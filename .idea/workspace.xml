@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/api/RetrofitClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/api/UserApiRest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +81,7 @@
       <workItem from="1728056408973" duration="1130000" />
       <workItem from="1728135215769" duration="1100000" />
       <workItem from="1728147567420" duration="4108000" />
-      <workItem from="1728152299373" duration="4104000" />
+      <workItem from="1728152299373" duration="4414000" />
     </task>
     <task id="LOCAL-00001" summary="Config Project dependencies">
       <option name="closed" value="true" />
