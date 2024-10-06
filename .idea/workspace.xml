@@ -112,13 +112,16 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
+            <option value="build" /
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.example.creditcard.repositories.CreditCardRepositoryImplTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -155,6 +158,7 @@
       <list>
         <item itemvalue="Gradle.BancoLocalAndRemote [build]" />
         <item itemvalue="Gradle.BancoLocalAndRemote [init]" />
+        <item itemvalue="Gradle.CreditCardRepositoryImplTest" />
       </list>
     </recent_temporary>
   </component>
