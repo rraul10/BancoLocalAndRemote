@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,42 +65,179 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
 
     @Override
     public List<TarjetaCredito> findAllCreditCards() {
-        return List.of();
+    logger.debug("Obteniendo todas las tarjetas de credito...");
+        List<TarjetaCredito> creditCards = new ArrayList<>();
+        String query = "SELECT * FROM Tarjeta";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                  Usuario user = findUserById(resultSet.getObject("clientID", UUID.class));
+                    creditCards.add(TarjetaCredito.builder()
+                            .id(resultSet.getObject("id", UUID.class))
+                            .numero(resultSet.getString("numero"))
+                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .nombreTitular(resultSet.getString(user.getName()))
+                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                            .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .build());
+                }
+                return creditCards;
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjetas de credito", e);
+        }
+        return creditCards;
     }
 
     @Override
     public TarjetaCredito findCreditCardById(UUID id) {
-        return null;
+    logger.debug("Obteniendo tarjeta de credito por id...");
+    TarjetaCredito creditCard = null;
+        String query = "SELECT * FROM Tarjeta WHERE id = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                  Usuario user = findUserById(resultSet.getObject("clientID", UUID.class));
+                    creditCard = TarjetaCredito.builder()
+                            .id(resultSet.getObject("id", UUID.class))
+                            .numero(resultSet.getString("numero"))
+                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .nombreTitular(resultSet.getString(user.getName()))
+                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                            .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .build();
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjeta de credito por id", e);
+        }
+        return creditCard;
     }
 
     @Override
     public TarjetaCredito findCreditCardByNumber(String number) {
-        return null;
+        logger.debug("Obteniendo tarjeta de credito por numero...");
+        TarjetaCredito creditCard = null;
+        String query = "SELECT * FROM Tarjeta WHERE numero = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, number);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                  Usuario user = findUserById(resultSet.getObject("clientID", UUID.class));
+                    creditCard = TarjetaCredito.builder()
+                            .id(resultSet.getObject("id", UUID.class))
+                            .numero(resultSet.getString("numero"))
+                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .nombreTitular(resultSet.getString(user.getName()))
+                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                            .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .build();
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjeta de credito por numero", e);
+        }
+        return creditCard;
     }
 
     @Override
     public TarjetaCredito saveCreditCard(TarjetaCredito creditCard) {
-        return null;
+        logger.debug("Guardando tarjeta de credito...");
+        String query = "INSERT INTO Tarjeta (id, numero, clientID, fechaCaducidad) VALUES (?, ?, ?, ?)";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, creditCard.getId());
+            statement.setString(2, creditCard.getNumero());
+            statement.setObject(3, creditCard.getClientID());
+            statement.setObject(4, creditCard.getFechaCaducidad());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al guardar tarjeta de credito", e);
+        }
+        return creditCard;
     }
 
     @Override
     public TarjetaCredito updateCreditCard(TarjetaCredito creditCard) {
-        return null;
+        logger.debug("Actualizando tarjeta de credito...");
+        String query = "UPDATE Tarjeta SET numero = ?, clientID = ?, fechaCaducidad = ? WHERE id = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, creditCard.getNumero());
+            statement.setObject(2, creditCard.getClientID());
+            statement.setObject(3, creditCard.getFechaCaducidad());
+            statement.setObject(4, creditCard.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al actualizar tarjeta de credito", e);
+        }
+        return creditCard;
     }
 
     @Override
     public Boolean deleteCreditCard(UUID id) {
-        return null;
+        logger.debug("Eliminando tarjeta de credito...");
+        String query = "DELETE FROM Tarjeta WHERE id = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al eliminar tarjeta de credito", e);
+        }
+        return true;
     }
 
     @Override
     public Boolean deleteAllCreditCards() {
-        return null;
+        logger.debug("Eliminando todas las tarjetas de credito...");
+        String query = "DELETE FROM Tarjeta";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al eliminar todas las tarjetas de credito", e);
+        }
+        return true;
     }
 
     @Override
-    public Optional<List<TarjetaCredito>> findAllCreditCardsByUserId(String userId) {
-        return Optional.empty();
+    public Optional<List<TarjetaCredito>> findAllCreditCardsByUserId(UUID userId) {
+        logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
+        Usuario user = findUserById(userId);
+        List<TarjetaCredito> creditCards = new ArrayList<>();
+        String query = "SELECT * FROM Tarjeta WHERE clientID = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    creditCards.add(TarjetaCredito.builder()
+                            .id(resultSet.getObject("id", UUID.class))
+                            .numero(resultSet.getString("numero"))
+                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .nombreTitular(resultSet.getString(user.getName()))
+                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                            .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .build());
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjetas de credito por usuario", e);
+        }
+        return Optional.of(creditCards);
     }
 
     //----------------------------------------------------------------
@@ -108,7 +247,6 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
       logger.debug("Obteniendo todos los usuarios...");
       List<Usuario> users = new ArrayList<>();
       String query = "SELECT * FROM Usuario";
-
       try (Connection connection = localDataBaseManager.connect();
            PreparedStatement statement = connection.prepareStatement(query);
            ResultSet resultSet = statement.executeQuery()) {
@@ -153,13 +291,13 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
     }
 
     @Override
-    public Usuario findUserById(Integer id) {
+    public Usuario findUserById(UUID id) {
         logger.debug("Obteniendo usuario por id...");
         Usuario usuario = null;
         String query = "SELECT * FROM Usuario WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
-          statement.setInt(1, id);
+          statement.setObject(1, id);
           try (ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
               usuario = Usuario.builder()
