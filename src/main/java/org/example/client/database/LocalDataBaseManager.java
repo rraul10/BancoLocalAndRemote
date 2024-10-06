@@ -7,24 +7,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class localDataBaseManager implements AutoCloseable {
-    private static localDataBaseManager instance = null;
+public class LocalDataBaseManager implements AutoCloseable {
+    private static LocalDataBaseManager instance = null;
     private HikariDataSource dataSource;
-    private final Logger logger = LoggerFactory.getLogger(localDataBaseManager.class);
+    private final Logger logger = LoggerFactory.getLogger(LocalDataBaseManager.class);
     private String DB_URL = "jdbc:sqlite:clients.db";
     private String DB_USER = "admin"; // reemplaza con tu usuario
     private String DB_PASSWORD = "adminPassword123"; // reemplaza con tu contraseña
     private String DB_Timeout = "10000";
     private Connection connection = null;
 
-    protected localDataBaseManager() {
+    protected LocalDataBaseManager() {
     }
 
     // Cambiamos el constructor para que reciba la configuración
-    private localDataBaseManager(ConfigProperties config) {
+    private LocalDataBaseManager(ConfigProperties config) {
         HikariConfig hikariConfig = new HikariConfig();
 
         hikariConfig.setJdbcUrl(config.getProperty("local.database.url", DB_URL));
@@ -36,16 +35,16 @@ public class localDataBaseManager implements AutoCloseable {
         logger.info("Hikari configurado correctamente");
     }
 
-    public static localDataBaseManager getInstance() {
+    public static LocalDataBaseManager getInstance() {
         if (instance == null) {
-            instance = new localDataBaseManager();
+            instance = new LocalDataBaseManager();
         }
         return instance;
     }
 
-    public static localDataBaseManager getInstance(ConfigProperties config) {
+    public static LocalDataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
-            instance = new localDataBaseManager(config);
+            instance = new LocalDataBaseManager(config);
         }
         return instance;
     }
