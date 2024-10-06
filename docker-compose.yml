@@ -2,8 +2,8 @@
 # Desarrollo
 services:
   # PostgreSQL
-  postgres-db:
-    container_name: personas-db_postgres
+  credit-card-db:
+    container_name: credit-card
     image: postgres:12-alpine
     restart: always
     env_file: .env
@@ -15,40 +15,40 @@ services:
       - ${POSTGRES_PORT}:5432
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres-db-data:/var/lib/postgresql/data
+      - credit-card-data:/var/lib/postgresql/data
     networks:
-      - personas-network
+      - credit-card-network
 
   # Adminer para conectarse a la base de datos
   # Quitar en despliegue final
-  adminer-postgres-db:
-    container_name: personas-db_adminer-postgres-db
+  adminer-credit-card-db:
+    container_name: credit-card-db_adminer
     image: adminer
     restart: always
     env_file: .env
     ports:
       - 8080:8080
     depends_on:
-      - postgres-db
+      - credit-card-db
     networks:
-      - personas-network
+      - credit-card-network
 
-  # App de personas
-  personas-app:
+  # App de credit-card
+  credit-card-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: personas-app
+    container_name: credit-card-app
     env_file: .env
     networks:
-      - personas-network
+      - credit-card-network
     depends_on:
-      - postgres-db
-      - adminer-postgres-db
+      - credit-card-db
+      - adminer-credit-card-db
 
 networks:
-  personas-network:
+  credit-card-network:
     driver: bridge
 
 volumes:
-  postgres-db-data:
+  credit-card-data:
