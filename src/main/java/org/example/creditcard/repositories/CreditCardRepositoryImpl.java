@@ -68,14 +68,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(TarjetaCredito.builder()
-                            .id((java.util.UUID) resultSet.getObject("uuid"))
+                            .id(resultSet.getObject("uuid", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID((java.util.UUID) resultSet.getObject("clientID"))
+                            .clientID(resultSet.getObject("clientID", UUID.class))
                             .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                             .build());
                 }
             }
