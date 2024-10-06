@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies">
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/initCliente.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/initTarjetaCredito.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/initUsuario.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-    </list>
+    <list default="true" id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,7 +85,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "feature/InitSql",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -182,7 +175,7 @@
       <workItem from="1728056408973" duration="1130000" />
       <workItem from="1728135215769" duration="1100000" />
       <workItem from="1728205774415" duration="1457000" />
-      <workItem from="1728207250262" duration="2120000" />
+      <workItem from="1728207250262" duration="2702000" />
     </task>
     <task id="LOCAL-00001" summary="Config Project dependencies">
       <option name="closed" value="true" />
