@@ -1,8 +1,8 @@
-package org.example.creditcard.validators;
+package org.example.creditcard.validator;
 
 import io.vavr.control.Either;
 import org.example.creditcard.repositories.CreditCardRepository;
-import org.example.creditcard.validators.errors.TarjetaErrors;
+import org.example.creditcard.errors.TarjetaErrors;
 import org.example.models.TarjetaCredito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

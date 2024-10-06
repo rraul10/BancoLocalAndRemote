@@ -1,4 +1,4 @@
-package org.example.creditcard.validators.errors;
+package org.example.creditcard.errors;
 
 public abstract class TarjetaErrors {
     private final String message;

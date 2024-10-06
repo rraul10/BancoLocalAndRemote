@@ -1,9 +1,6 @@
 package org.example.models;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -16,8 +13,16 @@ public class Usuario {
     @Getter
     @Builder.Default
     private UUID id = NEW_ID;
+    @NonNull
     private String name;
+    @NonNull
     private String username;
+    @Getter
+    @NonNull
     private String email;
+
+    public String getNombre() {
+        return name;
+    }
 
 }
