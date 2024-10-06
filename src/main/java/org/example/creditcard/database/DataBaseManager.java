@@ -42,8 +42,7 @@ public class DataBaseManager implements AutoCloseable {
 
     public Connection connect() throws SQLException {
         try {
-            logger.error("vas a conectarte si tienes postgres");
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
             logger.error("Error al conectar a la base de datos", e);
             throw new RuntimeException("Error al conectar a la base de datos", e);
