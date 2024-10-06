@@ -14,5 +14,5 @@ public interface CreditCardRepository {
     TarjetaCredito updateCreditCard(TarjetaCredito creditCard);
     Boolean deleteCreditCard(UUID id);
     Boolean deleteAllCreditCards();
-    Optional<List<TarjetaCredito>> findAllCreditCardsByUserId(UUID userId);
+    List<TarjetaCredito> findAllCreditCardsByUserId(UUID userId);
 }

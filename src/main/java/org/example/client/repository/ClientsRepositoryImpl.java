@@ -28,37 +28,111 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
   //----------------------------------------------------------------
     @Override
     public List<Cliente> findAllClientes()  {
-        return List.of();
+        logger.debug("Obteniendo todos los clientes...");
+        List<Cliente> clients = new ArrayList<>();
+        String query = "SELECT * FROM Cliente";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    clients.add(Cliente.builder()
+                                    .usuario(findUserById(resultSet.getObject("usuarioID", UUID.class)))
+                                    .tarjetas(findAllCreditCardsByUserId(resultSet.getObject("usuarioID", UUID.class)))
+                            .build());
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener todos los clientes", e);
+        }
+        return clients;
     }
 
     @Override
     public Cliente findClientById(UUID id) {
-        return null;
+        logger.debug("Obteniendo el cliente con id: {}", id);
+        Cliente client = null;
+        String query = "SELECT * FROM Cliente WHERE id = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    client = Cliente.builder()
+                            .usuario(findUserById(resultSet.getObject("usuarioID", UUID.class)))
+                            .tarjetas(findAllCreditCardsByUserId(resultSet.getObject("usuarioID", UUID.class)))
+                            .build();
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener el cliente con id: {}", id, e);
+        }
+        return client;
     }
 
     @Override
     public List<Cliente> findClientByName(String name) {
+        logger.debug("Obteniendo el cliente con nombre: {}", name);
+        String query = "SELECT * FROM Cliente WHERE name = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Cliente> clients = new ArrayList<>();
+                while (resultSet.next()) {
+                    clients.add(Cliente.builder()
+                                    .usuario(findUserById(resultSet.getObject("usuarioID", UUID.class)))
+                                    .tarjetas(findAllCreditCardsByUserId(resultSet.getObject("usuarioID", UUID.class)))
+                            .build());
+                }
+                return clients;
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener el cliente con nombre: {}", name, e);
+        }
         return List.of();
     }
 
     @Override
     public Cliente saveClient(Cliente client) {
-        return null;
+        logger.debug("Guardando el cliente: {}", client);
+        String query = "INSERT INTO Cliente (id, usuarioID) VALUES (?, ?)";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, client.getId());
+            statement.setObject(2, client.getUsuario().getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al guardar el cliente: {}", client, e);
+        }
+        return client;
     }
 
-    @Override
-    public Cliente updateClient(UUID id, Cliente updatedClient) {
-        return null;
-    }
 
     @Override
     public Boolean deleteCientById(UUID id) {
-        return null;
+        logger.debug("Eliminando el cliente con id: {}", id);
+        String query = "DELETE FROM Cliente WHERE id = ?";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al eliminar el cliente con id: {}", id, e);
+        }
+        return true;
     }
 
     @Override
     public Boolean deleteAllClients() {
-        return null;
+        logger.debug("Eliminando todos los clientes...");
+        String query = "DELETE FROM Cliente";
+        try (Connection connection = localDataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al eliminar todos los clientes", e);
+        }
+        return true;
     }
 
     //----------------------------------------------------------------
@@ -212,7 +286,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
     }
 
     @Override
-    public Optional<List<TarjetaCredito>> findAllCreditCardsByUserId(UUID userId) {
+    public List<TarjetaCredito> findAllCreditCardsByUserId(UUID userId) {
         logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
         Usuario user = findUserById(userId);
         List<TarjetaCredito> creditCards = new ArrayList<>();
@@ -237,7 +311,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
         } catch (SQLException e) {
             logger.error("Error al obtener tarjetas de credito por usuario", e);
         }
-        return Optional.of(creditCards);
+        return creditCards;
     }
 
     //----------------------------------------------------------------

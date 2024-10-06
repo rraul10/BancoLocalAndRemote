@@ -10,7 +10,6 @@ public interface ClientsRepository {
     Cliente findClientById(UUID id);
     List<Cliente> findClientByName(String name);
     Cliente saveClient(Cliente client);
-    Cliente updateClient(UUID id, Cliente updatedClient);
     Boolean deleteCientById(UUID id);
     Boolean deleteAllClients();
 }
