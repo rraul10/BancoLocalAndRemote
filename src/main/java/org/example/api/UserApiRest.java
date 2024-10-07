@@ -3,10 +3,10 @@ package org.example.api;
 import org.example.api.createupdatedelete.Request;
 import org.example.api.getAll.ResponseUserGetAll;
 import org.example.api.getById.ResponseUserGetByid;
-import retrofit2.Response;
 import retrofit2.http.*;
 
 import java.util.List;
+import org.example.api.createupdatedelete.Response;
 import java.util.concurrent.CompletableFuture;
 
 public interface UserApiRest {

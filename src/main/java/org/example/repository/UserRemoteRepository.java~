@@ -1,9 +1,6 @@
 package org.example.repository;
 
-import ch.qos.logback.classic.Logger;
 import org.example.api.UserApiRest;
-import org.example.api.createupdatedelete.Response;
-import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
@@ -35,29 +32,56 @@ public class UserRemoteRepository {
         }
     }
 
-    public Usuario getById(int id){
+    public Usuario getById(int id) {
         logger.info("Obteniendo usuario con id: " + id);
         var call = userApiRest.getById(id);
 
-        try{
+        try {
             var response = call.get();
             return UserMapper.toUserFromCreate(response);
-
-        }catch(Exception e){
-            throw new UserNotFoundException("User " + id + "" + " not found");
+        } catch (Exception e) {
+            if (e.getCause().getMessage().contains("404")) {
+                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
+            } else {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 
-    public Usuario create(Response response) {
-        logger.info("Creando usuario...");
-        return Usuario.builder()
-                .id((long)response.getId())
-                .name(response.getName())
-                .username(response.getUsername())
-                .email(response.getEmail())
-                .createdAt(response.getCreatedAt())
-                .updatedAt(response.getUpdatedAt())
-                .build();
+    public Usuario createUser(Usuario usuario) {
+        var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
+        try {
+            var response = callSync.get();
+            return UserMapper.toUserFromCreate(response);
+        } catch (Exception e) {
+            logger.error("Error creando usuario");
+            return null;
+        }
     }
+
+    public Usuario updateUser(int id , Usuario usuario){
+        logger.info("Actualizando al usuario" + usuario + " con id "+ id);
+
+        var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
+        try {
+            var response = callSync.get();
+            return UserMapper.toUserFromUpdate(response, id);
+        } catch (Exception e) {
+            if (e.getCause().getMessage().contains("404")) {
+                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
+            } else {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    public Usuario deleteById(int id) {
+        logger.info("Borrando al usuario con id: " + id);
+        
+    }
+
+
 
 }

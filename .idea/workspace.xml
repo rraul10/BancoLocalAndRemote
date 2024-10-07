@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/api/UserApiRest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/api/UserApiRest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/mappers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/mappers/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Usuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
