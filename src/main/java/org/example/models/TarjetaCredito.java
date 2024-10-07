@@ -23,7 +23,7 @@ public class TarjetaCredito {
     @NonNull
     private UUID clientID;
     @NonNull
-    private LocalDate fechaCaducidad;
+    private String fechaCaducidad;
     @NonNull
     private LocalDateTime createdAt;
     @NonNull

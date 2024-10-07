@@ -2,6 +2,9 @@ package org.example.usuarios.errors;
 
 public abstract class UserErrors {
     private final String message;
+    public String getMessage(){
+        return message;
+    }
 
     public UserErrors(String message){
         this.message = message;

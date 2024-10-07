@@ -20,6 +20,10 @@ public class TarjetaValidator {
             logger.error("Fecha de caducidad inválida");
             return Either.left(new TarjetaErrors.CaducidadInvalida("Fecha de caducidad inválida"));
         }
+        if(!validateNombre(tarjeta.getNombreTitular())){
+            logger.error("Nombre del titular inválido");
+            return Either.left(new TarjetaErrors.NombreInvalido("Nombre del titular inválido"));
+        }
         return Either.right(tarjeta);
     }
 
@@ -39,6 +43,16 @@ public class TarjetaValidator {
             suma += digito;
         }
         return suma % 10 == 0;
+    }
+
+    private boolean validateNombre(String nombre){
+        logger.debug("Validando nombre del titular");
+        if(nombre.length() < 2 || nombre.length() > 40){
+            logger.error("Nombre del titular inválido");
+            return false;
+        }
+        logger.info("El nombre del titular es válido");
+        return true;
     }
 
     private boolean validateCaducidad(String fechaCaducidad){
