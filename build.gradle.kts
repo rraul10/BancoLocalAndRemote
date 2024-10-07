@@ -32,6 +32,9 @@ dependencies {
     // Driver para SQLite
     implementation("org.xerial:sqlite-jdbc:3.46.0.0")
 
+    //Hikari
+    implementation ("com.zaxxer:HikariCP:6.0.0")
+
     // MyBatis
     implementation("org.mybatis:mybatis:3.5.13")
 
