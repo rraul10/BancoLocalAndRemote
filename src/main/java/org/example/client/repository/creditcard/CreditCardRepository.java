@@ -1,9 +1,8 @@
-package org.example.client.repository;
+package org.example.client.repository.creditcard;
 
 import org.example.models.TarjetaCredito;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface CreditCardRepository {
