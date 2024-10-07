@@ -9,7 +9,6 @@ import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserRemoteRepository {
@@ -56,8 +55,8 @@ public class UserRemoteRepository {
                 .name(response.getName())
                 .username(response.getUsername())
                 .email(response.getEmail())
-                .createdAt(LocalDateTime.parse(response.getCreatedAt()))
-                .updatedAt(LocalDateTime.parse(response.getCreatedAt()))
+                .createdAt(response.getCreatedAt())
+                .updatedAt(response.getUpdatedAt())
                 .build();
     }
 

@@ -15,7 +15,7 @@ public interface UserApiRest {
 
 
     @GET("users")
-    CompletableFuture<List<ResponseUserGetAll>> getAll();
+    CompletableFuture<ResponseUserGetAll> getAll();
 
     @GET("users/{id}")
     CompletableFuture<ResponseUserGetByid> getById(@Path("id") int id);

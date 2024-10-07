@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -12,12 +13,12 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Usuario {
-    public static UUID NEW_ID = UUID.randomUUID();
     @Getter
-    @Builder.Default
-    private UUID id = NEW_ID;
+    private Long id;
     private String name;
     private String username;
     private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
