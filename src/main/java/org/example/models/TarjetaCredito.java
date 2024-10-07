@@ -15,21 +15,21 @@ import static java.util.UUID.randomUUID;
 public class TarjetaCredito {
     public static final UUID NEW_ID = randomUUID();
     @Builder.Default
-    private UUID id = NEW_ID;
+    UUID id = NEW_ID;
     @NonNull
-    private String numero;
+    String numero;
     @NonNull
-    private String nombreTitular;
+    String nombreTitular;
     @NonNull
-    private UUID clientID;
+    UUID clientID;
     @NonNull
-    private LocalDate fechaCaducidad;
+    String fechaCaducidad;
     @NonNull
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
     @NonNull
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
     @NonNull
-    private boolean isDeleted;
+    boolean isDeleted;
 }
 
 
