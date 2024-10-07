@@ -5,12 +5,13 @@ import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 public class UserRemoteRepository {
 
-    private final org.slf4j.Logger logger = LoggerFactory.getLogger(UserRemoteRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(UserRemoteRepository.class);
     private final UserApiRest userApiRest;
 
     public UserRemoteRepository(UserApiRest userApiRest) {
