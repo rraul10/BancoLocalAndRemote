@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,17 +58,33 @@ class UserRepositoryImplTest {
     }
 
     @Test
+    void findUsersByNameNotFound(){
+        //act
+        var result = usersRepository.findUsersByName("NotFound");
+        //assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
     void findUserById() {
         //act
         var result = usersRepository.findUserById(1L);
         //assert
         assertAll(
                 ()-> assertNotNull(result),
-                ()-> assertEquals(1L, result.getId()),
-                ()-> assertEquals("Test", result.getName()),
-                ()-> assertEquals("TestUsername", result.getUsername()),
-                ()-> assertEquals("test@example.com", result.getEmail())
+                ()-> assertEquals(1L, result.get().getId()),
+                ()-> assertEquals("Test", result.get().getName()),
+                ()-> assertEquals("TestUsername", result.get().getUsername()),
+                ()-> assertEquals("test@example.com", result.get().getEmail())
         );
+    }
+
+    @Test
+    void findUserByIdNotFound(){
+        //act
+        var result = usersRepository.findUserById(99L);
+        //assert
+        assertEquals(Optional.empty(), result);
     }
 
     @Test
@@ -87,10 +104,10 @@ class UserRepositoryImplTest {
         //assert
         assertAll(
                 ()-> assertNotNull(savedUser),
-                ()-> assertEquals(2L, savedUser.getId()),
-                ()-> assertEquals("Test2", savedUser.getName()),
-                ()-> assertEquals("TestUsername2", savedUser.getUsername()),
-                ()-> assertEquals("test2@example.com", savedUser.getEmail())
+                ()-> assertEquals(2L, savedUser.get().getId()),
+                ()-> assertEquals("Test2", savedUser.get().getName()),
+                ()-> assertEquals("TestUsername2", savedUser.get().getUsername()),
+                ()-> assertEquals("test2@example.com", savedUser.get().getEmail())
         );
 
     }
@@ -112,11 +129,28 @@ class UserRepositoryImplTest {
         //assert
         assertAll(
                 ()-> assertNotNull(updatedUser),
-                ()-> assertEquals(1L, updatedUser.getId()),
-                ()-> assertEquals("TestUpdated", updatedUser.getName()),
-                ()-> assertEquals("TestUsernameUpdated", updatedUser.getUsername()),
-                ()-> assertEquals("testUpdated@example.com", updatedUser.getEmail())
+                ()-> assertEquals(1L, updatedUser.get().getId()),
+                ()-> assertEquals("TestUpdated", updatedUser.get().getName()),
+                ()-> assertEquals("TestUsernameUpdated", updatedUser.get().getUsername()),
+                ()-> assertEquals("testUpdated@example.com", updatedUser.get().getEmail())
         );
+    }
+
+    @Test
+    void updateUserNotFound(){
+        //arrange
+        Usuario userToUpdate = Usuario.builder()
+                .id(99L)
+                .name("TestUpdated")
+                .username("TestUsernameUpdated")
+                .email("testUpdated@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        //act
+        var updatedUser = usersRepository.updateUser(99L, userToUpdate);
+        //assert
+        assertEquals(Optional.empty(), updatedUser);
     }
 
     @Test
@@ -125,6 +159,14 @@ class UserRepositoryImplTest {
         var result = usersRepository.deleteUserById(1L);
         //assert
         assertTrue(result);
+    }
+
+    @Test
+    void deleteUserByIdNotFound(){
+        //act
+        var result = usersRepository.deleteUserById(99L);
+        //assert
+        assertFalse(result);
     }
 
     @Test
