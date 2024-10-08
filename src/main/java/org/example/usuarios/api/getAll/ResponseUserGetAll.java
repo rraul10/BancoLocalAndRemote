@@ -1,4 +1,4 @@
-package org.example.api.getAll;
+package org.example.usuarios.api.getAll;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserGetAll {
+public class ResponseUserGetAll {
     
     @JsonProperty("id")
     private int id;
@@ -22,4 +22,19 @@ public class UserGetAll {
     @JsonProperty("email")
     private String email;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

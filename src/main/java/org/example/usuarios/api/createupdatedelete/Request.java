@@ -1,4 +1,4 @@
-package org.example.api.createupdatedelete;
+package org.example.usuarios.api.createupdatedelete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
