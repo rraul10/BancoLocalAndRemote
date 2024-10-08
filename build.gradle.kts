@@ -54,10 +54,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
     testImplementation("org.mockito:mockito-core:5.12.0")
-
-    implementation ("io.vavr:vavr:0.10.3")
-
-
 }
 
 tasks.test {
