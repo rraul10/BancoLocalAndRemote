@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Cliente (
 
 -- Crear la tabla Tarjeta
 CREATE TABLE IF NOT EXISTS Tarjeta (
-                                       id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))), -- Generar un UUID como texto
+    id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))), -- Generar un UUID como texto
     numero VARCHAR(16) NOT NULL,
     clientID TEXT NOT NULL, -- Cambiar a TEXT para el UUID
     fechaCaducidad DATE NOT NULL,

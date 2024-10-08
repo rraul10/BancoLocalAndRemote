@@ -53,32 +53,85 @@ class UserRepositoryImplTest {
         //act
         var result = usersRepository.findUsersByName("Test");
         //assert
-        assertEquals(1l, result.size());
+        assertEquals(1, result.size());
     }
 
     @Test
     void findUserById() {
         //act
-        var result = usersRepository.findUserById(1l);
+        var result = usersRepository.findUserById(1L);
         //assert
-        assertNotNull(result);
-        assertEquals("Test", result.getName());
-        assertEquals("TestUsername", result.getUsername());
+        assertAll(
+                ()-> assertNotNull(result),
+                ()-> assertEquals(1L, result.getId()),
+                ()-> assertEquals("Test", result.getName()),
+                ()-> assertEquals("TestUsername", result.getUsername()),
+                ()-> assertEquals("test@example.com", result.getEmail())
+        );
     }
 
     @Test
     void saveUser() {
+        //arrange
+        Usuario userToSave = Usuario.builder()
+                .id(2l)
+                .name("Test2")
+                .username("TestUsername2")
+                .email("test2@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        //act
+        var savedUser = usersRepository.saveUser(userToSave);
+        //assert
+        assertAll(
+                ()-> assertNotNull(savedUser),
+                ()-> assertEquals(2L, savedUser.getId()),
+                ()-> assertEquals("Test2", savedUser.getName()),
+                ()-> assertEquals("TestUsername2", savedUser.getUsername()),
+                ()-> assertEquals("test2@example.com", savedUser.getEmail())
+        );
+
     }
 
     @Test
     void updateUser() {
+        //arrange
+        Usuario userToUpdate = Usuario.builder()
+               .id(1L)
+               .name("TestUpdated")
+               .username("TestUsernameUpdated")
+               .email("testUpdated@example.com")
+               .createdAt(LocalDateTime.now())
+               .updatedAt(LocalDateTime.now())
+               .build();
+
+        //act
+        var updatedUser = usersRepository.updateUser(1L, userToUpdate);
+        //assert
+        assertAll(
+                ()-> assertNotNull(updatedUser),
+                ()-> assertEquals(1L, updatedUser.getId()),
+                ()-> assertEquals("TestUpdated", updatedUser.getName()),
+                ()-> assertEquals("TestUsernameUpdated", updatedUser.getUsername()),
+                ()-> assertEquals("testUpdated@example.com", updatedUser.getEmail())
+        );
     }
 
     @Test
     void deleteUserById() {
+        //act
+        var result = usersRepository.deleteUserById(1L);
+        //assert
+        assertTrue(result);
     }
 
     @Test
     void deleteAllUsers() {
+        //act
+        var result = usersRepository.deleteAllUsers();
+        //assert
+        assertTrue(result);
     }
 }
