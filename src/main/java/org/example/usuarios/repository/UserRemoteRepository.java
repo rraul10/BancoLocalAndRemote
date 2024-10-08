@@ -1,6 +1,6 @@
-package org.example.repository;
+package org.example.usuarios.repository;
 
-import org.example.api.UserApiRest;
+import org.example.usuarios.api.UserApiRest;
 import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.models.Usuario;

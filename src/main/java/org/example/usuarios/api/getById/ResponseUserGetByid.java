@@ -1,14 +1,14 @@
-package org.example.api.createupdatedelete;
+package org.example.usuarios.api.getById;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
-public class Response {
-
-    @JsonProperty("createdAt")
-    private String createdAt;
-
-    @JsonProperty("updatedAt")
-    private String updatedAt;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ResponseUserGetByid {
 
     @JsonProperty("id")
     private int id;
@@ -36,13 +36,5 @@ public class Response {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
     }
 }

@@ -1,15 +1,13 @@
 package org.example.mappers;
 
-import org.example.api.createupdatedelete.Request;
-import org.example.api.createupdatedelete.Response;
-import org.example.api.getAll.ResponseUserGetAll;
-import org.example.api.getById.ResponseUserGetByid;
+import org.example.usuarios.api.createupdatedelete.Request;
+import org.example.usuarios.api.createupdatedelete.Response;
+import org.example.usuarios.api.getAll.ResponseUserGetAll;
+import org.example.usuarios.api.getById.ResponseUserGetByid;
 import org.example.models.Usuario;
-import org.example.repository.UserRemoteRepository;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class UserMapper {
 

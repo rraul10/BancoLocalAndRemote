@@ -15,7 +15,7 @@ public class Cliente {
     private final Usuario usuario;
     @Nullable
     private final List<TarjetaCredito> tarjetas;
-    public UUID getId(){
+    public Long getId(){
         return usuario.getId();
     }
     @Nullable

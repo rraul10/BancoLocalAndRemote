@@ -1,4 +1,4 @@
-package org.example.api.getAll;
+package org.example.usuarios.api.createupdatedelete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseUserGetAll {
-    
+public class Request {
+
     @JsonProperty("id")
     private int id;
 
