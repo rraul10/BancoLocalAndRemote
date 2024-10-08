@@ -147,7 +147,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             statement.setObject(4, creditCard.getFechaCaducidad());
             statement.setObject(5, creditCard.getCreatedAt());
             statement.setObject(6, creditCard.getUpdatedAt());
-            statement.setObject(7, creditCard.isDeleted());
+            statement.setObject(7, creditCard.getIsDeleted());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error al guardar tarjeta de credito", e);

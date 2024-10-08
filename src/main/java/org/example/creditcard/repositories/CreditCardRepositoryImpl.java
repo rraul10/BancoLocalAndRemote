@@ -104,7 +104,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
             statement.setObject(5, creditcard.getFechaCaducidad());
             statement.setObject(6, timeStamp);
             statement.setObject(7, timeStamp);
-            statement.setBoolean(8, creditcard.isDeleted());
+            statement.setBoolean(8, creditcard.getIsDeleted());
 
             // Ejecutamos la consulta
             statement.executeUpdate();
@@ -120,7 +120,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                     creditcard.setFechaCaducidad(creditcard.getFechaCaducidad());
                     creditcard.setCreatedAt(timeStamp);
                     creditcard.setUpdatedAt(timeStamp);
-                    creditcard.setDeleted(creditcard.isDeleted());
+                    creditcard.setIsDeleted(creditcard.getIsDeleted());
                     return creditcard;
                 } else {
                     throw new SQLException("No se pudo obtener la clave generada.");
