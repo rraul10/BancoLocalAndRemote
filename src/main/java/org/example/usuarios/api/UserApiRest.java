@@ -1,12 +1,12 @@
-package org.example.api;
+package org.example.usuarios.api;
 
-import org.example.api.createupdatedelete.Request;
-import org.example.api.getAll.ResponseUserGetAll;
-import org.example.api.getById.ResponseUserGetByid;
+import org.example.usuarios.api.createupdatedelete.Request;
+import org.example.usuarios.api.getAll.ResponseUserGetAll;
+import org.example.usuarios.api.getById.ResponseUserGetByid;
+import org.example.usuarios.api.createupdatedelete.Response;
 import retrofit2.http.*;
 
 import java.util.List;
-import org.example.api.createupdatedelete.Response;
 import java.util.concurrent.CompletableFuture;
 
 public interface UserApiRest {
