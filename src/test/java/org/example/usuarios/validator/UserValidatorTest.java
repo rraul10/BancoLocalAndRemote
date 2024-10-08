@@ -30,7 +30,7 @@ class UserValidatorTest {
         usuario.setName("");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -38,7 +38,7 @@ class UserValidatorTest {
         usuario.setName("Jo");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -46,7 +46,7 @@ class UserValidatorTest {
         usuario.setUsername("jo");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -54,7 +54,7 @@ class UserValidatorTest {
         usuario.setUsername("");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -62,7 +62,7 @@ class UserValidatorTest {
         usuario.setEmail("johndoeexample.com");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Email de usuario inválido", result.getLeft().getMessage());
+        assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
     }
 
     @Test
@@ -70,6 +70,6 @@ class UserValidatorTest {
         usuario.setEmail("");
         Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
         assertTrue(result.isLeft());
-        assertEquals("Email de usuario inválido", result.getLeft().getMessage());
+        assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
     }
 }
