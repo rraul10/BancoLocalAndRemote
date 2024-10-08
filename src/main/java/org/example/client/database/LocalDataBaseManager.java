@@ -6,8 +6,17 @@ import org.example.config.ConfigProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.stream.Collectors;
 
 public class LocalDataBaseManager implements AutoCloseable {
     private static LocalDataBaseManager instance = null;
@@ -19,22 +28,31 @@ public class LocalDataBaseManager implements AutoCloseable {
     private String DB_Timeout = "10000";
     private Connection connection = null;
 
+    // Constructor sin parámetros (usa valores predeterminados)
     protected LocalDataBaseManager() {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(DB_URL);
+        hikariConfig.setUsername(DB_USER);
+        hikariConfig.setPassword(DB_PASSWORD);
+        hikariConfig.setConnectionTimeout(Long.parseLong(DB_Timeout));
+
+        this.dataSource = new HikariDataSource(hikariConfig);
+        logger.info("Hikari configurado correctamente (con valores predeterminados)");
     }
 
-    // Cambiamos el constructor para que reciba la configuración
+    // Constructor que recibe la configuración
     private LocalDataBaseManager(ConfigProperties config) {
         HikariConfig hikariConfig = new HikariConfig();
-
         hikariConfig.setJdbcUrl(config.getProperty("local.database.url", DB_URL));
         hikariConfig.setUsername(config.getProperty("database.username", DB_USER));
         hikariConfig.setPassword(config.getProperty("database.password", DB_PASSWORD));
-        hikariConfig.setConnectionTimeout(Long.parseLong(config.getProperty("local.database.timeout",DB_Timeout)));
+        hikariConfig.setConnectionTimeout(Long.parseLong(config.getProperty("local.database.timeout", DB_Timeout)));
 
         this.dataSource = new HikariDataSource(hikariConfig);
-        logger.info("Hikari configurado correctamente");
+        logger.info("Hikari configurado correctamente (con configuración)");
     }
 
+    // Método para obtener la instancia sin configuración (singleton)
     public static LocalDataBaseManager getInstance() {
         if (instance == null) {
             instance = new LocalDataBaseManager();
@@ -42,6 +60,7 @@ public class LocalDataBaseManager implements AutoCloseable {
         return instance;
     }
 
+    // Método para obtener la instancia con configuración (singleton)
     public static LocalDataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
             instance = new LocalDataBaseManager(config);
@@ -49,6 +68,7 @@ public class LocalDataBaseManager implements AutoCloseable {
         return instance;
     }
 
+    // Método para conectarse a la base de datos
     public Connection connect() throws SQLException {
         try {
             return dataSource.getConnection();
@@ -58,13 +78,13 @@ public class LocalDataBaseManager implements AutoCloseable {
         }
     }
 
+    // Método para desconectar
     public void disconnect() {
         if (dataSource != null) {
             dataSource.close();
             logger.info("Desconectado del pool de conexiones...");
         }
     }
-
 
     @Override
     public void close() throws Exception {
