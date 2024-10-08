@@ -1,9 +1,8 @@
 package org.example.cache;
 
-package dev.joseluisgs.cache;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -12,15 +11,17 @@ import java.util.Set;
 
 public class CacheImpl<K, T> implements Cache<K, T> {
     private static final Logger logger = LoggerFactory.getLogger(CacheImpl.class);
-    private final int cacheSize;
     private final LinkedHashMap<K, T> cache;
+    private final int maxCapacity;
 
-    public CacheImpl(int cacheSize) {
-        this.cacheSize = cacheSize; 
-        this.cache = new LinkedHashMap<K, T>(cacheSize, 0.75f, true) {
+    public CacheImpl(int maxCapacity, Logger logger) {
+        this.maxCapacity = maxCapacity;
+        // Usamos el constructor de LinkedHashMap que respeta el orden de acceso (LRU)
+        this.cache = new LinkedHashMap<K, T>(maxCapacity, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, T> eldest) {
-                return size() > CacheImpl.this.cacheSize;
+                // Eliminamos automáticamente el registro más antiguo cuando se excede la capacidad
+                return size() > maxCapacity;
             }
         };
     }
