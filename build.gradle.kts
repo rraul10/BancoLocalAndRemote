@@ -18,15 +18,8 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.28")
     annotationProcessor("org.projectlombok:lombok:1.18.28")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.28")
-
     // Project Reactor
     implementation("io.projectreactor:reactor-core:3.6.7")
-<<<<<<< HEAD
-
-    // Testear Reactor
-=======
->>>>>>> origin/develop
-    testImplementation("io.projectreactor:reactor-test:3.6.7")
 
     // Vavr
     implementation("io.vavr:vavr:0.10.4")
