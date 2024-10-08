@@ -326,7 +326,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
            ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {
           users.add(Usuario.builder()
-              .id(resultSet.getObject("id", UUID.class))
+              .id(resultSet.getObject("id", long.class))
               .name(resultSet.getString("name"))
               .username(resultSet.getString("username"))
               .email(resultSet.getString("email"))
@@ -350,7 +350,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
 
           while (resultSet.next()) {
             users.add(Usuario.builder()
-                .id(resultSet.getObject("id", UUID.class))
+                .id(resultSet.getObject("id", long.class))
                 .name(resultSet.getString("name"))
                 .username(resultSet.getString("username"))
                 .email(resultSet.getString("email"))
@@ -375,7 +375,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
           try (ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
               usuario = Usuario.builder()
-                  .id(resultSet.getObject("id", UUID.class))
+                  .id(resultSet.getObject("id", long.class))
                   .name(resultSet.getString("name"))
                   .username(resultSet.getString("username"))
                   .email(resultSet.getString("email"))

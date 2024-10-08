@@ -36,7 +36,7 @@ public class StorageCsvUserImpl implements StorageCsvUser {
 
     private Usuario parseLine(List<String> linea) {
         return Usuario.builder()
-                .id(UUID.fromString(linea.get(0)))
+                .id(Long.valueOf(linea.get(0)))
                 .name( linea.get(1))
                 .username(linea.get(2))
                 .email(linea.get(4))

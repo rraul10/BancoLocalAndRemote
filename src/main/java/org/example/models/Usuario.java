@@ -11,13 +11,8 @@ import java.util.UUID;
 @Setter
 public class Usuario {
     @Getter
-<<<<<<< HEAD
     private Long id;
-=======
-    @Builder.Default
-    private UUID id = NEW_ID;
     @NonNull
->>>>>>> origin/develop
     private String name;
     @NonNull
     private String username;

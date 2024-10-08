@@ -21,11 +21,6 @@ dependencies {
 
     // Project Reactor
     implementation("io.projectreactor:reactor-core:3.6.7")
-<<<<<<< HEAD
-
-    // Testear Reactor
-=======
->>>>>>> origin/develop
     testImplementation("io.projectreactor:reactor-test:3.6.7")
 
     // Vavr

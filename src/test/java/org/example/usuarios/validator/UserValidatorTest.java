@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserValidatorTest {
     UserValidator userValidator = new UserValidator();
     Usuario usuario = Usuario.builder()
-            .id(UUID.fromString("3ec260b3-820c-496a-8620-9fe3b0b016b3"))
+            .id(1L)
             .name("John Doe")
             .username("johndoe")
             .email("johndoe@example.com")
@@ -27,48 +27,78 @@ class UserValidatorTest {
 
     @Test
     void validateUserEmptyName() {
-        usuario.setName("");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("")
+                .username("johndoe")
+                .email("johndoe@example.com")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
     void validateUserNameUnderLimit(){
-        usuario.setName("Jo");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("jo")
+                .username("johndoe")
+                .email("johndoe@example.com")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
     void validateUserUserNameUnderLimit(){
-        usuario.setUsername("jo");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("john")
+                .username("jo")
+                .email("johndoe@example.com")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
     void validateUserEmptyUsername() {
-        usuario.setUsername("");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("john")
+                .username("")
+                .email("johndoe@example.com")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
     void validateUserInvalidEmail() {
-        usuario.setEmail("johndoeexample.com");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("john")
+                .username("jondoe")
+                .email("johndoeexample.com")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
     }
 
     @Test
     void validateUserEmptyEmail() {
-        usuario.setEmail("");
-        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuario);
+        Usuario usuarioTest = Usuario.builder()
+                .id(1L)
+                .name("john")
+                .username("jondoe")
+                .email("")
+                .build();
+        Either<UserErrors,Usuario> result = userValidator.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
         assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
     }
