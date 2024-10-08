@@ -17,13 +17,21 @@ public class UserRepositoryImpl implements UsersRepository{
     private final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
     private final LocalDataBaseManager localDataBaseManager;
 
+    /**
+     * Constructor que recibe el gestor de la base de datos.
+     * @param localDataBase gestor de la base de datos.
+     */
     public UserRepositoryImpl(LocalDataBaseManager localDataBase) {this.localDataBaseManager = localDataBase;}
-
+    /**
+     * Obtiene una lista de todos los usuarios en la base de datos.
+     *
+     * @return una lista con todos los usuarios encontrados
+     */
     @Override
     public List<Usuario> findAllUsers() {
         logger.debug("Obteniendo todos los usuarios...");
         List<Usuario> users = new ArrayList<>();
-        String query = "SELECT * FROM Usuario";
+        String query = "SELECT * FROM Cliente";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -41,11 +49,17 @@ public class UserRepositoryImpl implements UsersRepository{
         return users;
     }
 
+    /**
+     * Obtiene una lista de usuarios cuyo nombre coincide con el especificado.
+     *
+     * @param name el nombre del usuario a buscar
+     * @return una lista con los usuarios encontrados
+     */
     @Override
     public List<Usuario> findUsersByName(String name) {
         logger.debug("Obteniendo usuarios por nombre...");
         List<Usuario> users = new ArrayList<>();
-        String query = "SELECT * FROM Usuario WHERE name = ?";
+        String query = "SELECT * FROM Cliente WHERE name = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, name);
@@ -67,11 +81,17 @@ public class UserRepositoryImpl implements UsersRepository{
         return users;
     }
 
+    /**
+     * Busca un usuario por su id en la base de datos.
+     *
+     * @param id el id del usuario a buscar
+     * @return el usuario encontrado
+     */
     @Override
     public Usuario findUserById(UUID id) {
         logger.debug("Obteniendo usuario por id...");
         Usuario usuario = null;
-        String query = "SELECT * FROM Usuario WHERE id = ?";
+        String query = "SELECT * FROM Cliente WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
@@ -91,10 +111,16 @@ public class UserRepositoryImpl implements UsersRepository{
         return usuario;
     }
 
+    /**
+     * Guarda un usuario en la base de datos.
+     *
+     * @param user el usuario a guardar
+     * @return el usuario guardado
+     */
     @Override
     public Usuario saveUser(Usuario user) {
         logger.debug("Guardando usuario...");
-        String query = "INSERT INTO Usuario (id, name, username, email) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Cliente (id, name, username, email) VALUES (?, ?, ?, ?)";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, user.getId());
@@ -108,10 +134,17 @@ public class UserRepositoryImpl implements UsersRepository{
         return user;
     }
 
+    /**
+     * Actualiza un usuario en la base de datos.
+     *
+     * @param uuid el id del usuario a actualizar
+     * @param user el usuario con los datos a actualizar
+     * @return el usuario actualizado
+     */
     @Override
     public Usuario updateUser(UUID uuid, Usuario user) {
         logger.debug("Actualizando usuario...");
-        String query = "UPDATE Usuario SET name = ?, username = ?, email = ? WHERE id = ?";
+        String query = "UPDATE Cliente SET name = ?, username = ?, email = ? WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getName());
@@ -125,10 +158,16 @@ public class UserRepositoryImpl implements UsersRepository{
         return user;
     }
 
+    /**
+     * Elimina un usuario en la base de datos por su id.
+     *
+     * @param id el id del usuario a eliminar
+     * @return {@code true} si se elimin  el usuario, {@code false} en caso de error.
+     */
     @Override
     public Boolean deleteUserById(UUID id) {
         logger.debug("Eliminando usuario por id...");
-        String query = "DELETE FROM Usuario WHERE id = ?";
+        String query = "DELETE FROM Cliente WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
@@ -136,19 +175,25 @@ public class UserRepositoryImpl implements UsersRepository{
         } catch (SQLException e) {
             logger.error("Error al eliminar usuario por id", e);
         }
-        return null;
+        return true;
     }
 
+    /**
+     * Elimina todos los usuarios en la base de datos.
+     *
+     * @return {@code true} si se eliminaron todos los usuarios, {@code false} en caso de error.
+     */
     @Override
     public Boolean deleteAllUsers() {
         logger.debug("Eliminando todos los usuarios...");
-        String query = "DELETE FROM Usuario";
+        String query = "DELETE FROM Cliente";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error al eliminar todos los usuarios", e);
         }
-        return null;
+
+        return true;
     }
 }

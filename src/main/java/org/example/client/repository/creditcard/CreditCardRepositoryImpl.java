@@ -11,20 +11,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class creditCardRepositoryImpl implements CreditCardRepository{
+public class CreditCardRepositoryImpl implements CreditCardRepository{
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
     private final LocalDataBaseManager localDataBaseManager;
     private final UsersRepository userRepository;
-    public creditCardRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
+    /**
+     * Constructor de la clase. Inicializa la clase con la base de datos local y el repositorio de usuarios.
+     * @param localDataBaseManager La base de datos local.
+     * @param userRepository El repositorio de usuarios.
+     */
+    public CreditCardRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
         this.localDataBaseManager = localDataBaseManager;
         this.userRepository = userRepository;
     }
+    /**
+     * Obtiene todas las tarjetas de credito.
+     * @return La lista de tarjetas de credito encontradas.
+     */
     @Override
     public List<TarjetaCredito> findAllCreditCards() {
         logger.debug("Obteniendo todas las tarjetas de credito...");
@@ -54,6 +62,11 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return creditCards;
     }
 
+    /**
+     * Obtiene una tarjeta de credito por su id.
+     * @param id El id de la tarjeta de credito.
+     * @return La tarjeta de credito encontrada o null si no existe.
+     */
     @Override
     public TarjetaCredito findCreditCardById(UUID id) {
         logger.debug("Obteniendo tarjeta de credito por id...");
@@ -83,6 +96,11 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return creditCard;
     }
 
+    /**
+     * Obtiene una tarjeta de credito por su numero.
+     * @param number El n mero de la tarjeta de credito.
+     * @return La tarjeta de credito encontrada o null si no existe.
+     */
     @Override
     public TarjetaCredito findCreditCardByNumber(String number) {
         logger.debug("Obteniendo tarjeta de credito por numero...");
@@ -112,16 +130,24 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return creditCard;
     }
 
+    /**
+     * Guarda una tarjeta de credito en la base de datos.
+     * @param creditCard La tarjeta de credito a guardar.
+     * @return La tarjeta de credito guardada.
+     */
     @Override
     public TarjetaCredito saveCreditCard(TarjetaCredito creditCard) {
         logger.debug("Guardando tarjeta de credito...");
-        String query = "INSERT INTO Tarjeta (id, numero, clientID, fechaCaducidad) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Tarjeta (id, numero, clientID, fechaCaducidad, created_at, updated_at, isDeleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, creditCard.getId());
             statement.setString(2, creditCard.getNumero());
             statement.setObject(3, creditCard.getClientID());
             statement.setObject(4, creditCard.getFechaCaducidad());
+            statement.setObject(5, creditCard.getCreatedAt());
+            statement.setObject(6, creditCard.getUpdatedAt());
+            statement.setObject(7, creditCard.isDeleted());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error al guardar tarjeta de credito", e);
@@ -129,16 +155,19 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return creditCard;
     }
 
+    /**
+     * Actualiza una tarjeta de credito existente, solo permite actualizar la fecha de caducidad.
+     * @param creditCard La tarjeta de credito a actualizar.
+     * @return La tarjeta de credito actualizada.
+     */
     @Override
     public TarjetaCredito updateCreditCard(TarjetaCredito creditCard) {
         logger.debug("Actualizando tarjeta de credito...");
-        String query = "UPDATE Tarjeta SET numero = ?, clientID = ?, fechaCaducidad = ? WHERE id = ?";
+        String query = "UPDATE Tarjeta SET fechaCaducidad = ?, updated_at = ? WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, creditCard.getNumero());
-            statement.setObject(2, creditCard.getClientID());
-            statement.setObject(3, creditCard.getFechaCaducidad());
-            statement.setObject(4, creditCard.getId());
+            statement.setObject(1, creditCard.getFechaCaducidad());
+            statement.setObject(2, LocalDateTime.now());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error al actualizar tarjeta de credito", e);
@@ -146,6 +175,11 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return creditCard;
     }
 
+    /**
+     * Elimina una tarjeta de credito por su id.
+     * @param id El id de la tarjeta de credito a eliminar.
+     * @return true si se elimino la tarjeta, false en caso contrario.
+     */
     @Override
     public Boolean deleteCreditCard(UUID id) {
         logger.debug("Eliminando tarjeta de credito...");
@@ -160,6 +194,10 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return true;
     }
 
+    /**
+     * Elimina todas las tarjetas de credito.
+     * @return true si se eliminararon todas las tarjetas, false en caso contrario.
+     */
     @Override
     public Boolean deleteAllCreditCards() {
         logger.debug("Eliminando todas las tarjetas de credito...");
@@ -173,6 +211,11 @@ public class creditCardRepositoryImpl implements CreditCardRepository{
         return true;
     }
 
+    /**
+     * Obtiene todas las tarjetas de credito de un usuario.
+     * @param userId El id del usuario.
+     * @return Una lista de tarjetas de credito.
+     */
     @Override
     public List<TarjetaCredito> findAllCreditCardsByUserId(UUID userId) {
         logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
