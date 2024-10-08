@@ -8,9 +8,9 @@ import java.util.UUID;
 public interface UsersRepository {
     List<Usuario> findAllUsers();
     List<Usuario> findUsersByName(String name);
-    Usuario findUserById(UUID id);
+    Usuario findUserById(Long id);
     Usuario saveUser(Usuario user);
-    Usuario updateUser(UUID uuid, Usuario user);
-    Boolean deleteUserById(UUID id);
+    Usuario updateUser(Long uuid, Usuario user);
+    Boolean deleteUserById(Long id);
     Boolean deleteAllUsers();
 }

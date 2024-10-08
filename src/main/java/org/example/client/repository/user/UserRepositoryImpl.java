@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UsersRepository{
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 users.add(Usuario.builder()
-                        .id(resultSet.getObject("id", UUID.class))
+                        .id(Long.parseLong(resultSet.getObject("id", String.class)))
                         .name(resultSet.getString("name"))
                         .username(resultSet.getString("username"))
                         .email(resultSet.getString("email"))
@@ -67,7 +67,7 @@ public class UserRepositoryImpl implements UsersRepository{
 
                 while (resultSet.next()) {
                     users.add(Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
@@ -88,7 +88,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return el usuario encontrado
      */
     @Override
-    public Usuario findUserById(UUID id) {
+    public Usuario findUserById(Long id) {
         logger.debug("Obteniendo usuario por id...");
         Usuario usuario = null;
         String query = "SELECT * FROM Cliente WHERE id = ?";
@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UsersRepository{
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     usuario = Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
@@ -142,7 +142,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return el usuario actualizado
      */
     @Override
-    public Usuario updateUser(UUID uuid, Usuario user) {
+    public Usuario updateUser(Long uuid, Usuario user) {
         logger.debug("Actualizando usuario...");
         String query = "UPDATE Cliente SET name = ?, username = ?, email = ? WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
@@ -165,7 +165,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return {@code true} si se elimin  el usuario, {@code false} en caso de error.
      */
     @Override
-    public Boolean deleteUserById(UUID id) {
+    public Boolean deleteUserById(Long id) {
         logger.debug("Eliminando usuario por id...");
         String query = "DELETE FROM Cliente WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();

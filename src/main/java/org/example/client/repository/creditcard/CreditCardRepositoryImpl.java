@@ -42,16 +42,16 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
              PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Usuario user = userRepository.findUserById(Long.parseLong(resultSet.getObject("clientID", String.class)));
                     creditCards.add(TarjetaCredito.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(UUID.fromString(resultSet.getString("id")))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .nombreTitular(resultSet.getString(user.getName()))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .nombreTitular(user.getName())
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getInt("isDeleted") == 1)
                             .build());
                 }
                 return creditCards;
@@ -77,11 +77,11 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             statement.setObject(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", Long.class));
                     creditCard = TarjetaCredito.builder()
                             .id(resultSet.getObject("id", UUID.class))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
                             .nombreTitular(resultSet.getString(user.getName()))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
@@ -111,11 +111,11 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             statement.setObject(1, number);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", Long.class));
                     creditCard = TarjetaCredito.builder()
                             .id(resultSet.getObject("id", UUID.class))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
                             .nombreTitular(resultSet.getString(user.getName()))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
@@ -217,7 +217,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
      * @return Una lista de tarjetas de credito.
      */
     @Override
-    public List<TarjetaCredito> findAllCreditCardsByUserId(UUID userId) {
+    public List<TarjetaCredito> findAllCreditCardsByUserId(Long userId) {
         logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
         Usuario user = userRepository.findUserById(userId);
         List<TarjetaCredito> creditCards = new ArrayList<>();
@@ -230,7 +230,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
                     creditCards.add(TarjetaCredito.builder()
                             .id(resultSet.getObject("id", UUID.class))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
                             .nombreTitular(resultSet.getString(user.getName()))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
