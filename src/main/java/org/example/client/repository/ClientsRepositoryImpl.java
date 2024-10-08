@@ -152,7 +152,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
                             .numero(resultSet.getString("numero"))
                             .clientID(resultSet.getObject("clientID", UUID.class))
                             .nombreTitular(resultSet.getString(user.getName()))
-                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", boolean.class))
@@ -182,7 +182,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
                             .numero(resultSet.getString("numero"))
                             .clientID(resultSet.getObject("clientID", UUID.class))
                             .nombreTitular(resultSet.getString(user.getName()))
-                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", boolean.class))
@@ -211,7 +211,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
                             .numero(resultSet.getString("numero"))
                             .clientID(resultSet.getObject("clientID", UUID.class))
                             .nombreTitular(resultSet.getString(user.getName()))
-                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", boolean.class))
@@ -301,7 +301,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
                             .numero(resultSet.getString("numero"))
                             .clientID(resultSet.getObject("clientID", UUID.class))
                             .nombreTitular(resultSet.getString(user.getName()))
-                            .fechaCaducidad(resultSet.getObject("fechaCaducidad", LocalDate.class))
+                            .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", boolean.class))
@@ -326,7 +326,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
            ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {
           users.add(Usuario.builder()
-              .id(resultSet.getObject("id", UUID.class))
+              .id(resultSet.getObject("id", long.class))
               .name(resultSet.getString("name"))
               .username(resultSet.getString("username"))
               .email(resultSet.getString("email"))
@@ -350,7 +350,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
 
           while (resultSet.next()) {
             users.add(Usuario.builder()
-                .id(resultSet.getObject("id", UUID.class))
+                .id(resultSet.getObject("id", long.class))
                 .name(resultSet.getString("name"))
                 .username(resultSet.getString("username"))
                 .email(resultSet.getString("email"))
@@ -375,7 +375,7 @@ public class ClientsRepositoryImpl implements ClientsRepository, UsersRepository
           try (ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
               usuario = Usuario.builder()
-                  .id(resultSet.getObject("id", UUID.class))
+                  .id(resultSet.getObject("id", long.class))
                   .name(resultSet.getString("name"))
                   .username(resultSet.getString("username"))
                   .email(resultSet.getString("email"))

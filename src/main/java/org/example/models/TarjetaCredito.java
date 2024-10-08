@@ -29,7 +29,7 @@ public class TarjetaCredito {
     @NonNull
     LocalDateTime updatedAt;
     @NonNull
-    boolean isDeleted;
+    Boolean isDeleted;
 }
 
 
