@@ -19,14 +19,14 @@ public class RepositoryClientNotificacion {
     private FluxSink<String> clienteNotification;
 
     public RepositoryClientNotificacion() {
-        ConnectableFlux<List<Cliente>> connectableFunkoFlux = Flux.<List<Cliente>>create(emitter -> this.clienteFluxSink = emitter).publish();
-        ConnectableFlux<String> connectableFunkoNotificationFlux = Flux.<String>create(emitter -> this.clienteNotification = emitter).publish();
+        ConnectableFlux<List<Cliente>> connectableClienteFlux = Flux.<List<Cliente>>create(emitter -> this.clienteFluxSink = emitter).publish();
+        ConnectableFlux<String> connectableClienteNotificationFlux = Flux.<String>create(emitter -> this.clienteNotification = emitter).publish();
 
-        clientesFlux = connectableFunkoFlux;
-        clienteNotificationFlux = connectableFunkoNotificationFlux;
+        clientesFlux = connectableClienteFlux;
+        clienteNotificationFlux = connectableClienteNotificationFlux;
 
-        connectableFunkoFlux.connect();
-        connectableFunkoNotificationFlux.connect();
+        connectableClienteFlux.connect();
+        connectableClienteNotificationFlux.connect();
     }
 
     public void add(Cliente cliente) {
