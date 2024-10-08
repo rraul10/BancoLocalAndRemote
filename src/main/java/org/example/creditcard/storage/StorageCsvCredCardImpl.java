@@ -22,7 +22,7 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
         return Flux.<TarjetaCredito>create(emitter -> {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 reader.lines()
-                        .skip(1) // Skip header
+                        .skip(1)
                         .forEach(line -> {
                             TarjetaCredito tarjetaCredito = parseLine(List.of(line.split(",")));
                             emitter.next(tarjetaCredito);
