@@ -1,19 +1,26 @@
 package org.example.cache;
 
-import io.vavr.control.Either;  // Suponiendo que usas Either de Vavr
+import io.vavr.control.Either;
 import org.example.cache.errors.CacheErrors;
-
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+
 
 public class CacheImpl<K, T> implements Cache<K, T> {
 
-    private final Map<K, T> cache;
+    // LinkedHashMap con orden de acceso para implementar la caché LRU
+    private final LinkedHashMap<K, T> cache;
     private final int maxCapacity;
 
     public CacheImpl(int maxCapacity) {
-        this.cache = new HashMap<>();
         this.maxCapacity = maxCapacity;
+
+        this.cache = new LinkedHashMap<K, T>(maxCapacity, 0.75f, true) {
+            protected boolean removeEldestEntry(Map.Entry<K, T> eldest) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -22,7 +29,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
             return Either.left(new CacheErrors<K>() {
                 @Override
                 public String getMessage() {
-                    return getInvalidKeyMessage(key); // Usamos un error específico
+                    return getInvalidKeyMessage(key); // Error por clave inválida
                 }
             });
         }
@@ -51,14 +58,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
             });
         }
 
-        if (cache.size() >= maxCapacity) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getCacheFullMessage(); // Error de caché lleno
-                }
-            });
-        }
+        // Insertamos el nuevo valor, el LinkedHashMap gestionará la eliminación del más antiguo si es necesario
         cache.put(key, value);
         return Either.right(value);
     }
@@ -83,7 +83,6 @@ public class CacheImpl<K, T> implements Cache<K, T> {
                 }
             });
         }
-
         return Either.right(value);
     }
 
@@ -93,3 +92,4 @@ public class CacheImpl<K, T> implements Cache<K, T> {
         return Either.right(null); // No hay valor a devolver.
     }
 }
+

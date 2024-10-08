@@ -19,14 +19,6 @@ public interface CacheErrors<K> {
         System.err.println(getKeyNotFoundMessage(key));
     }
 
-    default String getCacheFullMessage() {
-        return "El caché está lleno. No se puede insertar más elementos.";
-    }
-
-    default void logCacheFull() {
-        System.err.println(getCacheFullMessage());
-    }
-
     default String getStorageFailureMessage() {
         return "Error en el almacenamiento del caché. No se pudo completar la operación.";
     }
@@ -60,7 +52,7 @@ public interface CacheErrors<K> {
     }
 
     default String getCacheClearedMessage() {
-        return "El caché fue limpiado exitosamente.";
+        return "La caché fue limpiada exitosamente.";
     }
 
     default void logCacheCleared() {
