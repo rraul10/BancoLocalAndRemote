@@ -1,95 +1,93 @@
 package org.example.cache;
 
-import io.vavr.control.Either;
-import org.example.cache.errors.CacheErrors;
+package dev.joseluisgs.cache;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-
+import java.util.Set;
 
 public class CacheImpl<K, T> implements Cache<K, T> {
-
-    // LinkedHashMap con orden de acceso para implementar la caché LRU
+    private static final Logger logger = LoggerFactory.getLogger(CacheImpl.class);
+    private final int cacheSize;
     private final LinkedHashMap<K, T> cache;
-    private final int maxCapacity;
 
-    public CacheImpl(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
-
-        this.cache = new LinkedHashMap<K, T>(maxCapacity, 0.75f, true) {
+    public CacheImpl(int cacheSize) {
+        this.cacheSize = cacheSize; 
+        this.cache = new LinkedHashMap<K, T>(cacheSize, 0.75f, true) {
+            @Override
             protected boolean removeEldestEntry(Map.Entry<K, T> eldest) {
-                return false;
+                return size() > CacheImpl.this.cacheSize;
             }
         };
     }
 
     @Override
-    public Either<CacheErrors, T> get(K key) {
-        if (key == null) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getInvalidKeyMessage(key); // Error por clave inválida
-                }
-            });
-        }
-
-        T value = cache.get(key);
-        if (value == null) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getKeyNotFoundMessage(key); // Error de clave no encontrada
-                }
-            });
-        }
-
-        return Either.right(value);
+    public T get(K key) {
+        logger.debug("Obteniendo el valor de la clave: {}", key);
+        return cache.get(key);
     }
 
     @Override
-    public Either<CacheErrors, T> put(K key, T value) {
-        if (key == null) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getInvalidKeyMessage(key); // Error por clave inválida
-                }
-            });
-        }
-
-        // Insertamos el nuevo valor, el LinkedHashMap gestionará la eliminación del más antiguo si es necesario
+    public void put(K key, T value) {
+        logger.debug("Añadiendo a cache el valor de la clave: {}", key);
         cache.put(key, value);
-        return Either.right(value);
     }
 
     @Override
-    public Either<CacheErrors, T> remove(K key) {
-        if (key == null) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getInvalidKeyMessage(key); // Error por clave inválida
-                }
-            });
-        }
-
-        T value = cache.remove(key);
-        if (value == null) {
-            return Either.left(new CacheErrors<K>() {
-                @Override
-                public String getMessage() {
-                    return getKeyNotFoundMessage(key); // Error de clave no encontrada
-                }
-            });
-        }
-        return Either.right(value);
+    public void remove(K key) {
+        logger.debug("Eliminando de cache el valor de la clave: {}", key);
+        cache.remove(key);
     }
 
     @Override
-    public Either<CacheErrors, Void> clear() {
+    public void clear() {
+        logger.debug("Limpiando la cache");
         cache.clear();
-        return Either.right(null); // No hay valor a devolver.
+    }
+
+    @Override
+    public int size() {
+        logger.debug("Obteniendo el tamaño de la cache");
+        return cache.size();
+    }
+
+    @Override
+    public Set<K> keys() {
+        logger.debug("Obteniendo las claves de la cache");
+        return cache.keySet();
+    }
+
+    @Override
+    public Collection<T> values() {
+        logger.debug("Obteniendo los valores de la cache");
+        return cache.values();
+    }
+
+    @Override
+    public boolean containsKey(K key) {
+        logger.debug("Comprobando si existe la clave en la cache: {}", key);
+        return cache.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(T value) {
+        logger.debug("Comprobando si existe el valor en la cache: {}", value);
+        return cache.containsValue(value);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        logger.debug("Comprobando si la cache está vacía");
+        return cache.isEmpty();
+    }
+
+    @Override
+    public boolean isNotEmpty() {
+        logger.debug("Comprobando si la cache no está vacía");
+        return !isEmpty();
     }
 }
-

@@ -1,15 +1,26 @@
 package org.example.cache;
 
-import io.vavr.control.Either; // Ejemplo usando la librería Vavr para Either
-import org.example.cache.errors.CacheErrors;
+import java.util.Collection;
+import java.util.Set;
 
 public interface Cache<K, T> {
+    T get(K key);
+    void put(K key, T value);
+    void remove(K key);
+    void clear();
+    int size();
 
-    Either<CacheErrors, T> get(K key);
+    Set<K> keys();
 
-    Either<CacheErrors, T> put(K key, T value);
+    Collection<T> values();
 
-    Either<CacheErrors, T> remove(K key);
+    boolean containsKey(K key);
 
-    Either<CacheErrors, Void> clear();
+    boolean containsValue(T value);
+
+    boolean isEmpty();
+
+    default boolean isNotEmpty() {
+        return !isEmpty();
+    }
 }
