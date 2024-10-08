@@ -1,9 +1,7 @@
 package org.example.usuarios.api.createupdatedelete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 
-@Builder
 public class Response {
 
     @JsonProperty("createdAt")

@@ -21,10 +21,7 @@ dependencies {
 
     // Project Reactor
     implementation("io.projectreactor:reactor-core:3.6.7")
-<<<<<<< HEAD
 
-=======
->>>>>>> db0979821abc5b9312a91bb762190c6086ee79db
     testImplementation("io.projectreactor:reactor-test:3.6.7")
 
     // Vavr

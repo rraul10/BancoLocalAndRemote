@@ -39,14 +39,9 @@ public class UserRemoteRepository {
 
         try {
             var response = call.get();
-
-            if (response == null) {
-                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
-            }
-
             return UserMapper.toUserFromCreate(response);
         } catch (Exception e) {
-            if (e.getCause() != null && e.getCause().getMessage().contains("404")) {
+            if (e.getCause().getMessage().contains("404")) {
                 throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
@@ -54,7 +49,6 @@ public class UserRemoteRepository {
             }
         }
     }
-
 
     public Usuario createUser(Usuario usuario) {
         var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
