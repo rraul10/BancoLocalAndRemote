@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class StorageCsvUserImpl implements StorageCsvUser {
-    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageCsvUser.class);
 
 
     @Override
