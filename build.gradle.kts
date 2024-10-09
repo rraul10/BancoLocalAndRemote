@@ -30,7 +30,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
     // Driver para SQLite
-    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
+    implementation ("org.xerial:sqlite-jdbc:3.46.1.3")
 
     //Hikari
     implementation ("com.zaxxer:HikariCP:6.0.0")

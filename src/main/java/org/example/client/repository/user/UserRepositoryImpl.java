@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class UserRepositoryImpl implements UsersRepository{
@@ -37,7 +38,7 @@ public class UserRepositoryImpl implements UsersRepository{
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 users.add(Usuario.builder()
-                        .id(resultSet.getObject("id", UUID.class))
+                        .id(Long.parseLong(resultSet.getObject("id", String.class)))
                         .name(resultSet.getString("name"))
                         .username(resultSet.getString("username"))
                         .email(resultSet.getString("email"))
@@ -67,7 +68,7 @@ public class UserRepositoryImpl implements UsersRepository{
 
                 while (resultSet.next()) {
                     users.add(Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
@@ -88,28 +89,29 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return el usuario encontrado
      */
     @Override
-    public Usuario findUserById(UUID id) {
+    public Optional<Usuario> findUserById(Long id) {
         logger.debug("Obteniendo usuario por id...");
-        Usuario usuario = null;
         String query = "SELECT * FROM Cliente WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    usuario = Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                    Usuario usuario = Usuario.builder()
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
                             .build();
+                    return Optional.of(usuario);  // Devuelve el usuario envuelto en un Optional
                 }
             }
         } catch (SQLException e) {
             logger.error("Error al obtener usuario por id", e);
         }
-        return usuario;
+        return Optional.empty();  // Retorna Optional.empty() si no se encuentra el usuario
     }
+
 
     /**
      * Guarda un usuario en la base de datos.
@@ -118,7 +120,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return el usuario guardado
      */
     @Override
-    public Usuario saveUser(Usuario user) {
+    public Optional<Usuario> saveUser(Usuario user) {
         logger.debug("Guardando usuario...");
         String query = "INSERT INTO Cliente (id, name, username, email) VALUES (?, ?, ?, ?)";
         try (Connection connection = localDataBaseManager.connect();
@@ -127,13 +129,18 @@ public class UserRepositoryImpl implements UsersRepository{
             statement.setString(2, user.getName());
             statement.setString(3, user.getUsername());
             statement.setString(4, user.getEmail());
-            statement.executeUpdate();
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
         } catch (SQLException e) {
             logger.error("Error al guardar usuario", e);
+            return Optional.empty();
         }
-        return user;
     }
-
     /**
      * Actualiza un usuario en la base de datos.
      *
@@ -142,7 +149,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return el usuario actualizado
      */
     @Override
-    public Usuario updateUser(UUID uuid, Usuario user) {
+    public Optional<Usuario> updateUser(Long uuid, Usuario user) {
         logger.debug("Actualizando usuario...");
         String query = "UPDATE Cliente SET name = ?, username = ?, email = ? WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
@@ -151,11 +158,17 @@ public class UserRepositoryImpl implements UsersRepository{
             statement.setString(2, user.getUsername());
             statement.setString(3, user.getEmail());
             statement.setObject(4, uuid);
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return Optional.of(user);  // El usuario se actualizo? correctamente
+            } else {
+                return Optional.empty();  // No se actualizo? el usuario (aunque esto es poco probable con un update)
+            }
+
         } catch (SQLException e) {
             logger.error("Error al actualizar usuario", e);
+            return Optional.empty();
         }
-        return user;
     }
 
     /**
@@ -165,18 +178,28 @@ public class UserRepositoryImpl implements UsersRepository{
      * @return {@code true} si se elimin  el usuario, {@code false} en caso de error.
      */
     @Override
-    public Boolean deleteUserById(UUID id) {
+    public Boolean deleteUserById(Long id) {
         logger.debug("Eliminando usuario por id...");
         String query = "DELETE FROM Cliente WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                logger.warn("No se encontro ningun usuario con el id: " + id);
+                return false;
+            }
+
+            logger.info("Usuario con id " + id + " eliminado correctamente.");
+            return true;
         } catch (SQLException e) {
             logger.error("Error al eliminar usuario por id", e);
+            return false;
         }
-        return true;
     }
+
 
     /**
      * Elimina todos los usuarios en la base de datos.
