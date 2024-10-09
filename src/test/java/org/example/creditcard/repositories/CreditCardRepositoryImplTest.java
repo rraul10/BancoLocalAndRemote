@@ -58,10 +58,12 @@ class CreditCardRepositoryImplTest {
             when(mockResultSet.getString("numero")).thenReturn("1234567890123456");
             when(mockResultSet.getString("nombreTitular")).thenReturn("John Doe");
             when(mockResultSet.getObject("clientID")).thenReturn(UUID.randomUUID());
-            when(mockResultSet.getObject("fechaCaducidad", LocalDate.class)).thenReturn(LocalDate.now().plusYears(1));
+            when(mockResultSet.getString("fechaCaducidad")).thenReturn("12/99");
             when(mockResultSet.getObject("created_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
             when(mockResultSet.getObject("updated_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
             when(mockResultSet.getObject("isDeleted", boolean.class)).thenReturn(false);
+
+            System.out.println();
 
             List<TarjetaCredito> tarjetas = repository.getAll();
 
@@ -73,7 +75,7 @@ class CreditCardRepositoryImplTest {
 
     }
 
-    // Handles SQLException when database connection fails
+
     @Test
     public void getAllFails() {
         DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
@@ -98,8 +100,8 @@ class CreditCardRepositoryImplTest {
                 .id(validId)
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
-                .fechaCaducidad(String.valueOf(LocalDate.now().plusYears(1)))
+                .clientID(2l)
+                .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -119,10 +121,10 @@ class CreditCardRepositoryImplTest {
             doReturn(expectedCard.getNumero()).when(mockResultSet).getString("numero");
             doReturn(expectedCard.getNombreTitular()).when(mockResultSet).getString("nombreTitular");
             doReturn(expectedCard.getClientID()).when(mockResultSet).getObject("clientID", UUID.class);
-            doReturn(expectedCard.getFechaCaducidad()).when(mockResultSet).getObject("fechaCaducidad", LocalDate.class);
+            doReturn(expectedCard.getFechaCaducidad()).when(mockResultSet).getString("fechaCaducidad");
             doReturn(expectedCard.getCreatedAt()).when(mockResultSet).getObject("created_at", LocalDateTime.class);
             doReturn(expectedCard.getUpdatedAt()).when(mockResultSet).getObject("updated_at", LocalDateTime.class);
-            doReturn(expectedCard.isDeleted()).when(mockResultSet).getObject("isDeleted", Boolean.class);
+            doReturn(expectedCard.getIsDeleted()).when(mockResultSet).getObject("isDeleted", Boolean.class);
 
             CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
             Optional<TarjetaCredito> result = repository.getById(validId);
@@ -134,7 +136,7 @@ class CreditCardRepositoryImplTest {
         }
     }
 
-    // Returns an empty Optional when no credit card matches the given UUID
+
     @Test
     public void getByIdNotFound() {
         UUID nonExistentId = UUID.randomUUID();
@@ -159,7 +161,7 @@ class CreditCardRepositoryImplTest {
         }
     }
 
-    // Handles SQLException when database connection fails
+
     @Test
     public void getByIdFails() {
         UUID anyId = UUID.randomUUID();
@@ -182,7 +184,7 @@ class CreditCardRepositoryImplTest {
 
     @Test
     public void create() throws SQLException {
-        // Arrange
+
         DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
         Connection mockConnection = mock(Connection.class);
         PreparedStatement mockStatement = mock(PreparedStatement.class);
@@ -191,8 +193,8 @@ class CreditCardRepositoryImplTest {
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
-                .fechaCaducidad(String.valueOf(LocalDate.now().plusYears(1)))
+                .clientID(2l)
+                .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -206,26 +208,26 @@ class CreditCardRepositoryImplTest {
 
         CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
 
-        // Act
+
         TarjetaCredito result = repository.create(creditCard);
 
-        // Assert
+
         assertNotNull(result.getId());
         assertEquals(creditCard.getNumero(), result.getNumero());
         assertEquals(creditCard.getNombreTitular(), result.getNombreTitular());
     }
 
-    // Handles SQLException when database connection fails
+
     @Test
     public void createFails() throws SQLException {
-        // Arrange
+
         DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
 
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
-                .fechaCaducidad(String.valueOf(LocalDate.now().plusYears(3)))
+                .clientID(2l)
+                .fechaCaducidad(LocalDate.now().plusYears(3).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -235,14 +237,14 @@ class CreditCardRepositoryImplTest {
 
         CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
 
-        // Act
+
         TarjetaCredito result = repository.create(creditCard);
 
-        // Assert
+
         assertEquals(creditCard, result);
     }
 
-    // Successfully updates a credit card when valid data is provided
+
     @Test
     public void update() throws SQLException {
         UUID id = UUID.randomUUID();
@@ -250,8 +252,8 @@ class CreditCardRepositoryImplTest {
                 .id(id)
                 .nombreTitular("John Doe")
                 .numero("1234567890123456")
-                .clientID(UUID.randomUUID())
-                .fechaCaducidad(String.valueOf(LocalDate.now().plusYears(1)))
+                .clientID(2l)
+                .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -279,8 +281,8 @@ class CreditCardRepositoryImplTest {
                 .id(id)
                 .nombreTitular("Jane Doe")
                 .numero("1234567890123456")
-                .clientID(UUID.randomUUID())
-                .fechaCaducidad(String.valueOf(LocalDate.now().plusYears(1)))
+                .clientID(2l)
+                .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -298,7 +300,7 @@ class CreditCardRepositoryImplTest {
         assertNull(updatedCard);
     }
 
-    // Successfully deletes a credit card when a valid UUID is provided
+
     @Test
     public void delete() {
         UUID validId = UUID.randomUUID();

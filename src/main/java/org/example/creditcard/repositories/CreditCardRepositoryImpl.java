@@ -39,8 +39,8 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                         .id((java.util.UUID) resultSet.getObject("uuid"))
                         .numero(resultSet.getString("numero"))
                         .nombreTitular(resultSet.getString("nombreTitular"))
-                        .clientID((java.util.UUID) resultSet.getObject("clientID"))
-                        .fechaCaducidad(String.valueOf(resultSet.getObject("fechaCaducidad", LocalDate.class)))
+                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                        .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                         .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                         .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                         .isDeleted(resultSet.getObject("isDeleted", boolean.class))
@@ -71,8 +71,8 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                             .id(resultSet.getObject("uuid", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .fechaCaducidad(String.valueOf(resultSet.getObject("fechaCaducidad", LocalDate.class)))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
@@ -104,7 +104,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
             statement.setObject(5, creditcard.getFechaCaducidad());
             statement.setObject(6, timeStamp);
             statement.setObject(7, timeStamp);
-            statement.setBoolean(8, creditcard.isDeleted());
+            statement.setBoolean(8, creditcard.getIsDeleted());
 
             // Ejecutamos la consulta
             statement.executeUpdate();
@@ -120,7 +120,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                     creditcard.setFechaCaducidad(creditcard.getFechaCaducidad());
                     creditcard.setCreatedAt(timeStamp);
                     creditcard.setUpdatedAt(timeStamp);
-                    creditcard.setDeleted(creditcard.isDeleted());
+                    creditcard.setIsDeleted(creditcard.getIsDeleted());
                     return creditcard;
                 } else {
                     throw new SQLException("No se pudo obtener la clave generada.");

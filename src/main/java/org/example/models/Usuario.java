@@ -2,6 +2,7 @@ package org.example.models;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -9,10 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Usuario {
-    public static UUID NEW_ID = UUID.randomUUID();
     @Getter
-    @Builder.Default
-    private UUID id = NEW_ID;
+    private Long id;
     @NonNull
     private String name;
     @NonNull
@@ -20,6 +19,8 @@ public class Usuario {
     @Getter
     @NonNull
     private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public String getNombre() {
         return name;

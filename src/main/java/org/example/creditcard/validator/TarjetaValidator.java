@@ -29,7 +29,7 @@ public class TarjetaValidator {
 
     private boolean validateNumero(String numero){
         logger.debug("Validando número de tarjeta");
-        String tarjetaLimpia = numero.replace("", "");
+        String tarjetaLimpia = numero.replace(" ", "");
         if(tarjetaLimpia.length() < 13 || tarjetaLimpia.length() > 19) return false;
         if(!tarjetaLimpia.chars().allMatch(Character::isDigit)) return false;
         int[] numeros = tarjetaLimpia.chars().map(Character::getNumericValue).toArray();
@@ -58,9 +58,12 @@ public class TarjetaValidator {
     private boolean validateCaducidad(String fechaCaducidad){
         logger.debug("Validando fecha de caducidad");
         String[] partes = fechaCaducidad.split("/");
+        if (!fechaCaducidad.contains("/")){
+            return false;
+        }
         int mes = Integer.parseInt(partes[0]);
-        int año = Integer.parseInt(partes[1]);
-        if(mes < 1 || mes > 12 || año < 24){
+        int anyo = Integer.parseInt(partes[1]);
+        if(mes < 1 || mes > 12 || anyo < 24){
             logger.error("Fecha de caducidad inválida");
             return false;
         }
