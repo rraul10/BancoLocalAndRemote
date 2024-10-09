@@ -16,11 +16,9 @@ public class CacheImpl<K, T> implements Cache<K, T> {
 
     public CacheImpl(int maxCapacity, Logger logger) {
         this.maxCapacity = maxCapacity;
-        // Usamos el constructor de LinkedHashMap que respeta el orden de acceso (LRU)
         this.cache = new LinkedHashMap<K, T>(maxCapacity, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, T> eldest) {
-                // Eliminamos autom√°ticamente el registro m√°s antiguo cuando se excede la capacidad
                 return size() > maxCapacity;
             }
         };
@@ -34,7 +32,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
 
     @Override
     public void put(K key, T value) {
-        logger.debug("A√±adiendo a cache el valor de la clave: {}", key);
+        logger.debug("AÒadiendo a cache el valor de la clave: {}", key);
         cache.put(key, value);
     }
 
@@ -52,7 +50,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
 
     @Override
     public int size() {
-        logger.debug("Obteniendo el tama√±o de la cache");
+        logger.debug("Obteniendo el tamaÒo de la cache");
         return cache.size();
     }
 
@@ -82,13 +80,13 @@ public class CacheImpl<K, T> implements Cache<K, T> {
 
     @Override
     public boolean isEmpty() {
-        logger.debug("Comprobando si la cache est√° vac√≠a");
+        logger.debug("Comprobando si la cache est· vacÌa");
         return cache.isEmpty();
     }
 
     @Override
     public boolean isNotEmpty() {
-        logger.debug("Comprobando si la cache no est√° vac√≠a");
+        logger.debug("Comprobando si la cache no est· vacÌa");
         return !isEmpty();
     }
 }
