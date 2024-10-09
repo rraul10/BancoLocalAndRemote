@@ -21,7 +21,7 @@ public class TarjetaCredito {
     @NonNull
     String nombreTitular;
     @NonNull
-    UUID clientID;
+    Long clientID;
     @NonNull
     String fechaCaducidad;
     @NonNull

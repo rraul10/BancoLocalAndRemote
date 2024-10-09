@@ -39,7 +39,7 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
                 .id(UUID.fromString(linea.get(0)))
                 .numero( linea.get(1))
                 .nombreTitular(linea.get(2))
-                .clientID(UUID.fromString(linea.get(3)))
+                .clientID(Long.parseLong(linea.get(3)))
                 .fechaCaducidad(linea.get(4))
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())

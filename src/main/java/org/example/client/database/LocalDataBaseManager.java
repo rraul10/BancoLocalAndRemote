@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -75,6 +76,39 @@ public class LocalDataBaseManager implements AutoCloseable {
         } catch (SQLException e) {
             logger.error("Error al conectar a la base de datos local", e);
             throw new RuntimeException("Error al conectar a la base de datos local", e);
+        }
+    }
+
+    public void initializeDatabase() {
+        try (Connection conn = connect();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(
+                     getClass().getClassLoader().getResourceAsStream("initCliente.sql"), StandardCharsets.UTF_8));
+             Statement statement = conn.createStatement()) {
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            String line;
+
+            // Leer todo el contenido del archivo y almacenarlo en sqlBuilder
+            while ((line = reader.readLine()) != null) {
+                sqlBuilder.append(line.trim()).append("\n");
+            }
+
+            // Dividir las instrucciones SQL usando el punto y coma como delimitador
+            String[] sqlStatements = sqlBuilder.toString().split(";");
+            for (String sqlStatement : sqlStatements) {
+                logger.debug(sqlStatement);
+                sqlStatement = sqlStatement.trim();
+                if (!sqlStatement.isEmpty()) {
+                    statement.execute(sqlStatement); // Ejecutar cada instrucción
+                }
+            }
+
+            logger.info("Base de datos inicializada correctamente.");
+
+        } catch (IOException e) {
+            logger.error("Error al leer el archivo initCliente.sql", e);
+        } catch (SQLException e) {
+            logger.error("Error al conectar a la base de datos o ejecutar las instrucciones SQL", e);
         }
     }
 

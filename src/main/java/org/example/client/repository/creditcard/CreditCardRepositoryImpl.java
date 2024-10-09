@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class CreditCardRepositoryImpl implements CreditCardRepository{
@@ -42,16 +43,16 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
              PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Optional<Usuario> user = userRepository.findUserById(Long.parseLong(resultSet.getObject("clientID", String.class)));
                     creditCards.add(TarjetaCredito.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(UUID.fromString(resultSet.getString("id")))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .nombreTitular(resultSet.getString(user.getName()))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .nombreTitular(user.get().getName())
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getInt("isDeleted") == 1)
                             .build());
                 }
                 return creditCards;
@@ -77,16 +78,16 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             statement.setObject(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Optional<Usuario> user = userRepository.findUserById(Long.parseLong(resultSet.getObject("clientID", String.class)));
                     creditCard = TarjetaCredito.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(UUID.fromString(resultSet.getObject("id", String.class)))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .nombreTitular(resultSet.getString(user.getName()))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .nombreTitular(user.get().getName())
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getInt("isDeleted") == 1)
                             .build();
                 }
             }
@@ -111,16 +112,16 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             statement.setObject(1, number);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    Usuario user = userRepository.findUserById(resultSet.getObject("clientID", UUID.class));
+                    Optional<Usuario> user = userRepository.findUserById(Long.parseLong(resultSet.getObject("clientID", String.class)));
                     creditCard = TarjetaCredito.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(UUID.fromString(resultSet.getObject("id", String.class)))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .nombreTitular(resultSet.getString(user.getName()))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .nombreTitular(user.get().getName())
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getInt("isDeleted") == 1)
                             .build();
                 }
             }
@@ -161,18 +162,24 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
      * @return La tarjeta de credito actualizada.
      */
     @Override
-    public TarjetaCredito updateCreditCard(TarjetaCredito creditCard) {
+    public TarjetaCredito updateCreditCard(UUID uuid,TarjetaCredito creditCard) {
         logger.debug("Actualizando tarjeta de credito...");
         String query = "UPDATE Tarjeta SET fechaCaducidad = ?, updated_at = ? WHERE id = ?";
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, creditCard.getFechaCaducidad());
             statement.setObject(2, LocalDateTime.now());
-            statement.executeUpdate();
+            statement.setObject(3, uuid);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                return null;
+            } else {
+                return creditCard;
+            }
         } catch (SQLException e) {
             logger.error("Error al actualizar tarjeta de credito", e);
+            return null;
         }
-        return creditCard;
     }
 
     /**
@@ -187,11 +194,17 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
         try (Connection connection = localDataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted == 0) {
+                return false;
+            } else {
+                return true;
+            }
         } catch (SQLException e) {
             logger.error("Error al eliminar tarjeta de credito", e);
+            return false;
         }
-        return true;
+
     }
 
     /**
@@ -217,9 +230,9 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
      * @return Una lista de tarjetas de credito.
      */
     @Override
-    public List<TarjetaCredito> findAllCreditCardsByUserId(UUID userId) {
+    public List<TarjetaCredito> findAllCreditCardsByUserId(Long userId) {
         logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
-        Usuario user = userRepository.findUserById(userId);
+        Optional<Usuario> user = userRepository.findUserById(userId);
         List<TarjetaCredito> creditCards = new ArrayList<>();
         String query = "SELECT * FROM Tarjeta WHERE clientID = ?";
         try (Connection connection = localDataBaseManager.connect();
@@ -228,14 +241,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     creditCards.add(TarjetaCredito.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(UUID.fromString(resultSet.getObject("id", String.class)))
                             .numero(resultSet.getString("numero"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
-                            .nombreTitular(resultSet.getString(user.getName()))
+                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .nombreTitular(user.get().getName())
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                            .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                            .isDeleted(resultSet.getInt("isDeleted") == 1)
                             .build());
                 }
             }
