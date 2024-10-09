@@ -5,6 +5,7 @@ import org.example.client.repository.creditcard.CreditCardRepositoryImpl;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,29 +21,27 @@ class UserRepositoryImplTest {
     private static LocalDataBaseManager dataBaseManager;
     private static UsersRepository usersRepository;
 
-    @BeforeEach
-    void setUp() throws SQLException {
+    @BeforeAll
+    static void setUpAll() throws SQLException {
+        // Inicializa el pool de conexiones
         dataBaseManager = LocalDataBaseManager.getInstance();
         usersRepository = new UserRepositoryImpl(dataBaseManager);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
-        usersRepository.saveUser(Usuario.builder()
-                        .id(1l)
-                        .name("Test")
-                        .username("TestUsername")
-                        .email("test@example.com")
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                .build());
     }
 
-    @AfterEach
-    void tearDown() throws Exception {
-        dataBaseManager.close();
-    }
+
 
     @Test
     void findAllUsers() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.findAllUsers();
         //assert
@@ -51,6 +50,14 @@ class UserRepositoryImplTest {
 
     @Test
     void findUsersByName() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.findUsersByName("Test");
         //assert
@@ -59,6 +66,14 @@ class UserRepositoryImplTest {
 
     @Test
     void findUsersByNameNotFound(){
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.findUsersByName("NotFound");
         //assert
@@ -67,6 +82,14 @@ class UserRepositoryImplTest {
 
     @Test
     void findUserById() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.findUserById(1L);
         //assert
@@ -81,6 +104,14 @@ class UserRepositoryImplTest {
 
     @Test
     void findUserByIdNotFound(){
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.findUserById(99L);
         //assert
@@ -89,6 +120,14 @@ class UserRepositoryImplTest {
 
     @Test
     void saveUser() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //arrange
         Usuario userToSave = Usuario.builder()
                 .id(2l)
@@ -114,6 +153,14 @@ class UserRepositoryImplTest {
 
     @Test
     void updateUser() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //arrange
         Usuario userToUpdate = Usuario.builder()
                .id(1L)
@@ -138,6 +185,14 @@ class UserRepositoryImplTest {
 
     @Test
     void updateUserNotFound(){
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //arrange
         Usuario userToUpdate = Usuario.builder()
                 .id(99L)
@@ -155,6 +210,14 @@ class UserRepositoryImplTest {
 
     @Test
     void deleteUserById() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.deleteUserById(1L);
         //assert
@@ -163,6 +226,14 @@ class UserRepositoryImplTest {
 
     @Test
     void deleteUserByIdNotFound(){
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.deleteUserById(99L);
         //assert
@@ -171,6 +242,14 @@ class UserRepositoryImplTest {
 
     @Test
     void deleteAllUsers() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = usersRepository.deleteAllUsers();
         //assert

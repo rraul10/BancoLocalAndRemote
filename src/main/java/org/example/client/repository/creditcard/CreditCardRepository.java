@@ -10,7 +10,7 @@ public interface CreditCardRepository {
     TarjetaCredito findCreditCardById(UUID id);
     TarjetaCredito findCreditCardByNumber(String number);;
     TarjetaCredito saveCreditCard(TarjetaCredito creditCard);
-    TarjetaCredito updateCreditCard(TarjetaCredito creditCard);
+    TarjetaCredito updateCreditCard(UUID uuid,TarjetaCredito creditCard);
     Boolean deleteCreditCard(UUID id);
     Boolean deleteAllCreditCards();
     List<TarjetaCredito> findAllCreditCardsByUserId(Long userId);
