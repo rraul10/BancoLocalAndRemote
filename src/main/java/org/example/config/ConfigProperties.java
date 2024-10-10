@@ -4,8 +4,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Clase que carga y gestiona propiedades de configuración desde un archivo.
+ * Esta clase permite cargar un archivo de propiedades y acceder a sus valores.
+ * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, Alvaro Herrero, Yahya el Hadri
+ * @since 1.0
+ */
+
 public class ConfigProperties {
     private final Properties properties = new Properties();
+
+    /**
+     * Constructor que carga el archivo de propiedades especificado.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, Alvaro Herrero, Yahya el Hadri
+     * @since 1.0
+     * @param fileName nombre del archivo de propiedades a cargar
+     */
 
     public ConfigProperties(String fileName) {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(fileName)) {
@@ -19,6 +33,16 @@ public class ConfigProperties {
             System.exit(1);
         }
     }
+
+    /**
+     * Obtiene el valor de una propiedad especificada.
+     * Si la propiedad no existe, devuelve el valor por defecto proporcionado.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, Alvaro Herrero, Yahya el Hadri
+     * @since 1.0
+     * @param key clave de la propiedad a obtener
+     * @param defaultValue valor por defecto a devolver si la propiedad no existe
+     * @return valor de la propiedad o el valor por defecto
+     */
 
     public String getProperty(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
