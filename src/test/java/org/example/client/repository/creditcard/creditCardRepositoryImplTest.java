@@ -3,6 +3,7 @@ package org.example.client.repository.creditcard;
 import org.example.client.database.LocalDataBaseManager;
 import org.example.client.repository.user.UserRepositoryImpl;
 import org.example.client.repository.user.UsersRepository;
+import org.example.config.ConfigProperties;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
 import org.junit.jupiter.api.*;
@@ -24,15 +25,25 @@ class creditCardRepositoryImplTest {
 
     @BeforeAll
      static void setUpAll() throws SQLException {
-        dataBaseManager = LocalDataBaseManager.getInstance();
-        usersRepository = new UserRepositoryImpl(dataBaseManager);
-        creditCardRepository = new CreditCardRepositoryImpl(dataBaseManager, usersRepository);
+        ConfigProperties properties = new ConfigProperties("application.properties");
+        dataBaseManager = LocalDataBaseManager.getInstanceMemory(properties);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
+        usersRepository = new UserRepositoryImpl(dataBaseManager);
+        creditCardRepository = new CreditCardRepositoryImpl(dataBaseManager, usersRepository);
+
     }
 
     @BeforeEach
     void setUp() {
+        usersRepository.saveUser(Usuario.builder()
+                .id(1l)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         creditCardRepository.saveCreditCard(TarjetaCredito.builder()
                 .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
                 .numero("1234567890123456")
@@ -43,44 +54,37 @@ class creditCardRepositoryImplTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build());
-        usersRepository.saveUser(Usuario.builder()
-                .id(1l)
-                .name("Test")
-                .username("TestUsername")
-                .email("test@example.com")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build());
+
     }
 
     @AfterEach
     void tearDown() {
-        creditCardRepository.deleteCreditCard(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
-        creditCardRepository.saveCreditCard(TarjetaCredito.builder()
-                .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
-                .numero("1234567890123456")
-                .nombreTitular("Test")
-                .clientID(1L)
-                .fechaCaducidad("12/24")
-                .isDeleted(false)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build());
-        usersRepository.saveUser(Usuario.builder()
-                .id(1l)
-                .name("Test")
-                .username("TestUsername")
-                .email("test@example.com")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build());
-
+        creditCardRepository.deleteAllCreditCards();
+        usersRepository.deleteAllUsers();
     }
+
 
 
     @Test
     void findAllCreditCards() {
-
+        creditCardRepository.saveCreditCard(TarjetaCredito.builder()
+                .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
+                .numero("1234567890123456")
+                .nombreTitular("Test")
+                .clientID(1L)
+                .fechaCaducidad("12/24")
+                .isDeleted(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
+        usersRepository.saveUser(Usuario.builder()
+                .id(1L)
+                .name("Test")
+                .username("TestUsername")
+                .email("test@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
         //act
         var result = creditCardRepository.findAllCreditCards();
         //assert

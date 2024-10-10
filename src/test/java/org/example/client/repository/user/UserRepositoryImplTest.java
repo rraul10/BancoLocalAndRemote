@@ -2,6 +2,7 @@ package org.example.client.repository.user;
 
 import org.example.client.database.LocalDataBaseManager;
 import org.example.client.repository.creditcard.CreditCardRepositoryImpl;
+import org.example.config.ConfigProperties;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
 import org.junit.jupiter.api.AfterEach;
@@ -23,8 +24,9 @@ class UserRepositoryImplTest {
 
     @BeforeAll
     static void setUpAll() throws SQLException {
+        ConfigProperties config = new ConfigProperties("application.properties");
         // Inicializa el pool de conexiones
-        dataBaseManager = LocalDataBaseManager.getInstance();
+        dataBaseManager = LocalDataBaseManager.getInstanceMemory(config);
         usersRepository = new UserRepositoryImpl(dataBaseManager);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
