@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserValidator {
-    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(UserValidator.class);
 
     public Either<UserErrors, Usuario> ValidateUser(Usuario usuario){
         logger.debug("Validando usuario");
