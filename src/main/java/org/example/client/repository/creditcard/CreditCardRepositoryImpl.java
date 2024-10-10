@@ -17,23 +17,36 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementación del repositorio de tarjetas de crédito.
+ * @author Raúl Fernández, Javier Hernández, Javier Ruíz, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+ * @version 1.0
+ */
+
 public class CreditCardRepositoryImpl implements CreditCardRepository{
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
     private final LocalDataBaseManager localDataBaseManager;
     private final UsersRepository userRepository;
+
     /**
      * Constructor de la clase. Inicializa la clase con la base de datos local y el repositorio de usuarios.
+     * @author Raúl Fernández, Javier Hernández, Javier Ruíz, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
      * @param localDataBaseManager La base de datos local.
      * @param userRepository El repositorio de usuarios.
      */
+
     public CreditCardRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
         this.localDataBaseManager = localDataBaseManager;
         this.userRepository = userRepository;
     }
     /**
      * Obtiene todas las tarjetas de credito.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
      * @return La lista de tarjetas de credito encontradas.
      */
+
     @Override
     public List<TarjetaCredito> findAllCreditCards() {
         logger.debug("Obteniendo todas las tarjetas de credito...");
@@ -65,9 +78,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
 
     /**
      * Obtiene una tarjeta de credito por su id.
-     * @param id El id de la tarjeta de credito.
-     * @return La tarjeta de credito encontrada o null si no existe.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+     * @since 1.0
+     * @param id
+     * @return La tarjeta de crédito encontrada o null si no existe.
      */
+
     @Override
     public TarjetaCredito findCreditCardById(UUID id) {
         logger.debug("Obteniendo tarjeta de credito por id...");
@@ -98,10 +114,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
     }
 
     /**
-     * Obtiene una tarjeta de credito por su numero.
-     * @param number El n mero de la tarjeta de credito.
-     * @return La tarjeta de credito encontrada o null si no existe.
+     * Obtiene una tarjeta de crédito por su número.
+     * @author Raúl Fernandez, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero, Javier Ruiz.
+     * @param number El número de la tarjeta de crédito.
+     * @return La tarjeta de crédito encontrada o null si no existe.
      */
+
     @Override
     public TarjetaCredito findCreditCardByNumber(String number) {
         logger.debug("Obteniendo tarjeta de credito por numero...");
@@ -132,10 +150,13 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
     }
 
     /**
-     * Guarda una tarjeta de credito en la base de datos.
-     * @param creditCard La tarjeta de credito a guardar.
-     * @return La tarjeta de credito guardada.
+     * Guarda una tarjeta de crédito en la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Yahya El Hadri, Samuel Cortés.
+     * @since 1.0
+     * @param creditCard La tarjeta de crédito a guardar.
+     * @return La tarjeta de crédito guardada.
      */
+
     @Override
     public TarjetaCredito saveCreditCard(TarjetaCredito creditCard) {
         logger.debug("Guardando tarjeta de credito...");
@@ -158,9 +179,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
 
     /**
      * Actualiza una tarjeta de credito existente, solo permite actualizar la fecha de caducidad.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
      * @param creditCard La tarjeta de credito a actualizar.
      * @return La tarjeta de credito actualizada.
      */
+
     @Override
     public TarjetaCredito updateCreditCard(UUID uuid,TarjetaCredito creditCard) {
         logger.debug("Actualizando tarjeta de credito...");
@@ -183,10 +207,13 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
     }
 
     /**
-     * Elimina una tarjeta de credito por su id.
-     * @param id El id de la tarjeta de credito a eliminar.
-     * @return true si se elimino la tarjeta, false en caso contrario.
+     * Elimina una tarjeta de crédito por su id.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id
+     * @return true si se elimina la tarjeta, false en caso contrario.
      */
+
     @Override
     public Boolean deleteCreditCard(UUID id) {
         logger.debug("Eliminando tarjeta de credito...");
@@ -206,11 +233,13 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
         }
 
     }
-
     /**
-     * Elimina todas las tarjetas de credito.
-     * @return true si se eliminararon todas las tarjetas, false en caso contrario.
+     * Elimina todas las tarjetas de crédito.
+     * @author Raúl Fernández, Yahya El Hadri, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés.
+     * @since 1.0
+     * @return true si se eliminan todas las tarjetas, false en caso contrario.
      */
+
     @Override
     public Boolean deleteAllCreditCards() {
         logger.debug("Eliminando todas las tarjetas de credito...");
@@ -226,9 +255,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
 
     /**
      * Obtiene todas las tarjetas de credito de un usuario.
-     * @param userId El id del usuario.
+     * @author Raúl Fernández, Yahya El Hadri, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés.
+     * @since 1.0
+     * @param userId
      * @return Una lista de tarjetas de credito.
      */
+
     @Override
     public List<TarjetaCredito> findAllCreditCardsByUserId(Long userId) {
         logger.debug("Obteniendo todas las tarjetas de credito por usuario...");
