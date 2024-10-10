@@ -14,6 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementación del repositorio de tarjetas de crédito.
+ * Esta clase proporciona métodos para interactuar con la base de datos y realizar
+ * operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las tarjetas de crédito.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @since 1.0
+ */
+
 public class CreditCardRepositoryImpl implements CreditCardRepository {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
     private final DataBaseManager dataBaseManager;
@@ -22,7 +30,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         this.dataBaseManager = dataBaseManager;
     }
 
-
+    /**
+     * Obtiene todas las tarjetas de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @return lista de tarjetas de crédito
+     */
 
     @Override
     public List<TarjetaCredito> getAll() {
@@ -55,6 +68,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return tarjetas;
     }
 
+    /**
+     * Obtiene una tarjeta de crédito por su ID.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito
+     * @return tarjeta de crédito si existe, Optional.empty() si no existe
+     */
+
     @Override
     public Optional<TarjetaCredito> getById(UUID id) {
         logger.info("Obteniendo tarjeta por id...");
@@ -85,6 +106,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         }
         return Optional.empty();
     }
+
+    /**
+     * Crea una nueva tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param creditcard tarjeta de crédito a crear
+     * @return tarjeta de crédito creada
+     */
 
     @Override
     public TarjetaCredito create(TarjetaCredito creditcard) {
@@ -134,6 +163,15 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return creditcard;
     }
 
+    /**
+     * Actualiza una tarjeta de crédito existente.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito a actualizar
+     * @param creditcard tarjeta de crédito actualizada
+     * @return tarjeta de crédito actualizada
+     */
+
     @Override
     public TarjetaCredito update(UUID id, TarjetaCredito creditcard) {
         logger.info("Actualizando tarjeta...");
@@ -163,6 +201,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         }
         return null;
     }
+
+    /**
+     * Elimina una tarjeta de crédito por su ID.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito a eliminar
+     * @return true si se elimina la tarjeta, false si no se elimina
+     */
 
     @Override
     public boolean delete(UUID id) {
