@@ -37,12 +37,13 @@ public class UserRepositoryImpl implements UsersRepository{
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 users.add(Usuario.builder()
-                        .id(resultSet.getObject("id", UUID.class))
+                        .id(resultSet.getObject("id", Long.class))
                         .name(resultSet.getString("name"))
                         .username(resultSet.getString("username"))
                         .email(resultSet.getString("email"))
                         .build());
             }
+
         } catch (SQLException e) {
             logger.error("Error al obtener usuarios", e);
         }
@@ -67,7 +68,7 @@ public class UserRepositoryImpl implements UsersRepository{
 
                 while (resultSet.next()) {
                     users.add(Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
@@ -83,7 +84,6 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Busca un usuario por su id en la base de datos.
-     *
      * @param id el id del usuario a buscar
      * @return el usuario encontrado
      */
@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UsersRepository{
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     usuario = Usuario.builder()
-                            .id(resultSet.getObject("id", UUID.class))
+                            .id(resultSet.getObject("id", Long.class))
                             .name(resultSet.getString("name"))
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
