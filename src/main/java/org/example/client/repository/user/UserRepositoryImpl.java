@@ -14,18 +14,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementación del repositorio de usuarios.
+ * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+ * @since 1.0
+ */
+
 public class UserRepositoryImpl implements UsersRepository{
     private final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
     private final LocalDataBaseManager localDataBaseManager;
 
     /**
      * Constructor que recibe el gestor de la base de datos.
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param localDataBase gestor de la base de datos.
      */
+
     public UserRepositoryImpl(LocalDataBaseManager localDataBase) {this.localDataBaseManager = localDataBase;}
     /**
      * Obtiene una lista de todos los usuarios en la base de datos.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @return una lista con todos los usuarios encontrados
      */
     @Override
@@ -52,10 +62,12 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Obtiene una lista de usuarios cuyo nombre coincide con el especificado.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param name el nombre del usuario a buscar
      * @return una lista con los usuarios encontrados
      */
+
     @Override
     public List<Usuario> findUsersByName(String name) {
         logger.debug("Obteniendo usuarios por nombre...");
@@ -84,10 +96,12 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Busca un usuario por su id en la base de datos.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param id el id del usuario a buscar
      * @return el usuario encontrado
      */
+
     @Override
     public Optional<Usuario> findUserById(Long id) {
         logger.debug("Obteniendo usuario por id...");
@@ -115,10 +129,12 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Guarda un usuario en la base de datos.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param user el usuario a guardar
      * @return el usuario guardado
      */
+
     @Override
     public Optional<Usuario> saveUser(Usuario user) {
         logger.debug("Guardando usuario...");
@@ -143,11 +159,13 @@ public class UserRepositoryImpl implements UsersRepository{
     }
     /**
      * Actualiza un usuario en la base de datos.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param uuid el id del usuario a actualizar
      * @param user el usuario con los datos a actualizar
      * @return el usuario actualizado
      */
+
     @Override
     public Optional<Usuario> updateUser(Long uuid, Usuario user) {
         logger.debug("Actualizando usuario...");
@@ -173,10 +191,12 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Elimina un usuario en la base de datos por su id.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @param id el id del usuario a eliminar
      * @return {@code true} si se elimin  el usuario, {@code false} en caso de error.
      */
+
     @Override
     public Boolean deleteUserById(Long id) {
         logger.debug("Eliminando usuario por id...");
@@ -203,9 +223,11 @@ public class UserRepositoryImpl implements UsersRepository{
 
     /**
      * Elimina todos los usuarios en la base de datos.
-     *
+     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @since 1.0
      * @return {@code true} si se eliminaron todos los usuarios, {@code false} en caso de error.
      */
+
     @Override
     public Boolean deleteAllUsers() {
         logger.debug("Eliminando todos los usuarios...");
