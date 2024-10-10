@@ -1,9 +1,7 @@
 package org.example.notification;
 
 import lombok.Getter;
-import org.example.models.Usuario;
-import org.example.usuarios.dto.UsuarioDto;
-import org.example.usuarios.storage.StorageCsvUser;
+import org.example.users.dto.UsuarioDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
