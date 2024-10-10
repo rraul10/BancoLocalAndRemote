@@ -42,9 +42,15 @@ public class LocalDataBaseManager implements AutoCloseable {
     }
 
     // Constructor que recibe la configuración
-    private LocalDataBaseManager(ConfigProperties config) {
+    private LocalDataBaseManager(ConfigProperties config, Boolean memory) {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(config.getProperty("local.database.url", DB_URL));
+        if (memory) {
+            logger.info("-----------------------Base en memoria-------------------------");
+            hikariConfig.setJdbcUrl("jdbc:sqlite:memory:myDb?cache=shared");
+        } else {
+            hikariConfig.setJdbcUrl(config.getProperty("local.database.url", DB_URL));
+
+        }
         hikariConfig.setUsername(config.getProperty("database.username", DB_USER));
         hikariConfig.setPassword(config.getProperty("database.password", DB_PASSWORD));
         hikariConfig.setConnectionTimeout(Long.parseLong(config.getProperty("local.database.timeout", DB_Timeout)));
@@ -64,7 +70,13 @@ public class LocalDataBaseManager implements AutoCloseable {
     // Método para obtener la instancia con configuración (singleton)
     public static LocalDataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
-            instance = new LocalDataBaseManager(config);
+            instance = new LocalDataBaseManager(config, false);
+        }
+        return instance;
+    }
+    public static LocalDataBaseManager getInstanceMemory(ConfigProperties config) {
+        if (instance == null) {
+            instance = new LocalDataBaseManager(config, true);
         }
         return instance;
     }
