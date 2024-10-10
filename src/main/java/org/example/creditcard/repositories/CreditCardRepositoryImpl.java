@@ -5,6 +5,7 @@ import org.example.models.TarjetaCredito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                         .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                         .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                         .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                        .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                        .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                         .build();
                 tarjetas.add(tarjeta);
             }
@@ -71,7 +72,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                             .id(resultSet.getObject("uuid", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                            .clientID(( resultSet.getObject("clientID", Long.class)))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
