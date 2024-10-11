@@ -5,6 +5,7 @@ import org.example.users.api.createupdatedelete.Response;
 import org.example.users.api.getAll.ResponseUserGetAll;
 import org.example.users.api.getById.ResponseUserGetByid;
 import org.example.models.Usuario;
+import org.example.users.api.getByName.ResponseUserGetByName;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,14 @@ public class UserMapper {
                 .name(responseUserGetAll.getName())
                 .username(responseUserGetAll.getUsername())
                 .email(responseUserGetAll.getEmail())
+                .build();
+    }
+    public static Usuario toUserFromCreate(ResponseUserGetByName responseUserGetByName) {
+        return Usuario.builder()
+                .id((long) responseUserGetByName.getId())
+                .name(responseUserGetByName.getName())
+                .username(responseUserGetByName.getUsername())
+                .email(responseUserGetByName.getEmail())
                 .build();
     }
 

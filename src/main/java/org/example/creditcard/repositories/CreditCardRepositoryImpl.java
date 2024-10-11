@@ -41,7 +41,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     public List<TarjetaCredito> getAll() {
         logger.info("Obteniendo tarjetas de credito...");
         List<TarjetaCredito> tarjetas = new ArrayList<>();
-        String query = "SELECT * FROM credit-card";
+        String query = "SELECT * FROM Tarjeta";
 
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -79,7 +79,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public Optional<TarjetaCredito> getById(UUID id) {
         logger.info("Obteniendo tarjeta por id...");
-        String query = "SELECT * FROM credit-card WHERE id = ?";
+        String query = "SELECT * FROM Tarjeta WHERE id = ?";
 
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -118,7 +118,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public TarjetaCredito create(TarjetaCredito creditcard) {
         logger.info("Creando tarjeta...");
-        String query = "INSERT INTO credit-card (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
+        String query = "INSERT INTO Tarjeta (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
         var uuid = java.util.UUID.randomUUID();
         var timeStamp = LocalDateTime.now();
         // Esto es un try-with-resources, se cierra automáticamente
@@ -175,7 +175,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public TarjetaCredito update(UUID id, TarjetaCredito creditcard) {
         logger.info("Actualizando tarjeta...");
-        String query = "UPDATE credit-card SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
+        String query = "UPDATE Tarjeta SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
         LocalDateTime timeStamp = LocalDateTime.now();
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -213,7 +213,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public boolean delete(UUID id) {
         logger.info("Borrando persona...");
-        String query = "DELETE FROM credit-card WHERE id = ?";
+        String query = "DELETE FROM Tarjeta WHERE id = ?";
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -235,5 +235,36 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         }
 
         return false;
+    }
+
+    @Override
+    public List<TarjetaCredito> findAllCreditCardsByUserId(Long id) {
+        logger.info("Obteniendo tarjetas de credito seguún el id del usuario" + id);
+        List<TarjetaCredito> tarjetas = new ArrayList<>();
+        String query = "SELECT * FROM Tarjeta where clientID = ?";
+
+        // Esto es un try-with-resources, se cierra automáticamente
+        try (Connection connection = dataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                TarjetaCredito tarjeta = TarjetaCredito.builder()
+                        .id((java.util.UUID) resultSet.getObject("uuid"))
+                        .numero(resultSet.getString("numero"))
+                        .nombreTitular(resultSet.getString("nombreTitular"))
+                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                        .fechaCaducidad(resultSet.getString("fechaCaducidad"))
+                        .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                        .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                        .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
+                        .build();
+                tarjetas.add(tarjeta);
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjetas", e);
+        }
+
+        return tarjetas;
     }
 }

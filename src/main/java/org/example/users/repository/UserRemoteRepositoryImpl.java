@@ -66,6 +66,27 @@ public class UserRemoteRepositoryImpl {
         }
     }
 
+    public List<Usuario> getByName(String name) {
+        logger.info("Obteniendo usuario con nombre: " + name);
+        var call = userApiRest.getByName(name);
+
+        try {
+            var response = call.get();
+            return response.stream()
+                    .map(UserMapper::toUserFromCreate)
+                    .toList();
+        } catch (Exception e) {
+            if (e.getCause().getMessage().contains("404")) {
+                throw new UserNotFoundException("Usuario no encontrado con nombre: " + name);
+            } else {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+
+
     /**
      * Crea un usuario en la API remota
      * @param usuario el usuario a crear

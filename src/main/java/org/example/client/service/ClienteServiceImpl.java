@@ -104,7 +104,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, Cliente> getClienteById(Long id) {
         try {
-            Optional<Usuario> usuario = null;
+            Optional<Usuario> usuario = Optional.empty();
             if(cacheUsuario.containsKey(id)){
                 usuario = Optional.ofNullable(cacheUsuario.get(id));
             }else {
@@ -118,29 +118,159 @@ public class ClienteServiceImpl implements ClienteService {
             if(usuario.isEmpty()){
                 return Either.left(new ServiceError.UserNotFound("Cliente no encontrado con id: " + id));
             }
-            Optional<List<TarjetaCredito>> tarjetas = Optional.empty();
-
+            Optional<List<TarjetaCredito>> tarjetas = Optional.ofNullable(cacheTarjeta.buscarPorIdUsuario(id));
+            if(tarjetas.isEmpty()){
+                tarjetas = Optional.ofNullable(creditCardLocalRepository.findAllCreditCardsByUserId(id));
+                if(tarjetas.isEmpty()){
+                    tarjetas = Optional.ofNullable(creditCardRepository.findAllCreditCardsByUserId(id));
+                }
+            }
+            Cliente clienteDef = new Cliente(usuario.get(), tarjetas.orElse(new ArrayList<>()));
+            return Either.right(clienteDef);
+        }catch (Exception e){
+            logger.error("Error al obtener el cliente con id: {}", id, e);
+            return Either.left(new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id));
         }
     }
 
     @Override
     public Either<ServiceError, List<Cliente>> getClienteByName(String nombre) {
-        return null;
+        try {
+            Optional<List<Usuario>> usuarios = Optional.empty();
+            usuarios = Optional.ofNullable(usersRepository.findUsersByName(nombre));
+            if(usuarios.isEmpty()) {
+                usuarios = Optional.ofNullable(userRemoteRepository.getByName(nombre));
+            }
+            if(usuarios.isEmpty()){
+                return Either.left(new ServiceError.UserNotFound("Cliente no encontrado con nombre: " + nombre));
+            }
+            List<Cliente> clientes = new ArrayList<>();
+           for(int i = 0; i < usuarios.get().size(); i++){
+              Usuario user  = usuarios.get().get(i);
+               Optional<List<TarjetaCredito>> tarjetas = Optional.ofNullable(cacheTarjeta.buscarPorIdUsuario(user.getId()));
+               if(tarjetas.isEmpty()){
+                   tarjetas = Optional.ofNullable(creditCardLocalRepository.findAllCreditCardsByUserId(user.getId()));
+                   if(tarjetas.isEmpty()){
+                       tarjetas = Optional.ofNullable(creditCardRepository.findAllCreditCardsByUserId(user.getId()));
+                   }
+               }
+              clientes.add(new Cliente(user, tarjetas.orElse(new ArrayList<>())));
+           }
+
+            return Either.right(clientes);
+        }catch (Exception e){
+            logger.error("Error al obtener el cliente con nombre: {}", nombre, e);
+            return Either.left(new ServiceError.UserNotFound("Error al obtener el cliente con id: " + nombre));
+        }
     }
 
     @Override
     public Either<ServiceError, Cliente> createCliente(Cliente cliente) {
-        return null;
+        try{
+            userValidator.ValidateUser(cliente.getUsuario()).bimap(
+                    error -> {
+                        logger.error("Error al validar el usuario", error);
+                        return new ServiceError.tarjetaCreditValidatorError("Error al validar el usuario");
+                    },
+                    usuario -> {
+                        Usuario usuarioCreado = userRemoteRepository.createUser(cliente.getUsuario());
+                        cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
+                        cliente.getTarjetas().forEach(tarjeta -> {
+                            tarjeta.setClientID(usuarioCreado.getId());
+                            tarjetaValidator.validarTarjetaCredito(tarjeta).bimap(
+                                    error -> {
+                                        logger.error("Error al validar la tarjeta", error);
+                                        return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
+                                    },
+                                    tarjetaCredito -> {
+                                        creditCardRepository.create(tarjetaCredito);
+                                        cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
+                                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                    }
+                            );
+                        });
+                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                    }
+            );
+            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+        }catch (Exception e){
+            logger.error("Error al crear el cliente", e);
+            return Either.left(new ServiceError.UserNotDeleted("Error al crear el cliente" + cliente));
+        }
     }
 
     @Override
     public Either<ServiceError, Cliente> updateCliente(Long id, Cliente cliente) {
-        return null;
+        try {
+            getClienteById(id).bimap(
+                    error -> {
+                        logger.error("Error al obtener el cliente con id: {}", id, error);
+                        return new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id);
+                    },
+                    user -> {
+                        userValidator.ValidateUser(cliente.getUsuario()).bimap(
+                                error -> {
+                                    logger.error("Error al validar el usuario", error);
+                                    return new ServiceError.UservalidatorError("Error al validar el usuario");
+                                },
+                                usuario -> {
+                                    cacheUsuario.remove(id);
+                                    Usuario usuarioActualizado = userRemoteRepository.updateUser(id, cliente.getUsuario());
+                                    cacheUsuario.put(usuarioActualizado.getId(), usuarioActualizado);
+                                    cliente.tarjetas.forEach(tarjetaCredito -> cacheTarjeta.remove(tarjetaCredito.getId()));
+                                    cliente.getTarjetas().forEach(tarjeta -> {
+                                        tarjeta.setClientID(usuarioActualizado.getId());
+                                        tarjetaValidator.validarTarjetaCredito(tarjeta).bimap(
+                                                error -> {
+                                                    logger.error("Error al validar la tarjeta", error);
+                                                    return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
+                                                },
+                                                tarjetaCredito -> {
+                                                    creditCardRepository.update(tarjetaCredito.getId(), tarjetaCredito);
+                                                    cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
+                                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                                }
+                                        );
+                                    });
+                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                }
+                        );
+                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                    }
+            );
+            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+        }catch (Exception e){
+            logger.error("Error al actualizar el cliente con id: {}", id, e);
+            return Either.left(new ServiceError.UserNotUpdated("Error al actualizar el cliente con id: " + id));
+        }
     }
 
     @Override
     public Either<ServiceError, Cliente> deleteCliente(Long id) {
-        return null;
+        try {
+            getClienteById(id).bimap(
+                    error -> {
+                        logger.error("Error al obtener el cliente con id: {}", id, error);
+                        return new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id);
+                    },
+                    user -> {
+                        userRemoteRepository.deleteById(id);
+                        cacheUsuario.remove(id);
+                        user.getTarjetas().forEach(tarjeta -> {
+                            creditCardRepository.delete(tarjeta.getId());
+                        });
+                        cacheUsuario.remove(id);
+                        user.getTarjetas().forEach(tarjeta -> {
+                            cacheTarjeta.remove(tarjeta.getId());
+                        });
+                        return Either.right(user);
+                    }
+            );
+            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el cliente con id: " + id));
+        }catch (Exception e){
+            logger.error("Error al eliminar el cliente con id: {}", id, e);
+            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el cliente con id: " + id));
+        }
     }
 
     @Override

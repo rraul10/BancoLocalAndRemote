@@ -1,10 +1,6 @@
 package org.example.creditcard.cache;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 import org.example.cache.Cache;
 import org.example.models.TarjetaCredito;
@@ -49,14 +45,14 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
         return cache.get(key);
     }
 
-    public TarjetaCredito buscarPorIdUsuario(long idBuscado) {
-        // Iterar sobre las entradas del mapa
+    public List<TarjetaCredito> buscarPorIdUsuario(long idBuscado) {
+        List<TarjetaCredito> tarjetas = new ArrayList<>();
         for (Map.Entry<UUID, TarjetaCredito> entry : cache.entrySet()) {
             if (entry.getValue().getClientID() == idBuscado) {
-                return entry.getValue();
+                tarjetas.add(entry.getValue());
             }
         }
-        return null;
+        return tarjetas;
     }
 
 

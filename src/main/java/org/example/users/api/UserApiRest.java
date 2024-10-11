@@ -4,6 +4,7 @@ import org.example.users.api.createupdatedelete.Request;
 import org.example.users.api.getAll.ResponseUserGetAll;
 import org.example.users.api.getById.ResponseUserGetByid;
 import org.example.users.api.createupdatedelete.Response;
+import org.example.users.api.getByName.ResponseUserGetByName;
 import retrofit2.http.*;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public interface UserApiRest {
      */
     @GET("users/{id}")
     CompletableFuture<ResponseUserGetByid> getById(@Path("id") Long id);
+
+    @GET("users/{name}")
+    CompletableFuture<List<ResponseUserGetByName>> getByName(@Path("name") String nombre);
 
     /**
      * Crea un usuario.

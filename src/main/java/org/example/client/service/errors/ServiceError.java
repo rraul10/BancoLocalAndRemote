@@ -15,6 +15,30 @@ public abstract class ServiceError {
         }
     }
 
+    public static class UservalidatorError extends ServiceError{
+        public UservalidatorError(String message){
+            super("ERROR: " + message);
+        }
+    }
+    public static class tarjetaCreditValidatorError extends ServiceError{
+        public tarjetaCreditValidatorError(String message){
+            super("ERROR: " + message);
+        }
+    }
+    public static class UserNotCreated extends ServiceError{
+        public UserNotCreated(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class UserNotDeleted extends ServiceError{
+        public UserNotDeleted(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+
+
     public static class UserNotFound extends ServiceError{
         public UserNotFound(String message){
             super("ERROR: " + message);
