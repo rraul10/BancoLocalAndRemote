@@ -22,18 +22,46 @@ public class Request {
     @JsonProperty("email")
     private String email;
 
+    /**
+     * Devuelve el id del usuario.
+     *
+     * @return el id del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @version 1.0
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Devuelve el nombre del usuario.
+     *
+     * @return el nombre del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @version 1.0
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Devuelve el username del usuario.
+     *
+     * @return el username del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @version 1.0
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Devuelve el email del usuario.
+     *
+     * @return el email del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @version 1.0
+     */
     public String getEmail() {
         return email;
     }
