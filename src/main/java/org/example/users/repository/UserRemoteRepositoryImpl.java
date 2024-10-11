@@ -1,6 +1,6 @@
-package org.example.usuarios.repository;
+package org.example.users.repository;
 
-import org.example.usuarios.api.UserApiRest;
+import org.example.users.api.UserApiRest;
 import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
@@ -9,12 +9,12 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class UserRemoteRepository {
+public class UserRemoteRepositoryImpl {
 
-    private final Logger logger = LoggerFactory.getLogger(UserRemoteRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(UserRemoteRepositoryImpl.class);
     private final UserApiRest userApiRest;
 
-    public UserRemoteRepository(UserApiRest userApiRest) {
+    public UserRemoteRepositoryImpl(UserApiRest userApiRest) {
         this.userApiRest = userApiRest;
     }
 
@@ -49,7 +49,7 @@ public class UserRemoteRepository {
      * @version 1.0
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario getById(int id)  {
+    public Usuario getById(Long id)  {
         logger.info("Obteniendo usuario con id: " + id);
         var call = userApiRest.getById(id);
 
@@ -94,7 +94,7 @@ public class UserRemoteRepository {
      * @version 1.0
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario updateUser(int id , Usuario usuario){
+    public Usuario updateUser(Long id , Usuario usuario){
         logger.info("Actualizando al usuario" + usuario + " con id "+ id);
 
         var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
@@ -120,7 +120,7 @@ public class UserRemoteRepository {
      * @version 1.0
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario deleteById(int id) {
+    public Usuario deleteById(Long id) {
         logger.info("Borrando al usuario con id: " + id);
 
         var callSync = userApiRest.deleteUser(id);

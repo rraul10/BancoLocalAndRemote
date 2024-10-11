@@ -2,6 +2,7 @@ package org.example.client.repository.creditcard;
 
 import org.example.client.database.LocalDataBaseManager;
 import org.example.client.repository.user.UsersRepository;
+import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ import java.util.UUID;
  * @version 1.0
  */
 
-public class CreditCardRepositoryImpl implements CreditCardRepository{
+public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
     private final LocalDataBaseManager localDataBaseManager;
     private final UsersRepository userRepository;
@@ -36,7 +37,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
      * @param userRepository El repositorio de usuarios.
      */
 
-    public CreditCardRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
+    public CreditCardLocalRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
         this.localDataBaseManager = localDataBaseManager;
         this.userRepository = userRepository;
     }

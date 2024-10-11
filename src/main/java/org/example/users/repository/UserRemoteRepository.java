@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserRemoteRepository {
     List<Usuario> getAll();
-    Usuario getById(int id);
+    Usuario getById(Long id);
     Usuario createUser(Usuario usuario);
-    Usuario updateUser(int id , Usuario usuario);
-    Usuario deleteById(int id);
+    Usuario updateUser(Long id , Usuario usuario);
+    Usuario deleteById(Long id);
 }

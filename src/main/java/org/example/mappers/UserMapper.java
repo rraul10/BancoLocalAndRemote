@@ -93,7 +93,7 @@ public class UserMapper {
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
-    public static Usuario toUserFromUpdate(Response response, int id) {
+    public static Usuario toUserFromUpdate(Response response, Long id) {
         return Usuario.builder()
                 .id((long) id)
                 .name(response.getName())

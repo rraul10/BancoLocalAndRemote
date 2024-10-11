@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRepositoryImplTest {
+class UserRemoteRepositoryImplTest {
 
     private static LocalDataBaseManager dataBaseManager;
     private static UsersRepository usersRepository;
@@ -22,7 +22,7 @@ class UserRepositoryImplTest {
         ConfigProperties config = new ConfigProperties("application.properties");
         // Inicializa el pool de conexiones
         dataBaseManager = LocalDataBaseManager.getInstanceMemory(config);
-        usersRepository = new UserRepositoryImpl(dataBaseManager);
+        usersRepository = new UserLocalRepositoryImpl(dataBaseManager);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
     }

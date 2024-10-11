@@ -2,7 +2,6 @@ package org.example.creditcard.repositories;
 
 import org.example.creditcard.database.DataBaseManager;
 
-import java.math.BigInteger;
 import java.sql.*;
 import org.example.models.TarjetaCredito;
 import org.junit.jupiter.api.*;
@@ -24,7 +23,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class CreditCardLocalRepositoryImplTest {
+class CreditCardRepositoryImplTest {
 
     @BeforeAll
     static void setAllUp(){

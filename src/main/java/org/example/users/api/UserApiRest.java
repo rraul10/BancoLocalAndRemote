@@ -33,7 +33,7 @@ public interface UserApiRest {
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
     @GET("users/{id}")
-    CompletableFuture<ResponseUserGetByid> getById(@Path("id") int id);
+    CompletableFuture<ResponseUserGetByid> getById(@Path("id") Long id);
 
     /**
      * Crea un usuario.
@@ -56,7 +56,7 @@ public interface UserApiRest {
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
     @PUT("users/{id}")
-    CompletableFuture<Response> updateUser(@Path("id") int id, @Body Request usuario);
+    CompletableFuture<Response> updateUser(@Path("id") Long id, @Body Request usuario);
 
     /**
      * Elimina un usuario.
@@ -67,6 +67,6 @@ public interface UserApiRest {
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
     @DELETE("users/{id}")
-    CompletableFuture<Response> deleteUser(@Path("id") int id);
+    CompletableFuture<Response> deleteUser(@Path("id") Long id);
 
 }

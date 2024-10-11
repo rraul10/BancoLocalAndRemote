@@ -1,7 +1,7 @@
 package org.example.client.repository.creditcard;
 
 import org.example.client.database.LocalDataBaseManager;
-import org.example.client.repository.user.UserRepositoryImpl;
+import org.example.client.repository.user.UserLocalRepositoryImpl;
 import org.example.client.repository.user.UsersRepository;
 import org.example.config.ConfigProperties;
 import org.example.models.TarjetaCredito;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-class creditCardRepositoryImplTest {
+class creditCardRemoteRepositoryImplTest {
 
     private static LocalDataBaseManager dataBaseManager;
     private static UsersRepository usersRepository;
@@ -25,7 +25,7 @@ class creditCardRepositoryImplTest {
         dataBaseManager = LocalDataBaseManager.getInstanceMemory(properties);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
-        usersRepository = new UserRepositoryImpl(dataBaseManager);
+        usersRepository = new UserLocalRepositoryImpl(dataBaseManager);
         creditCardLocalRepository = new CreditCardLocalRepositoryImpl(dataBaseManager, usersRepository);
 
     }

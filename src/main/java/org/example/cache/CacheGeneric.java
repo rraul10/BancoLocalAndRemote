@@ -1,5 +1,6 @@
 package org.example.cache;
 
+import org.example.models.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,8 @@ import java.util.Set;
  * @author Yahya El Hadri, Raúl Fernández, Samuel Cortés, Javier Hernández, Javier Ruíz, Alvaro Herrero.
  */
 
-public class CacheImpl<K, T> implements Cache<K, T> {
-    private static final Logger logger = LoggerFactory.getLogger(CacheImpl.class);
+public class CacheGeneric<K, T> implements Cache<K, T> {
+    private static final Logger logger = LoggerFactory.getLogger(CacheGeneric.class);
     private final LinkedHashMap<K, T> cache;
     private final int maxCapacity;
 
@@ -31,7 +32,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
      * @return Tamaño de la cáche.
      */
 
-    public CacheImpl(int maxCapacity, Logger logger) {
+    public CacheGeneric(int maxCapacity, Logger logger) {
         this.maxCapacity = maxCapacity;
         this.cache = new LinkedHashMap<K, T>(maxCapacity, 0.75f, true) {
             @Override
@@ -54,6 +55,7 @@ public class CacheImpl<K, T> implements Cache<K, T> {
         logger.debug("Obteniendo el valor de la clave: {}", key);
         return cache.get(key);
     }
+
 
     /**
      * Añade un valor a la cáche con la clave especificada.

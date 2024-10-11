@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Implementación del repositorio de usuarios.
@@ -20,8 +19,8 @@ import java.util.UUID;
  * @since 1.0
  */
 
-public class UserRepositoryImpl implements UsersRepository{
-    private final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
+public class UserLocalRepositoryImpl implements UsersRepository{
+    private final Logger logger = LoggerFactory.getLogger(UserLocalRepositoryImpl.class);
     private final LocalDataBaseManager localDataBaseManager;
 
     /**
@@ -31,7 +30,7 @@ public class UserRepositoryImpl implements UsersRepository{
      * @param localDataBase gestor de la base de datos.
      */
 
-    public UserRepositoryImpl(LocalDataBaseManager localDataBase) {this.localDataBaseManager = localDataBase;}
+    public UserLocalRepositoryImpl(LocalDataBaseManager localDataBase) {this.localDataBaseManager = localDataBase;}
     /**
      * Obtiene una lista de todos los usuarios en la base de datos.
      * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.

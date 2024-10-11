@@ -3,6 +3,7 @@ package org.example.models;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import reactor.util.annotation.Nullable;
 
 import java.util.List;
@@ -11,10 +12,12 @@ import java.util.UUID;
 @Data
 @Builder
 @Getter
+@Setter
 public class Cliente {
-    private final Usuario usuario;
+    private long id;
+    public  Usuario usuario;
     @Nullable
-    private final List<TarjetaCredito> tarjetas;
+    public List<TarjetaCredito> tarjetas;
     public Long getId(){
         return usuario.getId();
     }
@@ -23,6 +26,11 @@ public class Cliente {
         return tarjetas;
     }
 
+    public Cliente(Usuario usuario, List<TarjetaCredito> tarjetas) {
+        this.id = usuario.getId();
+        this.usuario = usuario;
+        this.tarjetas = tarjetas;
+    }
 }
 
 
