@@ -9,6 +9,11 @@ public abstract class ServiceError {
     public ServiceError(String message){
         this.message = message;
     }
+    public static class UsersLoadError extends ServiceError{
+        public UsersLoadError(String message){
+            super("ERROR: " + message);
+        }
+    }
 
     public static class UserNotFound extends ServiceError{
         public UserNotFound(String message){

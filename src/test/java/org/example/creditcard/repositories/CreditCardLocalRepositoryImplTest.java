@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class CreditCardRepositoryImplTest {
+class CreditCardLocalRepositoryImplTest {
 
     @BeforeAll
     static void setAllUp(){

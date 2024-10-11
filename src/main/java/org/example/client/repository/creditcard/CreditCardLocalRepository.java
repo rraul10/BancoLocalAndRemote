@@ -5,7 +5,7 @@ import org.example.models.TarjetaCredito;
 import java.util.List;
 import java.util.UUID;
 
-public interface CreditCardRepository {
+public interface CreditCardLocalRepository {
     List<TarjetaCredito> findAllCreditCards();
     TarjetaCredito findCreditCardById(UUID id);
     TarjetaCredito findCreditCardByNumber(String number);;

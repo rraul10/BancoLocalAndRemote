@@ -6,14 +6,13 @@ import org.example.models.TarjetaCredito;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TarjetaValidatorTest {
-    TarjetaValidator tarjetaValidator = new TarjetaValidator();
+class TarjetaValidatorImplTest {
+    TarjetaValidatorImpl tarjetaValidatorImpl = new TarjetaValidatorImpl();
 
     @Test
     void validarTarjetaCreditoOk() {
@@ -29,7 +28,7 @@ class TarjetaValidatorTest {
                 .isDeleted(false)
                 .build();
 
-        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidator.validarTarjetaCredito(tarjeta);
+        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
         assertTrue(resultado.isRight());
         assertEquals(tarjeta, resultado.get());
     }
@@ -49,7 +48,7 @@ class TarjetaValidatorTest {
                 .build();
 
         tarjeta.setNumero("4257 4600 0460 1638");
-        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidator.validarTarjetaCredito(tarjeta);
+        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
         assertTrue(resultado.isLeft());
         assertEquals("ERROR: Número de tarjeta inválido", resultado.getLeft().getMessage());
     }
@@ -69,7 +68,7 @@ class TarjetaValidatorTest {
                 .build();
 
         tarjeta.setNumero("lalalalala");
-        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidator.validarTarjetaCredito(tarjeta);
+        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
         assertTrue(resultado.isLeft());
         assertEquals("ERROR: Número de tarjeta inválido", resultado.getLeft().getMessage());
     }
@@ -89,7 +88,7 @@ class TarjetaValidatorTest {
                 .build();
 
         tarjeta.setFechaCaducidad("12/20");
-        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidator.validarTarjetaCredito(tarjeta);
+        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
         assertTrue(resultado.isLeft());
         assertEquals("ERROR: Fecha de caducidad inválida", resultado.getLeft().getMessage());
     }
@@ -109,7 +108,7 @@ class TarjetaValidatorTest {
                 .build();
 
         tarjeta.setFechaCaducidad("12-20");
-        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidator.validarTarjetaCredito(tarjeta);
+        Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
         assertTrue(resultado.isLeft());
         assertEquals("ERROR: Fecha de caducidad inválida", resultado.getLeft().getMessage());
     }

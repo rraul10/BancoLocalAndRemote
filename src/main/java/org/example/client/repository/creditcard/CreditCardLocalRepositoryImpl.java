@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CreditCardRepositoryImpl implements CreditCardRepository{
-    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository {
+    private final Logger logger = LoggerFactory.getLogger(CreditCardLocalRepository.class);
     private final LocalDataBaseManager localDataBaseManager;
     private final UsersRepository userRepository;
     /**
@@ -26,7 +26,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository{
      * @param localDataBaseManager La base de datos local.
      * @param userRepository El repositorio de usuarios.
      */
-    public CreditCardRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
+    public CreditCardLocalRepositoryImpl(LocalDataBaseManager localDataBaseManager, UsersRepository userRepository) {
         this.localDataBaseManager = localDataBaseManager;
         this.userRepository = userRepository;
     }
