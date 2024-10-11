@@ -7,11 +7,7 @@ import org.example.config.ConfigProperties;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
 import org.junit.jupiter.api.*;
-import org.junit.rules.Timeout;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,7 +17,7 @@ class creditCardRepositoryImplTest {
 
     private static LocalDataBaseManager dataBaseManager;
     private static UsersRepository usersRepository;
-    private static CreditCardRepository creditCardRepository;
+    private static CreditCardLocalRepository creditCardLocalRepository;
 
     @BeforeAll
      static void setUpAll() throws SQLException {
@@ -30,7 +26,7 @@ class creditCardRepositoryImplTest {
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
         usersRepository = new UserRepositoryImpl(dataBaseManager);
-        creditCardRepository = new CreditCardRepositoryImpl(dataBaseManager, usersRepository);
+        creditCardLocalRepository = new CreditCardLocalRepositoryImpl(dataBaseManager, usersRepository);
 
     }
 
@@ -44,7 +40,7 @@ class creditCardRepositoryImplTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build());
-        creditCardRepository.saveCreditCard(TarjetaCredito.builder()
+        creditCardLocalRepository.saveCreditCard(TarjetaCredito.builder()
                 .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
                 .numero("1234567890123456")
                 .nombreTitular("Test")
@@ -59,7 +55,7 @@ class creditCardRepositoryImplTest {
 
     @AfterEach
     void tearDown() {
-        creditCardRepository.deleteAllCreditCards();
+        creditCardLocalRepository.deleteAllCreditCards();
         usersRepository.deleteAllUsers();
     }
 
@@ -67,7 +63,7 @@ class creditCardRepositoryImplTest {
 
     @Test
     void findAllCreditCards() {
-        creditCardRepository.saveCreditCard(TarjetaCredito.builder()
+        creditCardLocalRepository.saveCreditCard(TarjetaCredito.builder()
                 .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
                 .numero("1234567890123456")
                 .nombreTitular("Test")
@@ -86,7 +82,7 @@ class creditCardRepositoryImplTest {
                 .updatedAt(LocalDateTime.now())
                 .build());
         //act
-        var result = creditCardRepository.findAllCreditCards();
+        var result = creditCardLocalRepository.findAllCreditCards();
         //assert
         assertEquals(1, result.size());
     }
@@ -95,7 +91,7 @@ class creditCardRepositoryImplTest {
     void findCreditCardById() {
 
         //act
-        var result = creditCardRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
+        var result = creditCardLocalRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
         //assert
         assertAll(
                 ()-> assertNotNull(result),
@@ -111,7 +107,7 @@ class creditCardRepositoryImplTest {
     @Test
     void findCreditCardByIdNotFound() {
         //act
-        var result = creditCardRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa364e03d9"));
+        var result = creditCardLocalRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa364e03d9"));
         //assert
         assertNull(result);
     }
@@ -120,7 +116,7 @@ class creditCardRepositoryImplTest {
     void findCreditCardByNumber() {
 
         //act
-        var result = creditCardRepository.findCreditCardByNumber("1234567890123456");
+        var result = creditCardLocalRepository.findCreditCardByNumber("1234567890123456");
         //assert
         assertAll(
                 ()-> assertNotNull(result),
@@ -136,7 +132,7 @@ class creditCardRepositoryImplTest {
     @Test
     void findCreditCardByNumberNotFound() {
         //act
-        var result = creditCardRepository.findCreditCardByNumber("1234567234890123457");
+        var result = creditCardLocalRepository.findCreditCardByNumber("1234567234890123457");
         //assert
         assertNull(result);
     }
@@ -155,7 +151,7 @@ class creditCardRepositoryImplTest {
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                 .build();
-        var result = creditCardRepository.saveCreditCard(tarjetaCredito);
+        var result = creditCardLocalRepository.saveCreditCard(tarjetaCredito);
         //assert
         assertAll(
                 ()-> assertNotNull(result),
@@ -172,12 +168,12 @@ class creditCardRepositoryImplTest {
     void updateCreditCard() {
 
         //arrange
-        TarjetaCredito tarjetaCreditoUpdated = creditCardRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
+        TarjetaCredito tarjetaCreditoUpdated = creditCardLocalRepository.findCreditCardById(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
         tarjetaCreditoUpdated.setFechaCaducidad("11/24");
         var localDateTime = LocalDateTime.now();
         tarjetaCreditoUpdated.setUpdatedAt(localDateTime);
         //act
-        var result = creditCardRepository.updateCreditCard(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"),tarjetaCreditoUpdated);
+        var result = creditCardLocalRepository.updateCreditCard(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"),tarjetaCreditoUpdated);
         //assert
         assertAll(
                 ()-> assertNotNull(result),
@@ -208,7 +204,7 @@ class creditCardRepositoryImplTest {
         tarjetaCreditoNotFound.setFechaCaducidad("11/24");
         tarjetaCreditoNotFound.setUpdatedAt(localDateTime);
         //act
-        var result = creditCardRepository.updateCreditCard(UUID.fromString("3a41d823-e068-4560-a464-9daa369e03d6"),tarjetaCreditoNotFound);
+        var result = creditCardLocalRepository.updateCreditCard(UUID.fromString("3a41d823-e068-4560-a464-9daa369e03d6"),tarjetaCreditoNotFound);
         //assert
         assertNull(result);
     }
@@ -217,7 +213,7 @@ class creditCardRepositoryImplTest {
     void deleteCreditCard() {
 
         //act
-        var result = creditCardRepository.deleteCreditCard(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
+        var result = creditCardLocalRepository.deleteCreditCard(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"));
         //assert
         assertTrue(result);
     }
@@ -225,7 +221,7 @@ class creditCardRepositoryImplTest {
     @Test
     void deleteCreditCardNotFound() {
         //act
-        var result = creditCardRepository.deleteCreditCard(UUID.fromString("3a41d823-e068-4560-a464-9daa369e03d6"));
+        var result = creditCardLocalRepository.deleteCreditCard(UUID.fromString("3a41d823-e068-4560-a464-9daa369e03d6"));
         //assert
         assertFalse(result);
     }
@@ -234,14 +230,14 @@ class creditCardRepositoryImplTest {
     void deleteAllCreditCards() {
 
         //act
-        var result = creditCardRepository.deleteAllCreditCards();
+        var result = creditCardLocalRepository.deleteAllCreditCards();
         //assert
         assertTrue(result);
     }
 
     @Test
     void findAllCreditCardsByUserId() {
-        creditCardRepository.saveCreditCard(TarjetaCredito.builder()
+        creditCardLocalRepository.saveCreditCard(TarjetaCredito.builder()
                 .id(UUID.fromString("3a62d823-e068-4560-a464-9daa369e03d6"))
                 .numero("1234567890123456")
                 .nombreTitular("Test")
@@ -260,7 +256,7 @@ class creditCardRepositoryImplTest {
                 .updatedAt(LocalDateTime.now())
                 .build());
         //act
-        var result = creditCardRepository.findAllCreditCardsByUserId(1L);
+        var result = creditCardLocalRepository.findAllCreditCardsByUserId(1L);
         //assert
         assertAll(
                 ()-> assertNotNull(result),
@@ -276,7 +272,7 @@ class creditCardRepositoryImplTest {
     @Test
     void findAllCreditCardsByUserIdNotFound() {
         //act
-        var result = creditCardRepository.findAllCreditCardsByUserId(4L);
+        var result = creditCardLocalRepository.findAllCreditCardsByUserId(4L);
         //assert
         assertEquals(0, result.size());
     }

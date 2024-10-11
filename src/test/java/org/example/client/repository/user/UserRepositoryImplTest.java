@@ -1,19 +1,14 @@
 package org.example.client.repository.user;
 
 import org.example.client.database.LocalDataBaseManager;
-import org.example.client.repository.creditcard.CreditCardRepositoryImpl;
 import org.example.config.ConfigProperties;
-import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 

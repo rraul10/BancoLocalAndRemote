@@ -1,9 +1,9 @@
 package org.example.mappers;
 
-import org.example.usuarios.api.createupdatedelete.Request;
-import org.example.usuarios.api.createupdatedelete.Response;
-import org.example.usuarios.api.getAll.ResponseUserGetAll;
-import org.example.usuarios.api.getById.ResponseUserGetByid;
+import org.example.users.api.createupdatedelete.Request;
+import org.example.users.api.createupdatedelete.Response;
+import org.example.users.api.getAll.ResponseUserGetAll;
+import org.example.users.api.getById.ResponseUserGetByid;
 import org.example.models.Usuario;
 import org.slf4j.LoggerFactory;
 
