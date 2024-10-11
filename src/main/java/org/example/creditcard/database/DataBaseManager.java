@@ -10,6 +10,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Clase que gestiona la conexión a una base de datos utilizando HikariCP.
+ * Esta clase proporciona métodos para conectar y desconectar de la base de datos,
+ * así como para obtener una conexión a la base de datos.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @since 1.0
+ */
+
 public class DataBaseManager implements AutoCloseable {
     private static DataBaseManager instance = null;
     private HikariDataSource dataSource;
@@ -23,7 +31,13 @@ public class DataBaseManager implements AutoCloseable {
     protected DataBaseManager() {
     }
 
-    // Cambiamos el constructor para que reciba la configuración
+    /**
+     * Constructor que recibe la configuración de la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param config configuración de la base de datos
+     */
+    
     private DataBaseManager(ConfigProperties config) {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(config.getProperty("database.url", DB_URL));
@@ -34,6 +48,13 @@ public class DataBaseManager implements AutoCloseable {
         logger.info("Hikari configurado correctamente (con valores predeterminados)...");
     }
 
+    /**
+     * Obtiene la instancia única de la clase.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @return instancia única de la clase
+     */
+
     public static DataBaseManager getInstance() {
         if (instance == null) {
             instance = new DataBaseManager();
@@ -41,12 +62,28 @@ public class DataBaseManager implements AutoCloseable {
         return instance;
     }
 
+    /**
+     * Obtiene la instancia única de la clase utilizando la configuración proporcionada.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param config configuración de la base de datos
+     * @return instancia única de la clase
+     */
+
     public static DataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
             instance = new DataBaseManager(config);
         }
         return instance;
     }
+
+    /**
+     * Establece una conexión a la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @return conexión a la base de datos
+     * @throws SQLException si ocurre un error al conectar a la base de datos
+     */
 
     public Connection connect() throws SQLException {
         try {
@@ -57,6 +94,12 @@ public class DataBaseManager implements AutoCloseable {
         }
     }
 
+    /**
+     * Cierra la conexión a la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     */
+
     public void disconnect() {
         if (connection != null) {
                 dataSource.close();
@@ -64,6 +107,13 @@ public class DataBaseManager implements AutoCloseable {
                 logger.info("Desconectado de la base de datos...");
         }
     }
+
+    /**
+     * Cierra la conexión a la base de datos y libera los recursos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @throws Exception si ocurre un error al cerrar la conexión
+     */
 
     @Override
     public void close() throws Exception {
