@@ -5,6 +5,7 @@ import org.example.models.TarjetaCredito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+/**
+ * Implementación del repositorio de tarjetas de crédito.
+ * Esta clase proporciona métodos para interactuar con la base de datos y realizar
+ * operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las tarjetas de crédito.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @since 1.0
+ */
 
 public class CreditCardRepositoryImpl implements CreditCardRepository {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
@@ -21,13 +30,18 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         this.dataBaseManager = dataBaseManager;
     }
 
-
+    /**
+     * Obtiene todas las tarjetas de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @return lista de tarjetas de crédito
+     */
 
     @Override
     public List<TarjetaCredito> getAll() {
         logger.info("Obteniendo tarjetas de credito...");
         List<TarjetaCredito> tarjetas = new ArrayList<>();
-        String query = "SELECT * FROM credit-card";
+        String query = "SELECT * FROM Tarjeta";
 
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -39,11 +53,11 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                         .id((java.util.UUID) resultSet.getObject("uuid"))
                         .numero(resultSet.getString("numero"))
                         .nombreTitular(resultSet.getString("nombreTitular"))
-                        .clientID((java.util.UUID) resultSet.getObject("clientID"))
+                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
                         .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                         .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                         .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
-                        .isDeleted(resultSet.getObject("isDeleted", boolean.class))
+                        .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                         .build();
                 tarjetas.add(tarjeta);
             }
@@ -54,10 +68,18 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return tarjetas;
     }
 
+    /**
+     * Obtiene una tarjeta de crédito por su ID.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito
+     * @return tarjeta de crédito si existe, Optional.empty() si no existe
+     */
+
     @Override
     public Optional<TarjetaCredito> getById(UUID id) {
         logger.info("Obteniendo tarjeta por id...");
-        String query = "SELECT * FROM credit-card WHERE id = ?";
+        String query = "SELECT * FROM Tarjeta WHERE id = ?";
 
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -71,7 +93,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                             .id(resultSet.getObject("uuid", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID(resultSet.getObject("clientID", UUID.class))
+                            .clientID(( resultSet.getObject("clientID", Long.class)))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
@@ -85,10 +107,18 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return Optional.empty();
     }
 
+    /**
+     * Crea una nueva tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param creditcard tarjeta de crédito a crear
+     * @return tarjeta de crédito creada
+     */
+
     @Override
     public TarjetaCredito create(TarjetaCredito creditcard) {
         logger.info("Creando tarjeta...");
-        String query = "INSERT INTO credit-card (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
+        String query = "INSERT INTO Tarjeta (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
         var uuid = java.util.UUID.randomUUID();
         var timeStamp = LocalDateTime.now();
         // Esto es un try-with-resources, se cierra automáticamente
@@ -133,10 +163,19 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return creditcard;
     }
 
+    /**
+     * Actualiza una tarjeta de crédito existente.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito a actualizar
+     * @param creditcard tarjeta de crédito actualizada
+     * @return tarjeta de crédito actualizada
+     */
+
     @Override
     public TarjetaCredito update(UUID id, TarjetaCredito creditcard) {
         logger.info("Actualizando tarjeta...");
-        String query = "UPDATE credit-card SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
+        String query = "UPDATE Tarjeta SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
         LocalDateTime timeStamp = LocalDateTime.now();
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
@@ -163,10 +202,18 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         return null;
     }
 
+    /**
+     * Elimina una tarjeta de crédito por su ID.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID de la tarjeta de crédito a eliminar
+     * @return true si se elimina la tarjeta, false si no se elimina
+     */
+
     @Override
     public boolean delete(UUID id) {
         logger.info("Borrando persona...");
-        String query = "DELETE FROM credit-card WHERE id = ?";
+        String query = "DELETE FROM Tarjeta WHERE id = ?";
         // Esto es un try-with-resources, se cierra automáticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -188,5 +235,36 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         }
 
         return false;
+    }
+
+    @Override
+    public List<TarjetaCredito> findAllCreditCardsByUserId(Long id) {
+        logger.info("Obteniendo tarjetas de credito seguún el id del usuario" + id);
+        List<TarjetaCredito> tarjetas = new ArrayList<>();
+        String query = "SELECT * FROM Tarjeta where clientID = ?";
+
+        // Esto es un try-with-resources, se cierra automáticamente
+        try (Connection connection = dataBaseManager.connect();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                TarjetaCredito tarjeta = TarjetaCredito.builder()
+                        .id((java.util.UUID) resultSet.getObject("uuid"))
+                        .numero(resultSet.getString("numero"))
+                        .nombreTitular(resultSet.getString("nombreTitular"))
+                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                        .fechaCaducidad(resultSet.getString("fechaCaducidad"))
+                        .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
+                        .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                        .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
+                        .build();
+                tarjetas.add(tarjeta);
+            }
+        } catch (SQLException e) {
+            logger.error("Error al obtener tarjetas", e);
+        }
+
+        return tarjetas;
     }
 }

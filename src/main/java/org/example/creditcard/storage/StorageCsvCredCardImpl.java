@@ -13,8 +13,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementación del almacenamiento de tarjetas de crédito en formato CSV.
+ * Esta clase proporciona métodos para importar y exportar una lista de tarjetas de crédito
+ * en formato CSV.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @since 1.0
+ */
+
 public class StorageCsvCredCardImpl implements StorageCsvCredCard {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+
+    /**
+     * Importa una lista de tarjetas de crédito desde un archivo CSV.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param file archivo CSV con la lista de tarjetas de crédito
+     * @return flujo de tarjetas de crédito importadas
+     */
 
     @Override
     public Flux<TarjetaCredito> importList(File file) {
@@ -33,19 +49,34 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }
+    /**
+     * Convierte una línea del archivo CSV en una tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param linea línea del archivo CSV
+     * @return tarjeta de crédito
+     */
 
     private TarjetaCredito parseLine(List<String> linea) {
         return TarjetaCredito.builder()
                 .id(UUID.fromString(linea.get(0)))
                 .numero( linea.get(1))
                 .nombreTitular(linea.get(2))
-                .clientID(UUID.fromString(linea.get(3)))
+                .clientID(Long.parseLong(linea.get(3)))
                 .fechaCaducidad(linea.get(4))
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
                 .build();
     }
+
+    /**
+     * Exporta una lista de tarjetas de crédito a un archivo CSV.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param lista lista de tarjetas de crédito
+     * @param file archivo CSV con la lista de tarjetas de crédito
+     */
 
     @Override
     public void exportList(List<TarjetaCredito> lista, File file) {

@@ -1,6 +1,7 @@
 package org.example.creditcard.repositories;
 
 import org.example.creditcard.database.DataBaseManager;
+
 import java.sql.*;
 import org.example.models.TarjetaCredito;
 import org.junit.jupiter.api.*;
@@ -57,11 +58,11 @@ class CreditCardRepositoryImplTest {
             when(mockResultSet.getObject("uuid")).thenReturn(UUID.randomUUID());
             when(mockResultSet.getString("numero")).thenReturn("1234567890123456");
             when(mockResultSet.getString("nombreTitular")).thenReturn("John Doe");
-            when(mockResultSet.getObject("clientID")).thenReturn(UUID.randomUUID());
+            when(mockResultSet.getObject("clientID", String.class)).thenReturn("1");
             when(mockResultSet.getString("fechaCaducidad")).thenReturn("12/99");
             when(mockResultSet.getObject("created_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
             when(mockResultSet.getObject("updated_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
-            when(mockResultSet.getObject("isDeleted", boolean.class)).thenReturn(false);
+            when(mockResultSet.getObject("isDeleted", Boolean.class)).thenReturn(false);
 
             System.out.println();
 
@@ -100,7 +101,7 @@ class CreditCardRepositoryImplTest {
                 .id(validId)
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
+                .clientID(2L)
                 .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -120,7 +121,7 @@ class CreditCardRepositoryImplTest {
             doReturn(expectedCard.getId()).when(mockResultSet).getObject("uuid", UUID.class);
             doReturn(expectedCard.getNumero()).when(mockResultSet).getString("numero");
             doReturn(expectedCard.getNombreTitular()).when(mockResultSet).getString("nombreTitular");
-            doReturn(expectedCard.getClientID()).when(mockResultSet).getObject("clientID", UUID.class);
+            doReturn(expectedCard.getClientID()).when(mockResultSet).getObject("clientID", Long.class);
             doReturn(expectedCard.getFechaCaducidad()).when(mockResultSet).getString("fechaCaducidad");
             doReturn(expectedCard.getCreatedAt()).when(mockResultSet).getObject("created_at", LocalDateTime.class);
             doReturn(expectedCard.getUpdatedAt()).when(mockResultSet).getObject("updated_at", LocalDateTime.class);
@@ -193,7 +194,7 @@ class CreditCardRepositoryImplTest {
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
+                .clientID(2l)
                 .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -226,7 +227,7 @@ class CreditCardRepositoryImplTest {
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
-                .clientID(UUID.randomUUID())
+                .clientID(2l)
                 .fechaCaducidad(LocalDate.now().plusYears(3).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -252,7 +253,7 @@ class CreditCardRepositoryImplTest {
                 .id(id)
                 .nombreTitular("John Doe")
                 .numero("1234567890123456")
-                .clientID(UUID.randomUUID())
+                .clientID(2l)
                 .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -281,7 +282,7 @@ class CreditCardRepositoryImplTest {
                 .id(id)
                 .nombreTitular("Jane Doe")
                 .numero("1234567890123456")
-                .clientID(UUID.randomUUID())
+                .clientID(2l)
                 .fechaCaducidad(LocalDate.now().plusYears(1).toString())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
