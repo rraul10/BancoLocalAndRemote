@@ -3,7 +3,6 @@ package org.example.repository;
 import org.example.api.UserApiRest;
 import org.example.api.getAll.ResponseUserGetAll;
 import org.example.models.Usuario;
-import org.example.usuarios.repository.UserRemoteRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
