@@ -56,7 +56,7 @@ public class UserRemoteRepository {
     }
 
 
-    public Usuario createUser(Usuario usuario) {
+    public Usuario createUsuario(Usuario usuario) {
         var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
         try {
             var response = callSync.get();
@@ -68,7 +68,7 @@ public class UserRemoteRepository {
     }
 
     public Usuario updateUser(int id , Usuario usuario){
-        logger.info("Actualizando al usuario" + usuario + " con id "+ id);
+        logger.info("Actualizando al usuario " + usuario + " con id "+ id);
 
         var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
         try {
@@ -76,6 +76,7 @@ public class UserRemoteRepository {
             return UserMapper.toUserFromUpdate(response, id);
         } catch (Exception e) {
             if (e.getCause().getMessage().contains("404")) {
+                logger.info("Usuario no encontrados");
                 throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
@@ -90,9 +91,16 @@ public class UserRemoteRepository {
         var callSync = userApiRest.deleteUser(id);
         try {
             var response = callSync.get();
+
+            if (response == null) {
+                logger.info("Usuario eliminado correctamente con id: " + id);
+                return null;
+            }
+
             return UserMapper.toUserFromCreate(response);
         } catch (Exception e) {
-            if (e.getCause().getMessage().contains("404")) {
+            Throwable cause = e.getCause();
+            if (cause != null && cause.getMessage().contains("404")) {
                 throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
@@ -100,6 +108,8 @@ public class UserRemoteRepository {
             }
         }
     }
+
+
 
 
 

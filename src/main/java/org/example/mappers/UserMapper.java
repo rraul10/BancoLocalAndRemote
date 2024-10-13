@@ -45,6 +45,7 @@ public class UserMapper {
 
     public static Request toRequest(Usuario usuario) {
         return Request.builder()
+                .id(Math.toIntExact(usuario.getId()))
                 .name(usuario.getName())
                 .username(usuario.getUsername())
                 .email(usuario.getEmail())
@@ -60,6 +61,17 @@ public class UserMapper {
                 .createdAt(LocalDateTime.parse(response.getCreatedAt()))
                 .updatedAt(LocalDateTime.parse(response.getUpdatedAt()))
                 .build();
+    }
+
+    public static Response toResponse(Usuario usuario) {
+        return Response.builder()
+                .id(Math.toIntExact(usuario.getId()))
+               .name(usuario.getName())
+               .username(usuario.getUsername())
+               .email(usuario.getEmail())
+               .createdAt(usuario.getCreatedAt().toString())
+               .updatedAt(usuario.getUpdatedAt().toString())
+               .build();
     }
 
 

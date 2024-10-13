@@ -5,7 +5,6 @@ import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
 import org.example.usuarios.api.UserApiRest;
 import org.example.usuarios.api.createupdatedelete.Request;
-import org.example.usuarios.api.createupdatedelete.Response;
 import org.example.usuarios.api.getAll.ResponseUserGetAll;
 import org.example.usuarios.api.getById.ResponseUserGetByid;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -57,6 +57,8 @@ class UserRemoteRepositoryTest {
     }
 
 
+
+
     @Test
     void getByIdOK() {
 
@@ -78,10 +80,19 @@ class UserRemoteRepositoryTest {
     }
 
     @Test
+    void getAllThrowsException() {
+        when(userApiRest.getAll()).thenThrow(RuntimeException.class);
+
+
+        assertThrows(RuntimeException.class, () -> userRemoteRepository.getAll());
+
+        verify(userApiRest, times(1)).getAll();
+    }
+
+
+    @Test
     void getByIdNotFound() {
 
-        var response = ResponseUserGetByid.builder()
-                .build();
 
         when(userApiRest.getById(2)).thenThrow(UserNotFoundException.class);
 
@@ -95,43 +106,94 @@ class UserRemoteRepositoryTest {
 
 
     @Test
-    void createUserOK() {
+    void createUsuarioOK() {
 
 
-        var request = Request.builder()
-                .name("Juan Perez")
-                .username("juanp")
-                .email("juan@example.com")
-                .build();
-
-        var response = Response.builder()
-                .id(1)
-                .name("Juan Perez")
-                .username("juanp")
-                .email("juan@example.com")
-                .build();
         var usuario = Usuario.builder()
                 .id(1L)
                 .name("Juan Perez")
                 .username("juanp")
                 .email("juan@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
-        when(userApiRest.createUser(UserMapper.toRequest(usuario))).thenReturn(CompletableFuture.completedFuture(response));
 
-        var res = userRemoteRepository.createUser(usuario);
+        when(userApiRest.createUser(any(Request.class))).thenReturn(CompletableFuture.completedFuture(UserMapper.toResponse(usuario)));
 
-        assertEquals(1, res.getId());
+        var res = userRemoteRepository.createUsuario(usuario);
+
+        assertEquals(1L, res.getId());
         assertEquals("Juan Perez", res.getName());
 
-        verify(userApiRest, times(1)).createUser(request);
+        verify(userApiRest, times(1)).createUser(any(Request.class));
     }
 
 
     @Test
-    void updateUser() {
+    void updateUsuarioOK() {
+
+        var usuario = Usuario.builder()
+                .id(1L)
+                .name("Juan")
+                .username("juanp")
+                .email("juan@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+
+        when(userApiRest.updateUser(eq(1), any(Request.class)))
+                .thenReturn(CompletableFuture.completedFuture(UserMapper.toResponse(usuario)));
+
+        var res = userRemoteRepository.updateUser(1, usuario);
+
+        assertEquals(1L, res.getId());
+        assertEquals("Juan", res.getName());
+        assertEquals("juanp", res.getUsername());
+        assertEquals("juan@example.com", res.getEmail());
+
+        verify(userApiRest, times(1)).updateUser(eq(1), any(Request.class));
     }
 
     @Test
-    void deleteById() {
+    void updateUsuarioNotFound() {
+        var usuario = Usuario.builder()
+                .id(1L)
+                .name("Juan")
+                .username("juanp")
+                .email("juan@example.com")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        when(userApiRest.updateUser(eq(1), any(Request.class))).thenThrow(UserNotFoundException.class);
+
+        assertThrows(UserNotFoundException.class, () -> userRemoteRepository.updateUser(1, usuario));
+        verify(userApiRest, times(1)).updateUser(eq(1), any(Request.class));
     }
+
+    @Test
+    void deleteUsuarioOK() {
+        when(userApiRest.deleteUser(1)).thenReturn(CompletableFuture.completedFuture(null));
+
+        userRemoteRepository.deleteById(1);
+
+        verify(userApiRest, times(1)).deleteUser(1);
+    }
+
+
+    @Test
+    void deleteUsuarioNotFound() {
+        when(userApiRest.deleteUser(1)).thenThrow(UserNotFoundException.class);
+
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.deleteById(1));
+
+        assertEquals(UserNotFoundException.class, exception.getClass());
+
+        verify(userApiRest, times(1)).deleteUser(1);
+    }
+
+
+
+
 }
