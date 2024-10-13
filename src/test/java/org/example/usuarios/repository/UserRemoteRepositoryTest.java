@@ -3,10 +3,10 @@ package org.example.usuarios.repository;
 import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
-import org.example.usuarios.api.UserApiRest;
-import org.example.usuarios.api.createupdatedelete.Request;
-import org.example.usuarios.api.getAll.ResponseUserGetAll;
-import org.example.usuarios.api.getById.ResponseUserGetByid;
+import org.example.users.api.UserApiRest;
+import org.example.users.api.createupdatedelete.Request;
+import org.example.users.api.getAll.ResponseUserGetAll;
+import org.example.users.api.getById.ResponseUserGetByid;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -69,14 +69,14 @@ class UserRemoteRepositoryTest {
                 .email("juan@example.com")
                 .build();
 
-        when(userApiRest.getById(1)).thenReturn(CompletableFuture.completedFuture(response));
+        when(userApiRest.getById(1L)).thenReturn(CompletableFuture.completedFuture(response));
 
         var res = userRemoteRepository.getById(1);
 
         assertEquals(1, res.getId());
         assertEquals("Juan Perez", res.getName());
 
-        verify(userApiRest, times(1)).getById(1);
+        verify(userApiRest, times(1)).getById(1L);
     }
 
     @Test
@@ -94,13 +94,13 @@ class UserRemoteRepositoryTest {
     void getByIdNotFound() {
 
 
-        when(userApiRest.getById(2)).thenThrow(UserNotFoundException.class);
+        when(userApiRest.getById(2L)).thenThrow(UserNotFoundException.class);
 
         var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getById(2));
 
         assertEquals(UserNotFoundException.class, exception.getClass());
 
-        verify(userApiRest, times(1)).getById(2);
+        verify(userApiRest, times(1)).getById(2L);
     }
 
 
@@ -142,7 +142,7 @@ class UserRemoteRepositoryTest {
                 .build();
 
 
-        when(userApiRest.updateUser(eq(1), any(Request.class)))
+        when(userApiRest.updateUser(eq(1L), any(Request.class)))
                 .thenReturn(CompletableFuture.completedFuture(UserMapper.toResponse(usuario)));
 
         var res = userRemoteRepository.updateUser(1, usuario);
@@ -152,7 +152,7 @@ class UserRemoteRepositoryTest {
         assertEquals("juanp", res.getUsername());
         assertEquals("juan@example.com", res.getEmail());
 
-        verify(userApiRest, times(1)).updateUser(eq(1), any(Request.class));
+        verify(userApiRest, times(1)).updateUser(eq(1L), any(Request.class));
     }
 
     @Test
@@ -166,31 +166,31 @@ class UserRemoteRepositoryTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        when(userApiRest.updateUser(eq(1), any(Request.class))).thenThrow(UserNotFoundException.class);
+        when(userApiRest.updateUser(eq(1L), any(Request.class))).thenThrow(UserNotFoundException.class);
 
         assertThrows(UserNotFoundException.class, () -> userRemoteRepository.updateUser(1, usuario));
-        verify(userApiRest, times(1)).updateUser(eq(1), any(Request.class));
+        verify(userApiRest, times(1)).updateUser(eq(1L), any(Request.class));
     }
 
     @Test
     void deleteUsuarioOK() {
-        when(userApiRest.deleteUser(1)).thenReturn(CompletableFuture.completedFuture(null));
+        when(userApiRest.deleteUser(1L)).thenReturn(CompletableFuture.completedFuture(null));
 
         userRemoteRepository.deleteById(1);
 
-        verify(userApiRest, times(1)).deleteUser(1);
+        verify(userApiRest, times(1)).deleteUser(1L);
     }
 
 
     @Test
     void deleteUsuarioNotFound() {
-        when(userApiRest.deleteUser(1)).thenThrow(UserNotFoundException.class);
+        when(userApiRest.deleteUser(1L)).thenThrow(UserNotFoundException.class);
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.deleteById(1));
 
         assertEquals(UserNotFoundException.class, exception.getClass());
 
-        verify(userApiRest, times(1)).deleteUser(1);
+        verify(userApiRest, times(1)).deleteUser(1L);
     }
 
 
