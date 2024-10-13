@@ -7,8 +7,24 @@ import org.example.models.TarjetaCredito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Validador de tarjetas de crédito.
+ * Esta clase proporciona métodos para validar tarjetas de crédito.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @since 1.0
+ */
 public class TarjetaValidator {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+
+    /**
+     * Valida una tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param tarjeta tarjeta de crédito a validar
+     * @return un Either con el resultado de la validación, con el valor derecho
+     *         siendo la tarjeta de crédito válida y el valor izquierdo siendo un
+     *         TarjetaErrors con el error de validación
+     */
 
     public Either<TarjetaErrors, TarjetaCredito> validarTarjetaCredito(TarjetaCredito tarjeta){
         logger.debug("Validando tarjeta de crédito");
@@ -26,6 +42,14 @@ public class TarjetaValidator {
         }
         return Either.right(tarjeta);
     }
+
+    /**
+     * Valida el número de la tarjeta de crédito.
+     * @author Raúl Fern Aboriginal, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param numero número de la tarjeta de crédito
+     * @return true si el número es válido, false si no lo es
+     */
 
     private boolean validateNumero(String numero){
         logger.debug("Validando número de tarjeta");
@@ -45,6 +69,14 @@ public class TarjetaValidator {
         return suma % 10 == 0;
     }
 
+    /**
+     * Valida el nombre del titular de la tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param nombre nombre del titular de la tarjeta de crédito
+     * @return true si el nombre es válido, false si no lo es
+     */
+
     private boolean validateNombre(String nombre){
         logger.debug("Validando nombre del titular");
         if(nombre.length() < 2 || nombre.length() > 40){
@@ -54,6 +86,14 @@ public class TarjetaValidator {
         logger.info("El nombre del titular es válido");
         return true;
     }
+
+    /**
+     * Valida la fecha de caducidad de la tarjeta de crédito.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * @since 1.0
+     * @param fechaCaducidad fecha de caducidad de la tarjeta de crédito
+     * @return true si la fecha es válida, false si no lo es
+     */
 
     private boolean validateCaducidad(String fechaCaducidad){
         logger.debug("Validando fecha de caducidad");
