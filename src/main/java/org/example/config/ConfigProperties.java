@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Clase que carga y gestiona propiedades de configuraci�n desde un archivo.
+ * Clase que carga y gestiona propiedades de configuracion desde un archivo.
  * Esta clase permite cargar un archivo de propiedades y acceder a sus valores.
  * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  * @since 1.0
