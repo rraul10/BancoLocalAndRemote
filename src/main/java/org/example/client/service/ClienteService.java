@@ -20,8 +20,14 @@ public interface ClienteService {
     Either<ServiceError, List<Cliente>> getClienteByName(String nombre);
     Either<ServiceError, List<Usuario>> getUserByName(String nombre);
     Either<ServiceError,Cliente> createCliente(Cliente cliente);
+    Either<ServiceError, Usuario> createUser(Usuario usuario);
+    Either<ServiceError, TarjetaCredito> createTarjeta(TarjetaCredito tarjetaCredito);
     Either<ServiceError, Cliente> updateCliente(Long id, Cliente cliente);
+    Either<ServiceError, Usuario> updateUser(Long id, Usuario usuario);
+    Either<ServiceError, TarjetaCredito> updateTarjeta(UUID id, TarjetaCredito tarjetaCredito);
     Either<ServiceError, Cliente> deleteCliente(Long id);
+    Either<ServiceError, Usuario> deleteUser(Long id);
+    Either<ServiceError, TarjetaCredito> deleteTarjeta(UUID id);
 
     void loadData();
 }
