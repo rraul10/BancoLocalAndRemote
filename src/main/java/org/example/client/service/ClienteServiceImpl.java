@@ -483,7 +483,6 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
         }
     }
-
     @Override
     public void loadData() {
         logger.debug("Cargando datos remotos");
