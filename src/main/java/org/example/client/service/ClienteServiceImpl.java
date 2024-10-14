@@ -19,6 +19,20 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Inicializa la instancia con los repositorios y servicios necesarios.
+ * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+ * @since 1.0
+ * @param usersRepository Repositorio de usuarios.
+ * @param creditCardLocalRepository Repositorio de tarjetas de crédito local.
+ * @param creditCardRepository Repositorio de tarjetas de crédito remoto.
+ * @param cacheUsuario Cache de usuarios.
+ * @param cacheTarjeta Cache de tarjetas de crédito.
+ * @param userValidator Validador de usuarios.
+ * @param userRemoteRepository Repositorio de usuarios remoto.
+ * @param tarjetaValidator Validador de tarjetas de crédito.
+ */
+
 public class ClienteServiceImpl implements ClienteService {
     private final Logger logger = LoggerFactory.getLogger(ClienteServiceImpl.class);
     private final UsersRepository usersRepository;
@@ -42,6 +56,14 @@ public class ClienteServiceImpl implements ClienteService {
         loadData();
     }
 
+    /**
+     * Obtiene todos los clientes.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param fromRemote Indica si se deben obtener los clientes desde el repositorio remoto.
+     * @return Una lista de clientes.
+     */
+
 
     @Override
     public Either<ServiceError, List<Cliente>> getAllClientes(Boolean fromRemote) {
@@ -64,7 +86,7 @@ public class ClienteServiceImpl implements ClienteService {
             List<Cliente> clientes = usuarios.stream()
                     .map(usuario -> new Cliente(
                             usuario,
-                            tarjetasPorUsuario.getOrDefault(usuario.getId(), new ArrayList<>())  // Obtener las tarjetas o una lista vac�a
+                            tarjetasPorUsuario.getOrDefault(usuario.getId(), new ArrayList<>())  // Obtener las tarjetas o una lista vac�a
                     ))
                     .collect(Collectors.toList());
             return Either.right(clientes);
@@ -73,6 +95,14 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.ClienteLoadErrors("Error al obtener los clientes"));
         }
     }
+
+    /**
+     * Obtiene todos los usuarios.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param fromRemote Indica si se deben obtener los usuarios desde el repositorio remoto.
+     * @return Una lista de usuarios.
+     */
 
     @Override
     public Either<ServiceError, List<Usuario> > getAllUsers(Boolean fromRemote) {
@@ -87,6 +117,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Obtiene todas las tarjetas de credito.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param fromRemote Indica si se deben obtener las tarjetas de credito desde el repositorio remoto.
+     * @return Una lista de tarjetas de credito.
+     */
+
     @Override
     public Either<ServiceError, List<TarjetaCredito>> getAllTarjetas(Boolean fromRemote) {
         try {
@@ -100,6 +138,13 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Obtiene un cliente por su ID.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id ID del cliente.
+     * @return El cliente correspondiente al ID.
+     */
 
     @Override
     public Either<ServiceError, Cliente> getClienteById(Long id) {
@@ -133,6 +178,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id ID del usuario.
+     * @return El usuario correspondiente al ID.
+     */
+
     @Override
     public Either<ServiceError, Usuario> getUserById(Long id){
         try {
@@ -155,6 +208,15 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id));
         }
     }
+
+    /**
+     * Obtiene una tarjeta de credito por su ID.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id ID de la tarjeta de credito.
+     * @return La tarjeta de credito correspondiente al ID.
+     */
+
     @Override
     public Either<ServiceError, TarjetaCredito> getTarjetaById(UUID id){
         try {
@@ -177,6 +239,14 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id));
         }
     }
+
+    /**
+     * Obtiene un cliente por su nombre.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param nombre Nombre del cliente.
+     * @return El cliente correspondiente al nombre.
+     */
 
     @Override
     public Either<ServiceError, List<Cliente>> getClienteByName(String nombre) {
@@ -209,6 +279,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Obtiene un usuario por su nombre.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param nombre Nombre del usuario.
+     * @return El usuario correspondiente al nombre.
+     */
+
     @Override
     public Either<ServiceError, List<Usuario>> getUserByName(String nombre) {
         try {
@@ -227,6 +305,13 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Crea un nuevo cliente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param cliente El cliente a crear.
+     * @return Either que contiene el cliente creado o un error si no se pudo crear.
+     */
 
     @Override
     public Either<ServiceError, Cliente> createCliente(Cliente cliente) {
@@ -263,6 +348,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Crea un nuevo usuario.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param usuario El usuario a crear.
+     * @return Either que contiene el usuario creado o un error si no se pudo crear.
+     */
+
     @Override
     public Either<ServiceError, Usuario> createUser(Usuario usuario) {
         try {
@@ -284,6 +377,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Crea una nueva tarjeta de credito.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param tarjetaCredito La tarjeta de credito a crear.
+     * @return Either que contiene la tarjeta de credito creada o un error si no se pudo crear.
+     */
+
     @Override
     public Either<ServiceError, TarjetaCredito> createTarjeta(TarjetaCredito tarjetaCredito) {
         try {
@@ -304,6 +405,16 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al crear la tarjeta" + tarjetaCredito));
         }
     }
+
+    /**
+     * Actualiza un cliente existente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id El ID del cliente a actualizar.
+     * @param cliente El cliente actualizado.
+     * @return Either que contiene el cliente actualizado o un error si no se pudo actualizar.
+     */
+
 
 
     @Override
@@ -352,6 +463,16 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+
+    /**
+     * Actualiza un usuario existente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id El ID del usuario a actualizar.
+     * @param usuario El usuario actualizado.
+     * @return Either que contiene el usuario actualizado o un error si no se pudo actualizar.
+     */
+
     @Override
     public Either<ServiceError, Usuario> updateUser(Long id, Usuario usuario) {
         try {
@@ -382,6 +503,15 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.UserNotUpdated("Error al actualizar el usuario con id: " + id));
         }
     }
+
+    /**
+     * Actualiza una tarjeta de credito existente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id El ID de la tarjeta de credito a actualizar.
+     * @param tarjetaCredito La tarjeta de credito actualizada.
+     * @return Either que contiene la tarjeta de credito actualizada o un error si no se pudo actualizar.
+     */
 
     @Override
     public Either<ServiceError, TarjetaCredito> updateTarjeta(UUID id, TarjetaCredito tarjetaCredito) {
@@ -414,6 +544,15 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+
+    /**
+     * Elimina un cliente existente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id El ID del cliente a eliminar.
+     * @return Either que contiene el cliente eliminado o un error si no se pudo eliminar.
+     */
+
     @Override
     public Either<ServiceError, Cliente> deleteCliente(Long id) {
         try {
@@ -442,6 +581,13 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Elimina un usuario existente.
+     *
+     * @param id El ID del usuario a eliminar.
+     * @return Either que contiene el usuario eliminado o un error si no se pudo eliminar.
+     */
+
     @Override
     public Either<ServiceError, Usuario> deleteUser(Long id) {
         try {
@@ -463,6 +609,14 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    /**
+     * Elimina una tarjeta de credito existente.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param id El ID de la tarjeta de credito a eliminar.
+     * @return Either que contiene la tarjeta de crédito eliminada o un error si no se pudo eliminar.
+     */
+
     @Override
     public Either<ServiceError, TarjetaCredito> deleteTarjeta(UUID id) {
         try {
@@ -483,6 +637,14 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
         }
     }
+
+
+    /**
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * Carga los datos remotos en la cache local.
+     */
+
     @Override
     public void loadData() {
         logger.debug("Cargando datos remotos");
