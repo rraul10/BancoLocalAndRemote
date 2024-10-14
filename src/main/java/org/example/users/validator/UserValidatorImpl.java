@@ -1,14 +1,14 @@
-package org.example.usuarios.validator;
+package org.example.users.validator;
 
 import io.vavr.control.Either;
-import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.Usuario;
-import org.example.usuarios.errors.UserErrors;
+
+import org.example.users.errors.UserErrors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserValidator {
-    private final Logger logger = LoggerFactory.getLogger(UserValidator.class);
+public class UserValidatorImpl implements UserValidator {
+    private final Logger logger = LoggerFactory.getLogger(UserValidatorImpl.class);
 
     /**
      * Validates a user
@@ -17,6 +17,7 @@ public class UserValidator {
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
+    @Override
     public Either<UserErrors, Usuario> ValidateUser(Usuario usuario){
         logger.debug("Validando usuario");
         if(!validateNombre(usuario.getNombre())){
@@ -35,8 +36,8 @@ public class UserValidator {
     }
     /**
      * Validates a user name
-     * @param nombre the user name to validate
-     * @return true if the user name is valid, false otherwise
+     * @param nombre the username to validate
+     * @return true if the username is valid, false otherwise
      * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */

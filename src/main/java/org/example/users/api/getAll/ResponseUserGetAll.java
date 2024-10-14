@@ -26,7 +26,7 @@ public class ResponseUserGetAll {
      *
      * @return id of the user
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public int getId() {
         return id;
@@ -36,7 +36,7 @@ public class ResponseUserGetAll {
      *
      * @return name of the user
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getName() {
         return name;
@@ -46,7 +46,7 @@ public class ResponseUserGetAll {
      *
      * @return username of the user
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getUsername() {
         return username;
@@ -56,7 +56,7 @@ public class ResponseUserGetAll {
      *
      * @return email of the user
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getEmail() {
         return email;

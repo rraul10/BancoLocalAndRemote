@@ -17,7 +17,7 @@ public class StorageCsvUserImpl implements StorageCsvUser {
      * Lee un archivo CSV y devuelve un flujo de usuarios.
      * @param file Archivo CSV con los datos de los usuarios.
      * @return Flujo de usuarios leidos del archivo.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     @Override
@@ -42,7 +42,7 @@ public class StorageCsvUserImpl implements StorageCsvUser {
      * Convierte una l nea leida de un archivo CSV en un objeto {@link Usuario}.
      * @param linea lista de String con los valores de una l nea del archivo CSV.
      * @return objeto {@link Usuario} con los valores de la l nea.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     private Usuario parseLine(List<String> linea) {
@@ -58,7 +58,7 @@ public class StorageCsvUserImpl implements StorageCsvUser {
      * Guarda una lista de usuarios en un archivo CSV.
      * @param lista lista de usuarios a guardar.
      * @param file Archivo CSV donde se guardar n los usuarios.
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     @Override

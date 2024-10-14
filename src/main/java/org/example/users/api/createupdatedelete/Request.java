@@ -26,7 +26,7 @@ public class Request {
      * Devuelve el id del usuario.
      *
      * @return el id del usuario.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public int getId() {
@@ -37,7 +37,7 @@ public class Request {
      * Devuelve el nombre del usuario.
      *
      * @return el nombre del usuario.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getName() {
@@ -48,7 +48,7 @@ public class Request {
      * Devuelve el username del usuario.
      *
      * @return el username del usuario.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getUsername() {
@@ -59,7 +59,7 @@ public class Request {
      * Devuelve el email del usuario.
      *
      * @return el email del usuario.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getEmail() {
