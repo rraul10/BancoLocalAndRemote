@@ -15,10 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Implementación del repositorio de tarjetas de crédito.
- * Esta clase proporciona métodos para interactuar con la base de datos y realizar
- * operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las tarjetas de crédito.
- * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * Implementacion del repositorio de tarjetas de credito.
+ * Esta clase proporciona metodos para interactuar con la base de datos y realizar
+ * operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las tarjetas de credito.
+ * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
  * @since 1.0
  */
 
@@ -31,10 +31,10 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     }
 
     /**
-     * Obtiene todas las tarjetas de crédito.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Obtiene todas las tarjetas de credito.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @return lista de tarjetas de crédito
+     * @return lista de tarjetas de credito
      */
 
     @Override
@@ -43,7 +43,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         List<TarjetaCredito> tarjetas = new ArrayList<>();
         String query = "SELECT * FROM Tarjeta";
 
-        // Esto es un try-with-resources, se cierra automáticamente
+        // Esto es un try-with-resources, se cierra automaticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -69,11 +69,11 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     }
 
     /**
-     * Obtiene una tarjeta de crédito por su ID.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Obtiene una tarjeta de credito por su ID.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param id ID de la tarjeta de crédito
-     * @return tarjeta de crédito si existe, Optional.empty() si no existe
+     * @param id ID de la tarjeta de credito
+     * @return tarjeta de credito si existe, Optional.empty() si no existe
      */
 
     @Override
@@ -81,7 +81,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         logger.info("Obteniendo tarjeta por id...");
         String query = "SELECT * FROM Tarjeta WHERE id = ?";
 
-        // Esto es un try-with-resources, se cierra automáticamente
+        // Esto es un try-with-resources, se cierra automaticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
             // Sustituimos el ? por el id
@@ -93,7 +93,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                             .id(resultSet.getObject("uuid", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID(( resultSet.getObject("clientID", Long.class)))
+                            .clientID((resultSet.getObject("clientID", Long.class)))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
@@ -108,11 +108,11 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     }
 
     /**
-     * Crea una nueva tarjeta de crédito.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Crea una nueva tarjeta de credito.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param creditcard tarjeta de crédito a crear
-     * @return tarjeta de crédito creada
+     * @param creditcard tarjeta de credito a crear
+     * @return tarjeta de credito creada
      */
 
     @Override
@@ -121,7 +121,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         String query = "INSERT INTO Tarjeta (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
         var uuid = java.util.UUID.randomUUID();
         var timeStamp = LocalDateTime.now();
-        // Esto es un try-with-resources, se cierra automáticamente
+        // Esto es un try-with-resources, se cierra automaticamente
         try (Connection connection = dataBaseManager.connect();
              // Este statement nos permite recuperar la clave generada
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -143,7 +143,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     String id = generatedKeys.getString(1);
-                    creditcard.setId(UUID.fromString(id)); // Asumiendo que Persona tiene un método setId
+                    creditcard.setId(UUID.fromString(id)); // Asumiendo que Persona tiene un metodo setId
                     creditcard.setNumero(creditcard.getNumero());
                     creditcard.setNombreTitular(creditcard.getNombreTitular());
                     creditcard.setClientID(creditcard.getClientID());
@@ -164,12 +164,12 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     }
 
     /**
-     * Actualiza una tarjeta de crédito existente.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Actualiza una tarjeta de credito existente.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param id ID de la tarjeta de crédito a actualizar
-     * @param creditcard tarjeta de crédito actualizada
-     * @return tarjeta de crédito actualizada
+     * @param id ID de la tarjeta de credito a actualizar
+     * @param creditcard tarjeta de credito actualizada
+     * @return tarjeta de credito actualizada
      */
 
     @Override
@@ -177,7 +177,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         logger.info("Actualizando tarjeta...");
         String query = "UPDATE Tarjeta SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
         LocalDateTime timeStamp = LocalDateTime.now();
-        // Esto es un try-with-resources, se cierra automáticamente
+        // Esto es un try-with-resources, se cierra automaticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -203,24 +203,23 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     }
 
     /**
-     * Elimina una tarjeta de crédito por su ID.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Elimina una tarjeta de credito por su ID.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param id ID de la tarjeta de crédito a eliminar
+     * @param id ID de la tarjeta de credito a eliminar
      * @return true si se elimina la tarjeta, false si no se elimina
      */
 
     @Override
     public boolean delete(UUID id) {
-        logger.info("Borrando persona...");
+        logger.info("Borrando tarjeta...");
         String query = "DELETE FROM Tarjeta WHERE id = ?";
-        // Esto es un try-with-resources, se cierra automáticamente
+        // Esto es un try-with-resources, se cierra automaticamente
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             // Sustituimos el ? por el id
             statement.setString(1, id.toString());
-
 
             // Ejecutamos la consulta
             int rows = statement.executeUpdate();
@@ -236,6 +235,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
 
         return false;
     }
+
+    /**
+     * Encontrar la tarjeta por el id del usuario.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * @since 1.0
+     * @param id ID del usuario a encontrar
+     * @return true si se se encuentra, false si no se elimina
+     */
 
     @Override
     public List<TarjetaCredito> findAllCreditCardsByUserId(Long id) {
