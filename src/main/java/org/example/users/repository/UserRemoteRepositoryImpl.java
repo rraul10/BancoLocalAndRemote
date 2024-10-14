@@ -23,20 +23,20 @@ public class UserRemoteRepositoryImpl {
      * @return una lista con todos los usuarios encontrados
      * @throws Exception si ocurre un error al obtener los usuarios
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernï¿½ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public List<Usuario> getAll() throws Exception {
+    public List<Usuario> getAll() {
         logger.info("Obteniendo todos los usuarios...");
         var call = userApiRest.getAll();
 
-        try {
+        try{
             var response = call.get();
             return response.stream()
                     .map(UserMapper::toUserFromCreate)
                     .toList();
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-            throw e;
+            return List.of();
         }
     }
 
@@ -47,17 +47,18 @@ public class UserRemoteRepositoryImpl {
      * @throws UserNotFoundException si el usuario no existe
      * @throws Exception si ocurre un error al obtener el usuario
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernï¿½ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario getById(Long id)  {
-        logger.info("Obteniendo usuario con id: " + id);
-        var call = userApiRest.getById(id);
+    public Usuario updateUser(long id , Usuario usuario){
+        logger.info("Actualizando al usuario " + usuario + " con id "+ id);
 
+        var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
         try {
-            var response = call.get();
-            return UserMapper.toUserFromCreate(response);
+            var response = callSync.get();
+            return UserMapper.toUserFromUpdate(response, id);
         } catch (Exception e) {
             if (e.getCause().getMessage().contains("404")) {
+                logger.info("Usuario no encontrados");
                 throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
@@ -85,17 +86,16 @@ public class UserRemoteRepositoryImpl {
         }
     }
 
-
-
+    
     /**
      * Crea un usuario en la API remota
      * @param usuario el usuario a crear
      * @return el usuario creado
      * @throws Exception si ocurre un error al crear el usuario
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernï¿½ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario createUser(Usuario usuario) {
+    public Usuario createUsuario(Usuario usuario) {
         var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
         try {
             var response = callSync.get();
@@ -107,49 +107,30 @@ public class UserRemoteRepositoryImpl {
     }
 
     /**
-     * Actualiza un usuario en la API remota
-     * @param id el id del usuario a actualizar
-     * @param usuario el usuario con los datos a actualizar
-     * @return el usuario actualizado
-     * @throws Exception si ocurre un error al actualizar el usuario
-     * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
-     */
-    public Usuario updateUser(Long id , Usuario usuario){
-        logger.info("Actualizando al usuario" + usuario + " con id "+ id);
-
-        var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
-        try {
-            var response = callSync.get();
-            return UserMapper.toUserFromUpdate(response, id);
-        } catch (Exception e) {
-            if (e.getCause().getMessage().contains("404")) {
-                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
-            } else {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-
-    /**
      * Borra un usuario por su id en la API remota
      * @param id el id del usuario a borrar
      * @return el usuario borrado
      * @throws Exception si ocurre un error al borrar el usuario
      * @throws UserNotFoundException si el usuario no existe
      * @version 1.0
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernï¿½ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      */
-    public Usuario deleteById(Long id) {
+    public Usuario deleteById(long id) {
         logger.info("Borrando al usuario con id: " + id);
 
         var callSync = userApiRest.deleteUser(id);
         try {
             var response = callSync.get();
+
+            if (response == null) {
+                logger.info("Usuario eliminado correctamente con id: " + id);
+                return null;
+            }
+
             return UserMapper.toUserFromCreate(response);
         } catch (Exception e) {
-            if (e.getCause().getMessage().contains("404")) {
+            Throwable cause = e.getCause();
+            if (cause != null && cause.getMessage().contains("404")) {
                 throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
