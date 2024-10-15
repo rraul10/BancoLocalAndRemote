@@ -8,22 +8,22 @@ import java.util.List;
 public interface Storage<K> {
 
     /**
-     * Import data from a file
-     *
-     * @param file the file to import
-     * @return a flux of the imported data
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Importar datos desde un archivo
+     * @param file el archivo a importar
+     * @return un flujo de los datos importados
+     * @author Javier Hernández, Yahya El Hadri, Javier Ruiz, Álvaro Herrero, Samuel Cortés, Raúl Fernández
      * @version 1.0
      */
+
     Flux<K> importList(File file);
 
     /**
-     * Export data to a file
-     *
-     * @param lista the list of data to export
-     * @param file  the file to export to
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Exportar datos a un archivo
+     * @param lista la lista de datos a exportar
+     * @param file el archivo al que exportar
+     * @author Javier Hernández, Yahya El Hadri, Javier Ruiz, Álvaro Herrero, Samuel Cortés, Raúl Fernández
      * @version 1.0
      */
+
     void exportList(List<K> lista, File file);
 }
