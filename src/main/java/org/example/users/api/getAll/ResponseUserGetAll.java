@@ -13,14 +13,14 @@ public class ResponseUserGetAll {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("nombre")
-    private String nombre;
+    @JsonProperty("name")
+    private String name;
 
-    @JsonProperty("nombreUsuario")
-    private String nombreUsuario;
+    @JsonProperty("username")
+    private String username;
 
-    @JsonProperty("correo")
-    private String correo;
+    @JsonProperty("email")
+    private String email;
 
     /**
      *
@@ -38,8 +38,8 @@ public class ResponseUserGetAll {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -48,8 +48,8 @@ public class ResponseUserGetAll {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -58,7 +58,7 @@ public class ResponseUserGetAll {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 }

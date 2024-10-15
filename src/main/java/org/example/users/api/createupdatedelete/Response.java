@@ -6,23 +6,23 @@ import lombok.Builder;
 @Builder
 public class Response {
 
-    @JsonProperty("creadoEn")
-    private String creadoEn;
+    @JsonProperty("createdAt")
+    private String createdAt;
 
-    @JsonProperty("actualizadoEn")
-    private String actualizadoEn;
+    @JsonProperty("updatedAt")
+    private String updatedAt;
 
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("nombre")
-    private String nombre;
+    @JsonProperty("name")
+    private String name;
 
-    @JsonProperty("nombreUsuario")
-    private String nombreUsuario;
+    @JsonProperty("username")
+    private String username;
 
-    @JsonProperty("correo")
-    private String correo;
+    @JsonProperty("email")
+    private String email;
 
     /**
      * Retorna el id del usuario
@@ -40,8 +40,8 @@ public class Response {
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -50,8 +50,8 @@ public class Response {
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -60,8 +60,8 @@ public class Response {
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
     /**
@@ -70,8 +70,8 @@ public class Response {
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getCreadoEn() {
-        return creadoEn;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Response {
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getActualizadoEn() {
-        return actualizadoEn;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 }

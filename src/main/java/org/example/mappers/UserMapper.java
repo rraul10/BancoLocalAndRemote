@@ -14,11 +14,8 @@ public class UserMapper {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(UserMapper.class);
 
-
-
     /**
      * Convertir un ResponseUserGetAll a un Usuario.
-     *
      * @param responseUserGetAll el objeto que contiene los datos del usuario
      * @return un objeto de tipo Usuario con los datos del usuario
      * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
@@ -43,7 +40,6 @@ public class UserMapper {
 
     /**
      * Convertir un ResponseUserGetByid a un Usuario.
-     *
      * @param responseUserGetByid el objeto que contiene los datos del usuario
      * @return un objeto de tipo Usuario con los datos del usuario
      * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
@@ -60,7 +56,6 @@ public class UserMapper {
 
     /**
      * Convertir un Response a un Usuario.
-     *
      * @param response el objeto que contiene los datos del usuario
      * @return un objeto de tipo Usuario con los datos del usuario
      * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
@@ -79,7 +74,6 @@ public class UserMapper {
 
     /**
      * Convertir un objeto Usuario a un Request.
-     *
      * @param usuario el objeto que contiene los datos del usuario
      * @return un objeto de tipo Request con los datos del usuario
      * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
@@ -96,7 +90,6 @@ public class UserMapper {
 
     /**
      * Convertir un Response a un Usuario.
-     *
      * @param response el objeto que contiene los datos del usuario
      * @param id       el id del usuario
      * @return un objeto de tipo Usuario con los datos del usuario
