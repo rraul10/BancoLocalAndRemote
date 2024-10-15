@@ -20,18 +20,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Inicializa la instancia con los repositorios y servicios necesarios.
+ * Implementacion del servicio de clientes.
+ * Esta clase proporciona la logica de negocio para la gestion de clientes,
+ * incluyendo la creacion, actualizacion, eliminacion y consulta de clientes.
  * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  * @since 1.0
- * @param usersRepository Repositorio de usuarios.
- * @param creditCardLocalRepository Repositorio de tarjetas de crédito local.
- * @param creditCardRepository Repositorio de tarjetas de crédito remoto.
- * @param cacheUsuario Cache de usuarios.
- * @param cacheTarjeta Cache de tarjetas de crédito.
- * @param userValidator Validador de usuarios.
- * @param userRemoteRepository Repositorio de usuarios remoto.
- * @param tarjetaValidator Validador de tarjetas de crédito.
  */
+
 
 public class ClienteServiceImpl implements ClienteService {
     private final Logger logger = LoggerFactory.getLogger(ClienteServiceImpl.class);
@@ -43,6 +38,21 @@ public class ClienteServiceImpl implements ClienteService {
     private final UserValidator userValidator;
     private final UserRemoteRepository userRemoteRepository;
     private final TarjetaValidator tarjetaValidator;
+
+
+    /**
+     * Inicializa la instancia con los repositorios y servicios necesarios.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
+     * @param usersRepository Repositorio de usuarios.
+     * @param creditCardLocalRepository Repositorio de tarjetas de crédito local.
+     * @param creditCardRepository Repositorio de tarjetas de crédito remoto.
+     * @param cacheUsuario Cache de usuarios.
+     * @param cacheTarjeta Cache de tarjetas de crédito.
+     * @param usersRepository Validador de usuarios.
+     * @param userRemoteRepository Repositorio de usuarios remoto.
+     * @param tarjetaValidator Validador de tarjetas de crédito.
+     */
 
     public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator) {
         this.usersRepository = usersRepository;
@@ -77,16 +87,15 @@ public class ClienteServiceImpl implements ClienteService {
                 usuarios = usersRepository.findAllUsers();
                 tarjetas = creditCardLocalRepository.findAllCreditCards();
             }
-            // Mapear las tarjetas por el idCliente
+
             Map<Long, List<TarjetaCredito>> tarjetasPorUsuario = tarjetas.stream()
-                    .filter(tarjeta -> tarjeta.getClientID() != null)  // Filtrar tarjetas con idCliente no nulo
+                    .filter(tarjeta -> tarjeta.getClientID() != null)
                     .collect(Collectors.groupingBy(TarjetaCredito::getClientID));
 
-            // Crear la lista de clientes con usuarios y sus tarjetas
             List<Cliente> clientes = usuarios.stream()
                     .map(usuario -> new Cliente(
                             usuario,
-                            tarjetasPorUsuario.getOrDefault(usuario.getId(), new ArrayList<>())  // Obtener las tarjetas o una lista vac�a
+                            tarjetasPorUsuario.getOrDefault(usuario.getId(), new ArrayList<>())
                     ))
                     .collect(Collectors.toList());
             return Either.right(clientes);
@@ -583,7 +592,6 @@ public class ClienteServiceImpl implements ClienteService {
 
     /**
      * Elimina un usuario existente.
-     *
      * @param id El ID del usuario a eliminar.
      * @return Either que contiene el usuario eliminado o un error si no se pudo eliminar.
      */
