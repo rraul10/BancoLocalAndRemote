@@ -13,19 +13,19 @@ public class ResponseUserGetByName {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("nombre")
+    private String nombre;
 
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("nombreUsuario")
+    private String nombreUsuario;
 
-    @JsonProperty("email")
-    private String email;
+    @JsonProperty("correo")
+    private String correo;
 
     /**
      *
-     * @return the id
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el id
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public int getId() {
@@ -34,31 +34,31 @@ public class ResponseUserGetByName {
 
     /**
      *
-     * @return the name
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el nombre
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
      *
-     * @return the username
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el nombre de usuario
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
-    public String getUsername() {
-        return username;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
     /**
      *
-     * @return the email
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el correo
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 }
