@@ -9,7 +9,7 @@ public record Notification<T>(Type type, T item, String message, LocalDateTime c
      * @param item the item associated with the notification.
      * @param message the message associated with the notification.
      * @param createdAt the date and time when the notification was created.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public Notification(Type type, T item, String message, LocalDateTime createdAt) {
@@ -24,7 +24,7 @@ public record Notification<T>(Type type, T item, String message, LocalDateTime c
      * @param type the type of the notification.
      * @param item the item associated with the notification.
      * @param message the message associated with the notification.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public Notification(Type type, T item, String message) {
@@ -35,7 +35,7 @@ public record Notification<T>(Type type, T item, String message, LocalDateTime c
      * Creates a new notification with the current date and time and a null message.
      * @param type the type of the notification.
      * @param item the item associated with the notification.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public Notification(Type type, T item) {
@@ -45,7 +45,7 @@ public record Notification<T>(Type type, T item, String message, LocalDateTime c
     /**
      * Creates a new notification with the current date and time and a null message and item.
      * @param type the type of the notification.
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public Notification(Type type) {
