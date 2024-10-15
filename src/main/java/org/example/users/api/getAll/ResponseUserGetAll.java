@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseUserGetAll {
-    
+
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("nombre")
+    private String nombre;
 
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("nombreUsuario")
+    private String nombreUsuario;
 
-    @JsonProperty("email")
-    private String email;
+    @JsonProperty("correo")
+    private String correo;
 
     /**
      *
-     * @return id of the user
+     * @return el id del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
@@ -34,31 +34,31 @@ public class ResponseUserGetAll {
 
     /**
      *
-     * @return name of the user
+     * @return el nombre del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
      *
-     * @return username of the user
+     * @return el nombre de usuario del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getUsername() {
-        return username;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
     /**
      *
-     * @return email of the user
+     * @return el correo del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 }
