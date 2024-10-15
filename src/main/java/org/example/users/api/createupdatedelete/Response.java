@@ -4,30 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder
-
 public class Response {
 
-    @JsonProperty("createdAt")
-    private String createdAt;
+    @JsonProperty("creadoEn")
+    private String creadoEn;
 
-    @JsonProperty("updatedAt")
-    private String updatedAt;
+    @JsonProperty("actualizadoEn")
+    private String actualizadoEn;
 
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("nombre")
+    private String nombre;
 
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("nombreUsuario")
+    private String nombreUsuario;
 
-    @JsonProperty("email")
-    private String email;
+    @JsonProperty("correo")
+    private String correo;
 
     /**
-     * Returns the id of the user
-     * @return the id of the user
+     * Retorna el id del usuario
+     * @return el id del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -36,52 +35,52 @@ public class Response {
     }
 
     /**
-     * Returns the name of the user
-     * @return the name of the user
+     * Retorna el nombre del usuario
+     * @return el nombre del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
-     * Returns the username of the user
-     * @return the username of the user
+     * Retorna el nombre de usuario del usuario
+     * @return el nombre de usuario del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getUsername() {
-        return username;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
     /**
-     * Returns the email of the user
-     * @return the email of the user
+     * Retorna el correo del usuario
+     * @return el correo del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getEmail() {
-        return email;
+    public String getCorreo() {
+        return correo;
     }
 
     /**
-     * Returns the createdAt of the user
-     * @return the createdAt of the user
+     * Retorna la fecha de creacion del usuario
+     * @return la fecha de creacion del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreadoEn() {
+        return creadoEn;
     }
 
     /**
-     * Returns the updatedAt of the user
-     * @return the updatedAt of the user
+     * Retorna la fecha de actualizacion del usuario
+     * @return la fecha de actualizacion del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getActualizadoEn() {
+        return actualizadoEn;
     }
 }
