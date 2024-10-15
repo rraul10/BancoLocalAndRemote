@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación del repositorio de usuarios.
- * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+ * Implementacion del repositorio de usuarios.
+ * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  * @since 1.0
  */
 
@@ -25,7 +25,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     /**
      * Constructor que recibe el gestor de la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param localDataBase gestor de la base de datos.
      */
@@ -33,7 +33,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
     public UserLocalRepositoryImpl(LocalDataBaseManager localDataBase) {this.localDataBaseManager = localDataBase;}
     /**
      * Obtiene una lista de todos los usuarios en la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return una lista con todos los usuarios encontrados
      */
@@ -61,7 +61,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     /**
      * Obtiene una lista de usuarios cuyo nombre coincide con el especificado.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param name el nombre del usuario a buscar
      * @return una lista con los usuarios encontrados
@@ -95,7 +95,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     /**
      * Busca un usuario por su id en la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param id el id del usuario a buscar
      * @return el usuario encontrado
@@ -116,19 +116,19 @@ public class UserLocalRepositoryImpl implements UsersRepository{
                             .username(resultSet.getString("username"))
                             .email(resultSet.getString("email"))
                             .build();
-                    return Optional.of(usuario);  // Devuelve el usuario envuelto en un Optional
+                    return Optional.of(usuario);
                 }
             }
         } catch (SQLException e) {
             logger.error("Error al obtener usuario por id", e);
         }
-        return Optional.empty();  // Retorna Optional.empty() si no se encuentra el usuario
+        return Optional.empty();
     }
 
 
     /**
      * Guarda un usuario en la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param user el usuario a guardar
      * @return el usuario guardado
@@ -158,7 +158,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
     }
     /**
      * Actualiza un usuario en la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param uuid el id del usuario a actualizar
      * @param user el usuario con los datos a actualizar
@@ -177,9 +177,9 @@ public class UserLocalRepositoryImpl implements UsersRepository{
             statement.setObject(4, uuid);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                return Optional.of(user);  // El usuario se actualizo? correctamente
+                return Optional.of(user);
             } else {
-                return Optional.empty();  // No se actualizo? el usuario (aunque esto es poco probable con un update)
+                return Optional.empty();
             }
 
         } catch (SQLException e) {
@@ -190,7 +190,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     /**
      * Elimina un usuario en la base de datos por su id.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param id el id del usuario a eliminar
      * @return {@code true} si se elimin  el usuario, {@code false} en caso de error.
@@ -222,7 +222,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     /**
      * Elimina todos los usuarios en la base de datos.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Yahya El Hadri, ALvaro Herrero, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return {@code true} si se eliminaron todos los usuarios, {@code false} en caso de error.
      */

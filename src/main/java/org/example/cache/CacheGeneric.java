@@ -14,7 +14,7 @@ import java.util.Set;
  * @param <T>
  * @param <K>
  * @since 1.0
- * @author Yahya El Hadri, Ra�l Fern�ndez, Samuel Cort�s, Javier Hern�ndez, Javier Ru�z, Alvaro Herrero.
+ * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  */
 
 public class CacheGeneric<K, T> implements Cache<K, T> {
@@ -24,7 +24,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Constructor de la clase.
-     * @autor Ra�l Fern�ndez, Javier Hern�ndez, Javier Ru�z, Samuel Cort�s, Yahya El Hadri, Alvaro Herrero.
+     * @autor Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param maxCapacity
      * @param logger
@@ -43,7 +43,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Obtiene el valor asociado a la clave especificada.
-     * @author Alvaro Herrero, Javier Ru�z, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Samuel Cort�s.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a buscar
      * @return Valor asociado a la clave
@@ -57,8 +57,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
 
     /**
-     * A�ade un valor a la c�che con la clave especificada.
-     * @author Alvaro Herrero, Javier Ru�z, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Samuel Cort�s.
+     * A�ade un valor a la cache con la clave especificada.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a asociar
      * @param value Valor a almacenar
@@ -72,7 +72,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Elimina el valor asociado a la clave especificada de la cache.
-     * @author Alvaro Herrero, Javier Ru�z, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Samuel Cort�s.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a eliminar
      */
@@ -85,7 +85,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Limpia la cache.
-     * @author Alvaro Herrero, Javier Ru�z, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Samuel Cort�s.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      */
 
@@ -96,10 +96,10 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Obtiene el n�mero de valores almacenados en la c�che.
-     * @author Ra�l Fern�ndez, Samuel Cort�s, Javier Hern�ndez, Alvaro Herrero, Javier Ru�z, Yahya El Hadri.
+     * Obtiene el numero de valores almacenados en la cache.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
-     * @return N�mero de valores almacenados
+     * @return Numero de valores almacenados
      */
 
     @Override
@@ -109,8 +109,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Obtiene un conjunto de claves almacenadas en la c�che.
-     * @author Alvaro Herrero, Samuel Cort�s, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Javier Ru�z.
+     * Obtiene un conjunto de claves almacenadas en la cache.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return Conjunto de claves almacenadas.
      */
@@ -122,10 +122,10 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Obtiene una colecci�n de valores almacenados en la c�che.
-     * @author Ra�l Fern�ndez, Samuel Cort�s, Javier Hern�ndez, Alvaro Herrero, Javier Ru�z, Yahya El Hadri.
+     * Obtiene una coleccion de valores almacenados en la cache.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
-     * @return Colecci�n de valores almacenados.
+     * @return Coleccion de valores almacenados.
      */
 
     @Override
@@ -135,8 +135,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la c�che contiene un valor asociado a la clave especificada.
-     * @author Alvaro Herrero, Samuel Cort�s, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Javier Ru�z.
+     * Comprueba si la cache contiene un valor asociado a la clave especificada.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -149,8 +149,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cache contiene un valor espec�fico.
-     * @author Alvaro Herrero, Samuel Cort�s, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Javier Ru�z.
+     * Comprueba si la cache contiene un valor especifico.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param value Valor a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -163,8 +163,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cache est� vac�a.
-     * @author Alvaro Herrero, Samuel Cort�s, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Javier Ru�z.
+     * Comprueba si la cache este vacia.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return True si la cache est� vac�a, false en caso contrario.
      */
@@ -176,8 +176,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cache no est� vac�a.
-     * @author Alvaro Herrero, Samuel Cort�s, Javier Hern�ndez, Ra�l Fern�ndez, Yahya El Hadri, Javier Ru�z.
+     * Comprueba si la cache no este vacia.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return True si la cache no est� vac�a, false en caso contrario.
      */

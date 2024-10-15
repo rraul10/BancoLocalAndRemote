@@ -23,7 +23,7 @@ public class UserRemoteRepositoryImpl {
      * @return una lista con todos los usuarios encontrados
      * @throws Exception si ocurre un error al obtener los usuarios
      * @version 1.0
-     * @author Javier Hern�ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public List<Usuario> getAll() {
         logger.info("Obteniendo todos los usuarios...");
@@ -47,7 +47,7 @@ public class UserRemoteRepositoryImpl {
      * @throws UserNotFoundException si el usuario no existe
      * @throws Exception si ocurre un error al obtener el usuario
      * @version 1.0
-     * @author Javier Hern�ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public Usuario updateUser(long id , Usuario usuario){
         logger.info("Actualizando al usuario " + usuario + " con id "+ id);
@@ -93,7 +93,7 @@ public class UserRemoteRepositoryImpl {
      * @return el usuario creado
      * @throws Exception si ocurre un error al crear el usuario
      * @version 1.0
-     * @author Javier Hern�ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public Usuario createUsuario(Usuario usuario) {
         var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
@@ -113,7 +113,7 @@ public class UserRemoteRepositoryImpl {
      * @throws Exception si ocurre un error al borrar el usuario
      * @throws UserNotFoundException si el usuario no existe
      * @version 1.0
-     * @author Javier Hern�ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public Usuario deleteById(long id) {
         logger.info("Borrando al usuario con id: " + id);

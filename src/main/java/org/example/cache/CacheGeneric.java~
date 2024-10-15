@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Cache de almacenamiento genérico
+ * Cache de almacenamiento genï¿½rico
  * @param <T>
  * @param <K>
  * @since 1.0
- * @author Yahya El Hadri, Raúl Fernández, Samuel Cortés, Javier Hernández, Javier Ruíz, Alvaro Herrero.
+ * @author Yahya El Hadri, Raï¿½l Fernï¿½ndez, Samuel Cortï¿½s, Javier Hernï¿½ndez, Javier Ruï¿½z, Alvaro Herrero.
  */
 
 public class CacheGeneric<K, T> implements Cache<K, T> {
@@ -25,11 +25,11 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Constructor de la clase.
-     * @autor Raúl Fernández, Javier Hernández, Javier Ruíz, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+     * @autor Raï¿½l Fernï¿½ndez, Javier Hernï¿½ndez, Javier Ruï¿½z, Samuel Cortï¿½s, Yahya El Hadri, Alvaro Herrero.
      * @since 1.0
      * @param maxCapacity
      * @param logger
-     * @return Tamaño de la cáche.
+     * @return Tamaï¿½o de la cï¿½che.
      */
 
     public CacheGeneric(int maxCapacity, Logger logger) {
@@ -44,7 +44,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Obtiene el valor asociado a la clave especificada.
-     * @author Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruï¿½z, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Samuel Cortï¿½s.
      * @since 1.0
      * @param key Clave a buscar
      * @return Valor asociado a la clave
@@ -58,8 +58,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
 
     /**
-     * Añade un valor a la cáche con la clave especificada.
-     * @author Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * Aï¿½ade un valor a la cï¿½che con la clave especificada.
+     * @author Alvaro Herrero, Javier Ruï¿½z, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Samuel Cortï¿½s.
      * @since 1.0
      * @param key Clave a asociar
      * @param value Valor a almacenar
@@ -67,13 +67,13 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     @Override
     public void put(K key, T value) {
-        logger.debug("Añadiendo a cache el valor de la clave: {}", key);
+        logger.debug("Aï¿½adiendo a cache el valor de la clave: {}", key);
         cache.put(key, value);
     }
 
     /**
      * Elimina el valor asociado a la clave especificada de la cache.
-     * @author Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruï¿½z, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Samuel Cortï¿½s.
      * @since 1.0
      * @param key Clave a eliminar
      */
@@ -86,7 +86,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
     /**
      * Limpia la cache.
-     * @author Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruï¿½z, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Samuel Cortï¿½s.
      * @since 1.0
      */
 
@@ -97,21 +97,21 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Obtiene el número de valores almacenados en la cáche.
-     * @author Raúl Fernández, Samuel Cortés, Javier Hernández, Alvaro Herrero, Javier Ruíz, Yahya El Hadri.
+     * Obtiene el nï¿½mero de valores almacenados en la cï¿½che.
+     * @author Raï¿½l Fernï¿½ndez, Samuel Cortï¿½s, Javier Hernï¿½ndez, Alvaro Herrero, Javier Ruï¿½z, Yahya El Hadri.
      * @since 1.0
-     * @return Número de valores almacenados
+     * @return Nï¿½mero de valores almacenados
      */
 
     @Override
     public int size() {
-        logger.debug("Obteniendo el tamaño de la cache");
+        logger.debug("Obteniendo el tamaï¿½o de la cache");
         return cache.size();
     }
 
     /**
-     * Obtiene un conjunto de claves almacenadas en la cáche.
-     * @author Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Obtiene un conjunto de claves almacenadas en la cï¿½che.
+     * @author Alvaro Herrero, Samuel Cortï¿½s, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Javier Ruï¿½z.
      * @since 1.0
      * @return Conjunto de claves almacenadas.
      */
@@ -123,10 +123,10 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Obtiene una colección de valores almacenados en la cáche.
-     * @author Raúl Fernández, Samuel Cortés, Javier Hernández, Alvaro Herrero, Javier Ruíz, Yahya El Hadri.
+     * Obtiene una colecciï¿½n de valores almacenados en la cï¿½che.
+     * @author Raï¿½l Fernï¿½ndez, Samuel Cortï¿½s, Javier Hernï¿½ndez, Alvaro Herrero, Javier Ruï¿½z, Yahya El Hadri.
      * @since 1.0
-     * @return Colección de valores almacenados.
+     * @return Colecciï¿½n de valores almacenados.
      */
 
     @Override
@@ -136,8 +136,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cáche contiene un valor asociado a la clave especificada.
-     * @author Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cï¿½che contiene un valor asociado a la clave especificada.
+     * @author Alvaro Herrero, Samuel Cortï¿½s, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Javier Ruï¿½z.
      * @since 1.0
      * @param key Clave a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -150,8 +150,8 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cache contiene un valor específico.
-     * @author Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache contiene un valor especï¿½fico.
+     * @author Alvaro Herrero, Samuel Cortï¿½s, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Javier Ruï¿½z.
      * @since 1.0
      * @param value Valor a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -164,28 +164,28 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
     }
 
     /**
-     * Comprueba si la cache está vacía.
-     * @author Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache estï¿½ vacï¿½a.
+     * @author Alvaro Herrero, Samuel Cortï¿½s, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Javier Ruï¿½z.
      * @since 1.0
-     * @return True si la cache está vacía, false en caso contrario.
+     * @return True si la cache estï¿½ vacï¿½a, false en caso contrario.
      */
 
     @Override
     public boolean isEmpty() {
-        logger.debug("Comprobando si la cache está vacía");
+        logger.debug("Comprobando si la cache estï¿½ vacï¿½a");
         return cache.isEmpty();
     }
 
     /**
-     * Comprueba si la cache no está vacía.
-     * @author Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache no estï¿½ vacï¿½a.
+     * @author Alvaro Herrero, Samuel Cortï¿½s, Javier Hernï¿½ndez, Raï¿½l Fernï¿½ndez, Yahya El Hadri, Javier Ruï¿½z.
      * @since 1.0
-     * @return True si la cache no está vacía, false en caso contrario.
+     * @return True si la cache no estï¿½ vacï¿½a, false en caso contrario.
      */
 
     @Override
     public boolean isNotEmpty() {
-        logger.debug("Comprobando si la cache no está vacía");
+        logger.debug("Comprobando si la cache no estï¿½ vacï¿½a");
         return !isEmpty();
     }
 }

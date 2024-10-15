@@ -14,9 +14,9 @@ public class UserNotifications implements Notifications<UsuarioDto> {
     @Getter
     private final Flux<Notification<UsuarioDto>> notifications = notificationsSink.asFlux().onBackpressureDrop();
     /**
-     * Envía una notificación de un usuario.
+     * Envia una notificacion de un usuario.
      * @param notification la notificaci n a enviar
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     @Override

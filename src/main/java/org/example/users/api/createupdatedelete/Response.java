@@ -1,6 +1,9 @@
 package org.example.users.api.createupdatedelete;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+
+@Builder
 
 public class Response {
 
@@ -25,7 +28,7 @@ public class Response {
     /**
      * Returns the id of the user
      * @return the id of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public int getId() {
@@ -35,7 +38,7 @@ public class Response {
     /**
      * Returns the name of the user
      * @return the name of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getName() {
@@ -45,7 +48,7 @@ public class Response {
     /**
      * Returns the username of the user
      * @return the username of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getUsername() {
@@ -55,7 +58,7 @@ public class Response {
     /**
      * Returns the email of the user
      * @return the email of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getEmail() {
@@ -65,7 +68,7 @@ public class Response {
     /**
      * Returns the createdAt of the user
      * @return the createdAt of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getCreatedAt() {
@@ -75,7 +78,7 @@ public class Response {
     /**
      * Returns the updatedAt of the user
      * @return the updatedAt of the user
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
     public String getUpdatedAt() {

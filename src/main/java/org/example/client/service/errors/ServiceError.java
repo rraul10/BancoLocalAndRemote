@@ -50,4 +50,51 @@ public abstract class ServiceError {
             super("ERROR: " + message);
         }
     }
+
+    public static class ClientNotCreated extends ServiceError{
+        public ClientNotCreated(String message){
+            super("ERROR: " + message);
+        }
+    }
+    public static class ClienteNotFound extends ServiceError{
+        public ClienteNotFound(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class ClienteLoadErrors extends ServiceError{
+        public ClienteLoadErrors(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class TarjetaNotFound extends ServiceError{
+        public TarjetaNotFound(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class TarjeteNotCreated extends ServiceError{
+        public TarjeteNotCreated(String message){
+            super("ERROR: " + message);
+        }
+    }
+    public static class TarjeteNotUpdated extends ServiceError{
+        public TarjeteNotUpdated(String message){
+            super("ERROR: " + message);
+        }
+    }
+    public static class TarjeteNotDeleted extends ServiceError{
+        public TarjeteNotDeleted(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+
+    public static class TarjetasLoadError extends ServiceError{
+        public TarjetasLoadError(String message){
+            super("ERROR: " + message);
+        }
+    }
+
 }

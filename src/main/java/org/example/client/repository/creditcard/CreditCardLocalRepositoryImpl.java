@@ -19,8 +19,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Implementación del repositorio de tarjetas de crédito.
- * @author Raúl Fernández, Javier Hernández, Javier Ruíz, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+ * Implementacion del repositorio de tarjetas de credito.
+ * @authorAlvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  * @version 1.0
  */
 
@@ -31,7 +31,7 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
 
     /**
      * Constructor de la clase. Inicializa la clase con la base de datos local y el repositorio de usuarios.
-     * @author Raúl Fernández, Javier Hernández, Javier Ruíz, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param localDataBaseManager La base de datos local.
      * @param userRepository El repositorio de usuarios.
@@ -43,7 +43,7 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
     }
     /**
      * Obtiene todas las tarjetas de credito.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return La lista de tarjetas de credito encontradas.
      */
@@ -79,10 +79,10 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
 
     /**
      * Obtiene una tarjeta de credito por su id.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param id
-     * @return La tarjeta de crédito encontrada o null si no existe.
+     * @return La tarjeta de credito encontrada o null si no existe.
      */
 
     @Override
@@ -115,10 +115,10 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
     }
 
     /**
-     * Obtiene una tarjeta de crédito por su número.
-     * @author Raúl Fernandez, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero, Javier Ruiz.
-     * @param number El número de la tarjeta de crédito.
-     * @return La tarjeta de crédito encontrada o null si no existe.
+     * Obtiene una tarjeta de credito por su numero.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @param number El numero de la tarjeta de crï¿½dito.
+     * @return La tarjeta de credito encontrada o null si no existe.
      */
 
     @Override
@@ -151,11 +151,11 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
     }
 
     /**
-     * Guarda una tarjeta de crédito en la base de datos.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Yahya El Hadri, Samuel Cortés.
+     * Guarda una tarjeta de credito en la base de datos.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
-     * @param creditCard La tarjeta de crédito a guardar.
-     * @return La tarjeta de crédito guardada.
+     * @param creditCard La tarjeta de credito a guardar.
+     * @return La tarjeta de credito guardada.
      */
 
     @Override
@@ -180,7 +180,7 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
 
     /**
      * Actualiza una tarjeta de credito existente, solo permite actualizar la fecha de caducidad.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param creditCard La tarjeta de credito a actualizar.
      * @return La tarjeta de credito actualizada.
@@ -208,8 +208,8 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
     }
 
     /**
-     * Elimina una tarjeta de crédito por su id.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Alvaro Herrero, Samuel Cortés, Yahya El Hadri.
+     * Elimina una tarjeta de credito por su id.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param id
      * @return true si se elimina la tarjeta, false en caso contrario.
@@ -235,8 +235,8 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
 
     }
     /**
-     * Elimina todas las tarjetas de crédito.
-     * @author Raúl Fernández, Yahya El Hadri, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés.
+     * Elimina todas las tarjetas de credito.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @return true si se eliminan todas las tarjetas, false en caso contrario.
      */
@@ -256,7 +256,7 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
 
     /**
      * Obtiene todas las tarjetas de credito de un usuario.
-     * @author Raúl Fernández, Yahya El Hadri, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param userId
      * @return Una lista de tarjetas de credito.
