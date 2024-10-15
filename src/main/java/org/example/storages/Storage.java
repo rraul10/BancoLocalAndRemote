@@ -11,7 +11,7 @@ public interface Storage<K> {
      * Importar datos desde un archivo
      * @param file el archivo a importar
      * @return un flujo de los datos importados
-     * @author Javier Hernández, Yahya El Hadri, Javier Ruiz, Álvaro Herrero, Samuel Cortés, Raúl Fernández
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
 
@@ -21,7 +21,7 @@ public interface Storage<K> {
      * Exportar datos a un archivo
      * @param lista la lista de datos a exportar
      * @param file el archivo al que exportar
-     * @author Javier Hernández, Yahya El Hadri, Javier Ruiz, Álvaro Herrero, Samuel Cortés, Raúl Fernández
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
 
