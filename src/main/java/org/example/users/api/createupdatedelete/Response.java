@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder
-
 public class Response {
 
     @JsonProperty("createdAt")
@@ -26,8 +25,8 @@ public class Response {
     private String email;
 
     /**
-     * Returns the id of the user
-     * @return the id of the user
+     * Retorna el id del usuario
+     * @return el id del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -36,8 +35,8 @@ public class Response {
     }
 
     /**
-     * Returns the name of the user
-     * @return the name of the user
+     * Retorna el nombre del usuario
+     * @return el nombre del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -46,8 +45,8 @@ public class Response {
     }
 
     /**
-     * Returns the username of the user
-     * @return the username of the user
+     * Retorna el nombre de usuario del usuario
+     * @return el nombre de usuario del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -56,8 +55,8 @@ public class Response {
     }
 
     /**
-     * Returns the email of the user
-     * @return the email of the user
+     * Retorna el correo del usuario
+     * @return el correo del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -66,8 +65,8 @@ public class Response {
     }
 
     /**
-     * Returns the createdAt of the user
-     * @return the createdAt of the user
+     * Retorna la fecha de creacion del usuario
+     * @return la fecha de creacion del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */
@@ -76,8 +75,8 @@ public class Response {
     }
 
     /**
-     * Returns the updatedAt of the user
-     * @return the updatedAt of the user
+     * Retorna la fecha de actualizacion del usuario
+     * @return la fecha de actualizacion del usuario
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @version 1.0
      */

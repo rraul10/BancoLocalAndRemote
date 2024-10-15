@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Implementación del cliente de almacenamiento en formato JSON.
- * Esta clase proporciona métodos para importar y exportar listas de clientes en formato JSON.
- * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+ * Implementacion del cliente de almacenamiento en formato JSON.
+ * Esta clase proporciona metodos para importar y exportar listas de clientes en formato JSON.
+ * @author Raul Fernandez, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri, Alvaro Herrero.
  * @since 1.0
  */
 
@@ -24,7 +24,7 @@ public class StorageJsonClientImpl implements StorageJsonClient{
 
     /**
      * Importa una lista de clientes desde un archivo en formato JSON.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+     * @author Raul Fernandez, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri, Alvaro Herrero.
      * @since 1.0
      * @param file archivo que contiene la lista de clientes en formato JSON
      * @return flujo de clientes importados
@@ -45,10 +45,10 @@ public class StorageJsonClientImpl implements StorageJsonClient{
 
     /**
      * Exporta una lista de clientes a un archivo en formato JSON.
-     * @author Raúl Fernández, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri, Alvaro Herrero
+     * @author Raul Fernqndez, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri, Alvaro Herrero
      * @since 1.0
      * @param lista lista de clientes a exportar
-     * @param file archivo donde se guardará la lista de clientes en formato JSON
+     * @param file archivo donde se guardara la lista de clientes en formato JSON
      */
 
     @Override

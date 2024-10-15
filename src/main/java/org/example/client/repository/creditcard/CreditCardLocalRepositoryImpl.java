@@ -20,7 +20,7 @@ import java.util.UUID;
 
 /**
  * Implementacion del repositorio de tarjetas de credito.
- * @authorAlvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+ * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
  * @version 1.0
  */
 
@@ -117,7 +117,7 @@ public class CreditCardLocalRepositoryImpl implements CreditCardLocalRepository 
     /**
      * Obtiene una tarjeta de credito por su numero.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
-     * @param number El numero de la tarjeta de cr�dito.
+     * @param number El numero de la tarjeta de credito.
      * @return La tarjeta de credito encontrada o null si no existe.
      */
 

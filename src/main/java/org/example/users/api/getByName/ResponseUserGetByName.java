@@ -24,8 +24,8 @@ public class ResponseUserGetByName {
 
     /**
      *
-     * @return the id
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el id
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public int getId() {
@@ -34,8 +34,8 @@ public class ResponseUserGetByName {
 
     /**
      *
-     * @return the name
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el nombre
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public String getName() {
@@ -44,8 +44,8 @@ public class ResponseUserGetByName {
 
     /**
      *
-     * @return the username
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el nombre de usuario
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public String getUsername() {
@@ -54,8 +54,8 @@ public class ResponseUserGetByName {
 
     /**
      *
-     * @return the email
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * @return el correo
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public String getEmail() {
