@@ -11,34 +11,35 @@ public class UserValidatorImpl implements UserValidator {
     private final Logger logger = LoggerFactory.getLogger(UserValidatorImpl.class);
 
     /**
-     * Validates a user
-     * @param usuario The user to validate
-     * @return Either a UserErrors if the user is invalid, or the user itself if it's valid
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Valida un usuario
+     * @param usuario El usuario a validar
+     * @return Either un UserErrors si el usuario es invalido, o el mismo usuario si es valido
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     @Override
-    public Either<UserErrors, Usuario> ValidateUser(Usuario usuario){
+    public Either<UserErrors, Usuario> ValidateUser(Usuario usuario) {
         logger.debug("Validando usuario");
-        if(!validateNombre(usuario.getNombre())){
-            logger.error("Nombre de usuario inválido");
-            return Either.left(new UserErrors.NombreInvalido("Nombre inválido, el nombre debe tener al menos 3 caracteres"));
+        if (!validateNombre(usuario.getNombre())) {
+            logger.error("Nombre de usuario invalido");
+            return Either.left(new UserErrors.NombreInvalido("Nombre invalido, el nombre debe tener al menos 3 caracteres"));
         }
-        if(!validateNombre(usuario.getUsername())){
-            logger.error("Nombre de usuario inválido");
-            return Either.left(new UserErrors.NombreInvalido("Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres"));
+        if (!validateNombre(usuario.getUsername())) {
+            logger.error("Nombre de usuario invalido");
+            return Either.left(new UserErrors.NombreInvalido("Nombre de usuario invalido, el nombre debe tener al menos 3 caracteres"));
         }
-        if(!validateEmail(usuario.getEmail())){
-            logger.error("Email de usuario inválido");
-            return Either.left(new UserErrors.EmailInvalido("Email de usuario inválido"));
+        if (!validateEmail(usuario.getEmail())) {
+            logger.error("Email de usuario invalido");
+            return Either.left(new UserErrors.EmailInvalido("Email de usuario invalido"));
         }
         return Either.right(usuario);
     }
+
     /**
-     * Validates a user name
-     * @param nombre the username to validate
-     * @return true if the username is valid, false otherwise
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Valida un nombre de usuario
+     * @param nombre el nombre de usuario a validar
+     * @return true si el nombre de usuario es valido, false en caso contrario
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     private boolean validateNombre(String nombre) {
@@ -47,10 +48,10 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     /**
-     * Validates a user email
-     * @param email the user email to validate
-     * @return true if the user email is valid, false otherwise
-     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Valida el email de un usuario
+     * @param email el email del usuario a validar
+     * @return true si el email es valido, false en caso contrario
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     private boolean validateEmail(String email) {
@@ -58,4 +59,5 @@ public class UserValidatorImpl implements UserValidator {
         String regex = "^[\\w!#$%&'*+/=?`{|}~^.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         return email != null && !email.isEmpty() && email.matches(regex);
     }
+
 }
