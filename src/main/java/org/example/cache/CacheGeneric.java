@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Cache de almacenamiento gen�rico
+ * Cache de almacenamiento generico
  * @param <T>
  * @param <K>
  * @since 1.0
@@ -28,7 +28,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
      * @since 1.0
      * @param maxCapacity
      * @param logger
-     * @return Tama�o de la c�che.
+     * @return Tamano de la cache.
      */
 
     public CacheGeneric(int maxCapacity, Logger logger) {
@@ -57,7 +57,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
 
 
     /**
-     * A�ade un valor a la cache con la clave especificada.
+     * Anade un valor a la cache con la clave especificada.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a asociar
@@ -166,7 +166,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
      * Comprueba si la cache este vacia.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
-     * @return True si la cache est� vac�a, false en caso contrario.
+     * @return True si la cache esta vacia, false en caso contrario.
      */
 
     @Override
@@ -179,7 +179,7 @@ public class CacheGeneric<K, T> implements Cache<K, T> {
      * Comprueba si la cache no este vacia.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
-     * @return True si la cache no est� vac�a, false en caso contrario.
+     * @return True si la cache no esta vacia, false en caso contrario.
      */
 
     @Override
