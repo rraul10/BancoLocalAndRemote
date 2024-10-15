@@ -67,24 +67,54 @@ public class UserRemoteRepositoryImpl {
         }
     }
 
-    public List<Usuario> getByName(String name) {
-        logger.info("Obteniendo usuario con nombre: " + name);
-        var call = userApiRest.getByName(name);
+    public Usuario getById(int id) {
+        logger.info("Obteniendo usuario con id: " + id);
+        var call = userApiRest.getById((long)id);
 
         try {
             var response = call.get();
-            return response.stream()
-                    .map(UserMapper::toUserFromCreate)
-                    .toList();
+
+            if (response == null) {
+                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
+            }
+
+            return UserMapper.toUserFromCreate(response);
         } catch (Exception e) {
-            if (e.getCause().getMessage().contains("404")) {
-                throw new UserNotFoundException("Usuario no encontrado con nombre: " + name);
+            if (e.getCause() != null && e.getCause().getMessage().contains("404")) {
+                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
             } else {
                 e.printStackTrace();
                 return null;
             }
         }
     }
+
+
+    public List<Usuario> getByName(String name) {
+        logger.info("Obteniendo usuario(s) con nombre: " + name);
+        var call = userApiRest.getByName(name);
+
+        try {
+            var response = call.get();
+
+            if (response == null || response.isEmpty()) {
+                throw new UserNotFoundException("Usuario no encontrado con nombre: " + name);
+            }
+            return response.stream()
+                    .map(UserMapper::toUserFromCreate)
+                    .toList();
+
+        } catch (Exception e) {
+            if (e.getCause() != null && e.getCause().getMessage().contains("404")) {
+                throw new UserNotFoundException("Usuario no encontrado con nombre: " + name);
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return List.of();
+    }
+
+
 
 
     /**

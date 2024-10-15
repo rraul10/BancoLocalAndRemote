@@ -7,7 +7,8 @@ import org.example.users.api.UserApiRest;
 import org.example.users.api.createupdatedelete.Request;
 import org.example.users.api.getAll.ResponseUserGetAll;
 import org.example.users.api.getById.ResponseUserGetByid;
-import org.example.users.repository.UserRemoteRepository;
+import org.example.users.api.getByName.ResponseUserGetByName;
+import org.example.users.repository.UserRemoteRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ class UserRemoteRepositoryTest {
     private UserApiRest userApiRest;
 
     @InjectMocks
-    private UserRemoteRepository userRemoteRepository;
+    private UserRemoteRepositoryImpl userRemoteRepository;
 
     @Test
     void getAll() {
@@ -72,7 +73,7 @@ class UserRemoteRepositoryTest {
 
         when(userApiRest.getById(1L)).thenReturn(CompletableFuture.completedFuture(response));
 
-        var res = userRemoteRepository.getById(1L);
+        var res = userRemoteRepository.getById(1);
 
         assertEquals(1, res.getId());
         assertEquals("Juan Perez", res.getName());
@@ -94,17 +95,71 @@ class UserRemoteRepositoryTest {
     @Test
     void getByIdNotFound() {
 
-
         when(userApiRest.getById(2L)).thenThrow(UserNotFoundException.class);
 
-        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getById(2L));
+        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getById(2));
 
         assertEquals(UserNotFoundException.class, exception.getClass());
 
         verify(userApiRest, times(1)).getById(2L);
     }
 
+    @Test
+    void findByNameOK() {
+        var user1 = ResponseUserGetByName.builder()
+                .id(1)
+                .name("Juan Perez")
+                .username("juanp")
+                .email("juan@example.com")
+                .build();
 
+        when(userApiRest.getByName("Juan Perez")).thenReturn(CompletableFuture.completedFuture(List.of(user1)));
+        var res = userRemoteRepository.getByName("Juan Perez");
+
+        assertEquals(1, res.size());
+        assertEquals("Juan Perez", res.get(0).getName());
+
+        verify(userApiRest, times(1)).getByName("Juan Perez");
+    }
+
+
+    @Test
+    void findByNameNotFound() {
+
+        when(userApiRest.getByName("Ana Gomez")).thenThrow(UserNotFoundException.class);
+
+        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName("Ana Gomez"));
+
+        assertEquals(UserNotFoundException.class, exception.getClass());
+
+        verify(userApiRest, times(1)).getByName("Ana Gomez");
+    }
+
+    @Test
+    void findByNameNull() {
+
+        when(userApiRest.getByName(null)).thenThrow(UserNotFoundException.class);
+
+        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName(null));
+
+        assertEquals(UserNotFoundException.class, exception.getClass());
+
+        verify(userApiRest, times(1)).getByName(null);
+    }
+
+
+
+    @Test
+    void findByNameEmpty() {
+
+        when(userApiRest.getByName("")).thenThrow(UserNotFoundException.class);
+
+        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName(""));
+
+        assertEquals(UserNotFoundException.class, exception.getClass());
+
+        verify(userApiRest, times(1)).getByName("");
+    }
 
     @Test
     void createUsuarioOK() {
@@ -121,7 +176,7 @@ class UserRemoteRepositoryTest {
 
         when(userApiRest.createUser(any(Request.class))).thenReturn(CompletableFuture.completedFuture(UserMapper.toResponse(usuario)));
 
-        var res = userRemoteRepository.createUser(usuario);
+        var res = userRemoteRepository.createUsuario(usuario);
 
         assertEquals(1L, res.getId());
         assertEquals("Juan Perez", res.getName());
