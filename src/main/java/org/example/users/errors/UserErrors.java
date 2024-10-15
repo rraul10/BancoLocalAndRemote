@@ -11,8 +11,8 @@ public abstract class UserErrors {
     }
 
     /**
-     * Excepción para nombres de usuario inválidos
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Excepcion para nombres de usuario invalidos
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public static class NombreInvalido extends UserErrors{
@@ -22,8 +22,8 @@ public abstract class UserErrors {
     }
 
     /**
-     * Excepción para correos electrónicos inválidos
-     * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Excepcion para correos electronicos invalidos
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
     public static class EmailInvalido extends UserErrors{

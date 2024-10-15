@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Implementación del almacenamiento de tarjetas de crédito en formato CSV.
- * Esta clase proporciona métodos para importar y exportar una lista de tarjetas de crédito
+ * Implementacion del almacenamiento de tarjetas de credito en formato CSV.
+ * Esta clase proporciona metodos para importar y exportar una lista de tarjetas de credito
  * en formato CSV.
- * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+ * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
  * @since 1.0
  */
 
@@ -25,11 +25,11 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
 
     /**
-     * Importa una lista de tarjetas de crédito desde un archivo CSV.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Importa una lista de tarjetas de credito desde un archivo CSV.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param file archivo CSV con la lista de tarjetas de crédito
-     * @return flujo de tarjetas de crédito importadas
+     * @param file archivo CSV con la lista de tarjetas de credito
+     * @return flujo de tarjetas de credito importadas
      */
 
     @Override
@@ -49,18 +49,19 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }
+
     /**
-     * Convierte una línea del archivo CSV en una tarjeta de crédito.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Convierte una linea del archivo CSV en una tarjeta de credito.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param linea línea del archivo CSV
-     * @return tarjeta de crédito
+     * @param linea linea del archivo CSV
+     * @return tarjeta de credito
      */
 
     private TarjetaCredito parseLine(List<String> linea) {
         return TarjetaCredito.builder()
                 .id(UUID.fromString(linea.get(0)))
-                .numero( linea.get(1))
+                .numero(linea.get(1))
                 .nombreTitular(linea.get(2))
                 .clientID(Long.parseLong(linea.get(3)))
                 .fechaCaducidad(linea.get(4))
@@ -71,11 +72,11 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
     }
 
     /**
-     * Exporta una lista de tarjetas de crédito a un archivo CSV.
-     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
+     * Exporta una lista de tarjetas de credito a un archivo CSV.
+     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
      * @since 1.0
-     * @param lista lista de tarjetas de crédito
-     * @param file archivo CSV con la lista de tarjetas de crédito
+     * @param lista lista de tarjetas de credito
+     * @param file archivo CSV con la lista de tarjetas de credito
      */
 
     @Override
@@ -100,4 +101,3 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
         }
     }
 }
-

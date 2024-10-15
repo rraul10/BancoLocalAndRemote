@@ -24,7 +24,7 @@ public class ResponseUserGetByid {
 
     /**
      *
-     * @return the id
+     * @return el id
      * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
@@ -34,7 +34,7 @@ public class ResponseUserGetByid {
 
     /**
      *
-     * @return the name
+     * @return el nombre
      * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
@@ -44,7 +44,7 @@ public class ResponseUserGetByid {
 
     /**
      *
-     * @return the username
+     * @return el apellido
      * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
@@ -54,7 +54,7 @@ public class ResponseUserGetByid {
 
     /**
      *
-     * @return the email
+     * @return el gmail
      * @author Javier Hern ndez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */

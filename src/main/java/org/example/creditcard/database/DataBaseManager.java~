@@ -11,10 +11,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Clase que gestiona la conexion a una base de datos utilizando HikariCP.
- * Esta clase proporciona metodos para conectar y desconectar de la base de datos,
- * asi como para obtener una conexion a la base de datos.
- * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+ * Clase que gestiona la conexión a una base de datos utilizando HikariCP.
+ * Esta clase proporciona métodos para conectar y desconectar de la base de datos,
+ * así como para obtener una conexión a la base de datos.
+ * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
  * @since 1.0
  */
 
@@ -24,7 +24,7 @@ public class DataBaseManager implements AutoCloseable {
     private final Logger logger = LoggerFactory.getLogger(DataBaseManager.class);
     private String DB_URL = "jdbc:postgresql://localhost:5432/credit-card";
     private String DB_USER = "admin"; // reemplaza con tu usuario
-    private String DB_PASSWORD = "adminPassword123"; // reemplaza con tu contrasena
+    private String DB_PASSWORD = "adminPassword123"; // reemplaza con tu contraseña
     private String DB_Timeout = "10000";
     private Connection connection = null;
 
@@ -32,12 +32,12 @@ public class DataBaseManager implements AutoCloseable {
     }
 
     /**
-     * Constructor que recibe la configuracion de la base de datos.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Constructor que recibe la configuración de la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
-     * @param config configuracion de la base de datos
+     * @param config configuración de la base de datos
      */
-
+    
     private DataBaseManager(ConfigProperties config) {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(config.getProperty("database.url", DB_URL));
@@ -49,10 +49,10 @@ public class DataBaseManager implements AutoCloseable {
     }
 
     /**
-     * Obtiene la instancia unica de la clase.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Obtiene la instancia única de la clase.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
-     * @return instancia unica de la clase
+     * @return instancia única de la clase
      */
 
     public static DataBaseManager getInstance() {
@@ -63,11 +63,11 @@ public class DataBaseManager implements AutoCloseable {
     }
 
     /**
-     * Obtiene la instancia unica de la clase utilizando la configuracion proporcionada.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Obtiene la instancia única de la clase utilizando la configuración proporcionada.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
-     * @param config configuracion de la base de datos
-     * @return instancia unica de la clase
+     * @param config configuración de la base de datos
+     * @return instancia única de la clase
      */
 
     public static DataBaseManager getInstance(ConfigProperties config) {
@@ -78,10 +78,10 @@ public class DataBaseManager implements AutoCloseable {
     }
 
     /**
-     * Establece una conexion a la base de datos.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Establece una conexión a la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
-     * @return conexion a la base de datos
+     * @return conexión a la base de datos
      * @throws SQLException si ocurre un error al conectar a la base de datos
      */
 
@@ -95,24 +95,24 @@ public class DataBaseManager implements AutoCloseable {
     }
 
     /**
-     * Cierra la conexion a la base de datos.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Cierra la conexión a la base de datos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
      */
 
     public void disconnect() {
         if (connection != null) {
-            dataSource.close();
-            connection = null;
-            logger.info("Desconectado de la base de datos...");
+                dataSource.close();
+                connection = null;
+                logger.info("Desconectado de la base de datos...");
         }
     }
 
     /**
-     * Cierra la conexion a la base de datos y libera los recursos.
-     * @author Raul Fernandez, Alvaro Herrero, Javier Ruiz, Javier Hernandez, Samuel Cortes, Yahya El Hadri.
+     * Cierra la conexión a la base de datos y libera los recursos.
+     * @author Raúl Fernández, Alvaro Herrero, Javier Ruíz, Javier Hernández, Samuel Cortés, Yahya El Hadri.
      * @since 1.0
-     * @throws Exception si ocurre un error al cerrar la conexion
+     * @throws Exception si ocurre un error al cerrar la conexión
      */
 
     @Override

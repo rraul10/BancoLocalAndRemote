@@ -14,11 +14,11 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
 
     /**
      * Constructor de la clase.
-     * @autor Raúl Fernández, Javier Hernández, Javier Ruíz, Samuel Cortés, Yahya El Hadri, Alvaro Herrero.
+     * @autor Raul Fernandez, Javier Hernandez, Javier Ruiz, Samuel Cortes, Yahya El Hadri, Alvaro Herrero.
      * @since 1.0
      * @param maxCapacity
      * @param logger
-     * @return Tamaño de la cáche.
+     * @return Tamano de la cache.
      */
 
     public CacheTarjetaImpl(int maxCapacity, Logger logger) {
@@ -33,7 +33,7 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
 
     /**
      * Obtiene el valor asociado a la clave especificada.
-     * @author Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a buscar
      * @return Valor asociado a la clave
@@ -55,10 +55,9 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
         return tarjetas;
     }
 
-
     /**
-     * Añade un valor a la cáche con la clave especificada.
-     * @autor Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * Anade un valor a la cache con la clave especificada.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a asociar
      * @param value Valor a almacenar
@@ -66,13 +65,13 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
 
     @Override
     public void put(UUID key, TarjetaCredito value) {
-        logger.debug("Añadiendo a cache el valor de la clave: {}", key);
+        logger.debug("Anadiendo a cache el valor de la clave: {}", key);
         cache.put(key, value);
     }
 
     /**
      * Elimina el valor asociado a la clave especificada de la cache.
-     * @autor Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      * @param key Clave a eliminar
      */
@@ -85,7 +84,7 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
 
     /**
      * Limpia la cache.
-     * @autor Alvaro Herrero, Javier Ruíz, Javier Hernández, Raúl Fernández, Yahya El Hadri, Samuel Cortés.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      * @since 1.0
      */
 
@@ -96,21 +95,21 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
     }
 
     /**
-     * Obtiene el número de valores almacenados en la cáche.
-     * @autor Raúl Fernández, Samuel Cortés, Javier Hernández, Alvaro Herrero, Javier Ruíz, Yahya El Hadri.
+     * Obtiene el numero de valores almacenados en la cache.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
      * @since 1.0
-     * @return Número de valores almacenados
+     * @return Numero de valores almacenados
      */
 
     @Override
     public int size() {
-        logger.debug("Obteniendo el tamaño de la cache");
+        logger.debug("Obteniendo el tamano de la cache");
         return cache.size();
     }
 
     /**
-     * Obtiene un conjunto de claves almacenadas en la cáche.
-     * @autor Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Obtiene un conjunto de claves almacenadas en la cache.
+     * @author Alvaro Herrero, Samuel Cortes, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Javier Ruiz.
      * @since 1.0
      * @return Conjunto de claves almacenadas.
      */
@@ -122,10 +121,10 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
     }
 
     /**
-     * Obtiene una colección de valores almacenados en la cáche.
-     * @autor Raúl Fernández, Samuel Cortés, Javier Hernández, Alvaro Herrero, Javier Ruíz, Yahya El Hadri.
+     * Obtiene una coleccion de valores almacenados en la cache.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
      * @since 1.0
-     * @return Colección de valores almacenados.
+     * @return Coleccion de valores almacenados.
      */
 
     @Override
@@ -135,8 +134,8 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
     }
 
     /**
-     * Comprueba si la cáche contiene un valor asociado a la clave especificada.
-     * @autor Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache contiene un valor asociado a la clave especificada.
+     * @author Alvaro Herrero, Samuel Cortes, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Javier Ruiz.
      * @since 1.0
      * @param key Clave a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -149,8 +148,8 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
     }
 
     /**
-     * Comprueba si la cache contiene un valor específico.
-     * @autor Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache contiene un valor especifico.
+     * @author Alvaro Herrero, Samuel Cortes, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Javier Ruiz.
      * @since 1.0
      * @param value Valor a buscar
      * @return True si la cache contiene el valor, false en caso contrario
@@ -163,28 +162,28 @@ public class CacheTarjetaImpl implements Cache<UUID, TarjetaCredito> {
     }
 
     /**
-     * Comprueba si la cache está vacía.
-     * @autor Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache esta vacia.
+     * @author Alvaro Herrero, Samuel Cortes, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Javier Ruiz.
      * @since 1.0
-     * @return True si la cache está vacía, false en caso contrario.
+     * @return True si la cache esta vacia, false en caso contrario.
      */
 
     @Override
     public boolean isEmpty() {
-        logger.debug("Comprobando si la cache está vacía");
+        logger.debug("Comprobando si la cache esta vacia");
         return cache.isEmpty();
     }
 
     /**
-     * Comprueba si la cache no está vacía.
-     * @autor Alvaro Herrero, Samuel Cortés, Javier Hernández, Raúl Fernández, Yahya El Hadri, Javier Ruíz.
+     * Comprueba si la cache no esta vacia.
+     * @author Alvaro Herrero, Samuel Cortes, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Javier Ruiz.
      * @since 1.0
-     * @return True si la cache no está vacía, false en caso contrario.
+     * @return True si la cache no esta vacia, false en caso contrario.
      */
 
     @Override
     public boolean isNotEmpty() {
-        logger.debug("Comprobando si la cache no está vacía");
+        logger.debug("Comprobando si la cache no esta vacia");
         return !isEmpty();
     }
 }

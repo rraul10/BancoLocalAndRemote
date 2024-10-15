@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseUserGetAll {
-    
+
     @JsonProperty("id")
     private int id;
 
@@ -24,7 +24,7 @@ public class ResponseUserGetAll {
 
     /**
      *
-     * @return id of the user
+     * @return el id del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
@@ -34,7 +34,7 @@ public class ResponseUserGetAll {
 
     /**
      *
-     * @return name of the user
+     * @return el nombre del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
@@ -44,7 +44,7 @@ public class ResponseUserGetAll {
 
     /**
      *
-     * @return username of the user
+     * @return el nombre de usuario del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
@@ -54,7 +54,7 @@ public class ResponseUserGetAll {
 
     /**
      *
-     * @return email of the user
+     * @return el correo del usuario
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
