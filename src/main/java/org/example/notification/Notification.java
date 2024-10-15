@@ -4,14 +4,15 @@ import java.time.LocalDateTime;
 
 public record Notification<T>(Type type, T item, String message, LocalDateTime createdAt) {
     /**
-     * Creates a new notification.
-     * @param type the type of the notification.
-     * @param item the item associated with the notification.
-     * @param message the message associated with the notification.
-     * @param createdAt the date and time when the notification was created.
-     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Crea una nueva notificacion.
+     * @param type el tipo de la notificacion.
+     * @param item el elemento asociado con la notificacion.
+     * @param message el mensaje asociado con la notificacion.
+     * @param createdAt la fecha y hora en que se creo la notificacion.
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
+
     public Notification(Type type, T item, String message, LocalDateTime createdAt) {
         this.type = type;
         this.item = item;
@@ -20,40 +21,43 @@ public record Notification<T>(Type type, T item, String message, LocalDateTime c
     }
 
     /**
-     * Creates a new notification with the current date and time.
-     * @param type the type of the notification.
-     * @param item the item associated with the notification.
-     * @param message the message associated with the notification.
-     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Crea una nueva notificacion con la fecha y hora actual.
+     * @param type el tipo de la notificacion.
+     * @param item el elemento asociado con la notificacion.
+     * @param message el mensaje asociado con la notificacion.
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
+
     public Notification(Type type, T item, String message) {
         this(type, item, message, LocalDateTime.now());
     }
 
     /**
-     * Creates a new notification with the current date and time and a null message.
-     * @param type the type of the notification.
-     * @param item the item associated with the notification.
-     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Crea una nueva notificacion con la fecha y hora actual y un mensaje nulo.
+     * @param type el tipo de la notificacion.
+     * @param item el elemento asociado con la notificacion.
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
+
     public Notification(Type type, T item) {
         this(type, item, null, LocalDateTime.now());
     }
 
     /**
-     * Creates a new notification with the current date and time and a null message and item.
-     * @param type the type of the notification.
-     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     * Crea una nueva notificacion con la fecha y hora actual, y con un mensaje y elemento nulos.
+     * @param type el tipo de la notificacion.
+     * @author Javier Hernandez, Yahya El Hadri, Javier Ruiz, Alvaro Herrero, Samuel Cortes, Raul Fernandez
      * @version 1.0
      */
+
     public Notification(Type type) {
         this(type, null, null, LocalDateTime.now());
     }
 
     /**
-     * The type of the notification.
+     * El tipo de notificacion
      */
     public enum Type {
         CREATE, UPDATE, DELETE, REFRESH
