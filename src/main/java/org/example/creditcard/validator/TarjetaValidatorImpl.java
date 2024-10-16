@@ -7,7 +7,7 @@ import org.example.models.TarjetaCredito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TarjetaValidatorImpl implements TarjetaValidator {
+public class TarjetaValidatorImpl extends TarjetaValidator {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
     @Override
     public Either<TarjetaErrors, TarjetaCredito> validarTarjetaCredito(TarjetaCredito tarjeta){

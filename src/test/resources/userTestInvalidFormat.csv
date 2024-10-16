@@ -1,0 +1,4 @@
+id,name,username,email,createdAt,updatedAt
+1,Ana González-anagonzalez,ana.gonzalez@example.com,2024-01-01T12:00:00,2024-01-01T12:00:00
+2,Pablo Martínez,pablomartinez,pablo.martinez@example.com,2024-01-02T13:00:00,2024-01-02T13:00:00
+3,Lucía Fernández,luciafernandez,lucia.fernandez@example.com,2024-01-03T14:00:00,2024-01-03T14:00:00

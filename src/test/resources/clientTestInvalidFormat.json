@@ -1,0 +1,68 @@
+[
+  {
+    "usuario":
+      "id": 1,
+      "name": "Ana González",
+      "username": "ana_gonzalez",
+      "email": "ana.gonzalez@example.com",
+      "createdAt": "2024-01-01T12:00:00",
+      "updatedAt": "2024-01-01T12:00:00"
+    ,
+    "tarjetas": [
+      {
+        "id": "8d4e7f9f-6f2d-4a6c-a8c0-f2c5568a89e2",
+        "numero": "4111111111111111",
+        "nombreTitular": "Ana González",
+        "clientID": "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
+        "fechaCaducidad": "12/26",
+        "createdAt": "2024-01-01T12:00:00",
+        "updatedAt": "2024-01-01T12:00:00",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "usuario": {
+      "id": 2,
+      "name": "Pablo Martínez",
+      "username": "pablo_martinez",
+      "email": "pablo.martinez@example.com",
+      "createdAt": "2024-01-02T13:00:00",
+      "updatedAt": "2024-01-02T13:00:00"
+    },
+    "tarjetas": [
+      {
+        "id": "5a7e6f5d-4c3b-2a1d-0e9f-8g7h6i5j4k3l",
+        "numero": "5500000000000004",
+        "nombreTitular": "Pablo Martínez",
+        "clientID": "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
+        "fechaCaducidad": "01/25",
+        "createdAt": "2024-01-02T13:00:00",
+        "updatedAt": "2024-01-02T13:00:00",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "usuario": {
+      "id": 3,
+      "name": "Lucía Fernández",
+      "username": "lucia_fernandez",
+      "email": "lucia.fernandez@example.com",
+      "createdAt": "2024-01-03T14:00:00",
+      "updatedAt": "2024-01-03T14:00:00"
+    },
+    "tarjetas": [
+      {
+        "id": "0e9f8g7h-6i5j-4k3l-2a1d-5a7e6f5d4c3b",
+        "numero": "6011000990139424",
+        "nombreTitular": "Lucía Fernández",
+        "clientID": "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
+        "fechaCaducidad": "07/24",
+        "createdAt": "2024-01-03T14:00:00",
+        "updatedAt": "2024-01-03T14:00:00",
+        "isDeleted": true
+      }
+    ]
+  }
+]
