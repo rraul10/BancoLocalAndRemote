@@ -2,8 +2,12 @@ package org.example.client.storage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Setter;
 import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.Cliente;
+import org.example.storages.validators.csvValidator;
+import org.example.storages.validators.jsonValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -20,7 +24,17 @@ import java.util.List;
  */
 
 public class StorageJsonClientImpl implements StorageJsonClient{
-    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageJsonClientImpl.class);
+    private final jsonValidator validador;
+
+    @Setter
+    private ObjectMapper objectMapper;
+
+    public StorageJsonClientImpl(jsonValidator validador) {
+        this.validador = validador;
+        this.objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     /**
      * Importa una lista de clientes desde un archivo en formato JSON.
@@ -32,8 +46,11 @@ public class StorageJsonClientImpl implements StorageJsonClient{
 
     @Override
     public Flux<Cliente> importList(File file) {
-        ObjectMapper objectMapper = new ObjectMapper();
         logger.debug("Export import from file: {}", file.getAbsolutePath());
+        if(!validador.jsonValidator(file)){
+            logger.error("Error import clients from file: {}", file.getAbsolutePath());
+            return Flux.error(new RuntimeException("Error import clients from file: " + file.getAbsolutePath()));
+        };
         try {
             return Flux.fromIterable(objectMapper.readValue(file, new TypeReference<List<Cliente>>() {}));
         } catch (IOException e) {
@@ -51,9 +68,9 @@ public class StorageJsonClientImpl implements StorageJsonClient{
      * @param file archivo donde se guardara la lista de clientes en formato JSON
      */
 
+
     @Override
     public void exportList(List<Cliente> lista, File file) {
-        ObjectMapper objectMapper = new ObjectMapper();
         logger.debug("Export clients to file: {}", file.getAbsolutePath());
         try {
             objectMapper.writeValue(file, lista);
@@ -61,5 +78,6 @@ public class StorageJsonClientImpl implements StorageJsonClient{
             e.printStackTrace();
             logger.error("Error export clients to file: {}", file.getAbsolutePath());
         }
+
     }
 }

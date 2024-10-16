@@ -1,5 +1,7 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -30,6 +32,30 @@ public class TarjetaCredito {
     LocalDateTime updatedAt;
     @NonNull
     Boolean isDeleted;
+
+    // Constructor predeterminado
+    public TarjetaCredito() {
+    }
+
+    // Constructor completo para Jackson
+    @JsonCreator
+    public TarjetaCredito(@JsonProperty("id") UUID id,
+                          @JsonProperty("numero") @NonNull String numero,
+                          @JsonProperty("nombreTitular") @NonNull String nombreTitular,
+                          @JsonProperty("clientID") @NonNull Long clientID,
+                          @JsonProperty("fechaCaducidad") @NonNull String fechaCaducidad,
+                          @JsonProperty("createdAt") @NonNull LocalDateTime createdAt,
+                          @JsonProperty("updatedAt") @NonNull LocalDateTime updatedAt,
+                          @JsonProperty("isDeleted") @NonNull Boolean isDeleted) {
+        this.id = id;
+        this.numero = numero;
+        this.nombreTitular = nombreTitular;
+        this.clientID = clientID;
+        this.fechaCaducidad = fechaCaducidad;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isDeleted = isDeleted;
+    }
 }
 
 
