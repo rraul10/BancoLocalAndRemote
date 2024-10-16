@@ -27,7 +27,7 @@ class StorageCsvCredCardImplTest {
         System.out.println(file.getAbsolutePath());
         csvValidator validadorCsvCC = mock(csvValidator.class);
         //when(validadorCsvCC.csvValidatorImport(any(File.class))).thenReturn(true);
-        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl(validadorCsvCC);
+        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
 
         Flux<TarjetaCredito> result = storage.importList(file);
 
@@ -41,7 +41,7 @@ class StorageCsvCredCardImplTest {
         csvValidator validador = mock(csvValidator.class);
         //when(validador.csvValidatorImport(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("creditCardTest.json").getFile());
-        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl(validador);
+        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
         Flux<TarjetaCredito> result = storage.importList(file);
 
         StepVerifier.create(result)
@@ -54,7 +54,7 @@ class StorageCsvCredCardImplTest {
         csvValidator validador = mock(csvValidator.class);
         //when(validador.csvValidatorImport(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("creditCardTestInvalidFormat.csv").getFile());
-        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl(validador);
+        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
         Flux<TarjetaCredito> result = storage.importList(file);
 
         StepVerifier.create(result)
@@ -68,8 +68,8 @@ class StorageCsvCredCardImplTest {
         csvValidator validator = Mockito.mock(csvValidator.class);
         //Mockito.when(validator.csvValidatorImport(Mockito.any(File.class))).thenReturn(false);
 
-        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl(validator);
-        File nonCsvFile = new File("invalid.txt");
+        StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
+        File nonCsvFile = new File(getClass().getClassLoader().getResource("creditCardTest.json").getFile());
 
         Flux<TarjetaCredito> result = storage.importList(nonCsvFile);
 
@@ -91,7 +91,7 @@ class StorageCsvCredCardImplTest {
                             .id(UUID.randomUUID())
                             .numero("1234567890123456")
                             .nombreTitular("John Doe")
-                            .clientID(UUID.randomUUID())
+                            .clientID(1L)
                             .fechaCaducidad("12/25")
                             .createdAt(LocalDateTime.now())
                             .updatedAt(LocalDateTime.now())
@@ -100,7 +100,7 @@ class StorageCsvCredCardImplTest {
             );
 
             File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "test_output.csv");
-            StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl(validador);
+            StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
 
             storage.exportList(lista, file);
 

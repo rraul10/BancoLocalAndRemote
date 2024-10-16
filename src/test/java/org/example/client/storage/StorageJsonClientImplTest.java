@@ -98,10 +98,12 @@ class StorageJsonClientImplTest {
     public void exportList() {
         jsonValidator validador = mock(jsonValidator.class);
         StorageJsonClientImpl storageClient = new StorageJsonClientImpl(validador);
+
+        Usuario usuario = new Usuario(1L, "John Doe", "john_doe", "john@example.com",
+                LocalDateTime.now(), LocalDateTime.now());
+
         List<Cliente> clientes = List.of(
-                Cliente.builder().usuario(Cliente.createUsuario
-                        (1L, "John Doe", "john_doe", "john@example.com",
-                                LocalDateTime.now(), LocalDateTime.now())).build()
+                new Cliente(usuario, null)
         );
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         File file = new File(tempDir, "test_client_output.json");
@@ -147,23 +149,25 @@ class StorageJsonClientImplTest {
     public void test_export_list_exception() throws IOException {
         jsonValidator validador = mock(jsonValidator.class);
         StorageJsonClientImpl storageClient = new StorageJsonClientImpl(validador);
+
+        Usuario usuario = new Usuario(1L, "John Doe", "john_doe", "john@example.com",
+                LocalDateTime.now(), LocalDateTime.now());
+
         List<Cliente> clientes = List.of(
-                Cliente.builder().usuario(Cliente.createUsuario
-                        (1L, "John Doe", "john_doe", "john@example.com",
-                                LocalDateTime.now(), LocalDateTime.now())).build()
+                new Cliente(usuario, null)
         );
 
         ObjectMapper objectMapper = mock(ObjectMapper.class);
-        storageClient.setObjectMapper(objectMapper); // Inyectar el ObjectMapper simulado
+        storageClient.setObjectMapper(objectMapper);
 
         File file = new File(System.getProperty("java.io.tmpdir"), "test_client_output.json");
 
         doThrow(new IOException("Simulated IO Exception")).when(objectMapper).writeValue(file, clientes);
 
-        // Usa assertThrows para verificar que se lanza una excepción
+        // Usa assertThrows para verificar que se lanza una excepciï¿½n
         storageClient.exportList(clientes, file);
 
-        // Verifica que el mensaje de error se registró correctamente
+        // Verifica que el mensaje de error se registrï¿½ correctamente
         verify(objectMapper).writeValue(file, clientes);
     }
 

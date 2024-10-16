@@ -60,7 +60,7 @@ public class ClienteServiceImpl implements ClienteService {
      * @param tarjetaValidator Validador de tarjetas de crédito.
      */
 
-    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator) {
+    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator, UserNotifications userNotifications, TarjetaNotificacion tarjetaNotificacion) {
         this.usersRepository = usersRepository;
         this.creditCardLocalRepository = creditCardLocalRepository;
         this.creditCardRepository = creditCardRepository;
