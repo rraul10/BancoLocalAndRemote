@@ -10,6 +10,8 @@ import org.example.creditcard.validator.TarjetaValidator;
 import org.example.models.Cliente;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
+import org.example.notification.TarjetaNotificacion;
+import org.example.notification.UserNotifications;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.repository.UserRemoteRepository;
 import org.example.users.validator.UserValidator;
@@ -54,6 +56,12 @@ class ClienteServiceImplTest {
 
     @Mock
     private TarjetaValidator tarjetaValidator;
+
+    @Mock
+    private UserNotifications userNotifications;
+
+    @Mock
+    private TarjetaNotificacion tarjetaNotificacion;
 
     @InjectMocks
     private ClienteServiceImpl clienteService;
