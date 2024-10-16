@@ -1,0 +1,32 @@
+[
+  {
+    "id": "2a3b5c70-d9c8-412e-9814-1db9e9a5d52e",
+    "numero": "4111111111111111",
+    "nombreTitular": "John Doe",
+    "clientID": "c56a4180-65aa-42ec-a945-5fd21dec0538",
+    "fechaCaducidad": "12/26",
+    "createdAt": "2024-01-01T12:00:00",
+    "updatedAt": "2024-01-01T12:00:00",
+    "isDeleted": false
+  },
+  {
+    "id": "3f28b30d-7a24-4d76-8b78-d6b877a37efb",
+    "numero": "5500000000000004",
+    "nombreTitular": "Jane Smith",
+    "clientID": "110ec58a-a0f2-4ac4-8393-c866d813b8d1",
+    "fechaCaducidad": "01/25",
+    "createdAt": "2024-01-02T12:00:00",
+    "updatedAt": "2024-01-02T12:00:00",
+    "isDeleted": false
+  },
+  {
+    "id": "42f73a2e-2985-4556-a58e-d3b8f7b8a1e4",
+    "numero": "6011000990139424",
+    "nombreTitular": "Juan Perez",
+    "clientID": "a3bb189e-8bf9-3888-9912-ace4e6543002",
+    "fechaCaducidad": "07/24",
+    "createdAt": "2024-01-03T12:00:00",
+    "updatedAt": "2024-01-03T12:00:00",
+    "isDeleted": true
+  }
+]

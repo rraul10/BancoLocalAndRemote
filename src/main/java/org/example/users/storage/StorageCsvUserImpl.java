@@ -1,6 +1,8 @@
 package org.example.users.storage;
 
+import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.Usuario;
+import org.example.storages.validators.csvValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -10,8 +12,12 @@ import java.io.*;
 import java.util.List;
 
 public class StorageCsvUserImpl implements StorageCsvUser {
-    private final Logger logger = LoggerFactory.getLogger(StorageCsvUser.class);
+    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+    private final csvValidator validador;
 
+    public StorageCsvUserImpl(csvValidator validador) {
+        this.validador = validador;
+    }
 
     /**
      * Lee un archivo CSV y devuelve un flujo de usuarios.
@@ -23,17 +29,20 @@ public class StorageCsvUserImpl implements StorageCsvUser {
     @Override
     public Flux<Usuario> importList(File file) {
         logger.debug("Import users from file: {}", file.getAbsolutePath());
-        return Flux.<Usuario>create(emiitter -> {
+        if(!validador.csvValidatorImport(file)){
+            return Flux.error(new RuntimeException("Error import users from file: " + file.getAbsolutePath()));
+        };
+        return Flux.<Usuario>create(emitter -> {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 reader.lines()
                         .skip(1) // Skip header
                         .forEach(line -> {
                             Usuario usuario = parseLine(List.of(line.split(",")));
-                            emiitter.next(usuario);
+                            emitter.next(usuario);
                         });
-                emiitter.complete();
+                emitter.complete();
             } catch (Exception e) {
-                emiitter.error(e);
+                emitter.error(e);
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }

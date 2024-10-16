@@ -32,7 +32,7 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre invalido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -45,7 +45,7 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Nombre inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre invalido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -58,7 +58,7 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre de usuario invalido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -71,7 +71,7 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Nombre de usuario inválido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
+        assertEquals("ERROR: Nombre de usuario invalido, el nombre debe tener al menos 3 caracteres", result.getLeft().getMessage());
     }
 
     @Test
@@ -84,7 +84,7 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
+        assertEquals("ERROR: Email de usuario invalido", result.getLeft().getMessage());
     }
 
     @Test
@@ -97,6 +97,6 @@ class UserValidatorImplTest {
                 .build();
         Either<UserErrors,Usuario> result = userValidatorImpl.ValidateUser(usuarioTest);
         assertTrue(result.isLeft());
-        assertEquals("ERROR: Email de usuario inválido", result.getLeft().getMessage());
+        assertEquals("ERROR: Email de usuario invalido", result.getLeft().getMessage());
     }
 }
