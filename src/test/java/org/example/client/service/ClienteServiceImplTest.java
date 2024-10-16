@@ -124,5 +124,9 @@ class ClienteServiceImplTest {
         verify(creditCardRepository).getAll();
     }
 
+    @Test
+    void getAllUsers(){
+        //TODO
+    }
 
 }
