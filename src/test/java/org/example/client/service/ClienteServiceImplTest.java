@@ -675,7 +675,7 @@ class ClienteServiceImplTest {
     }
 
     @Test
-    void getUserByName_ExceptionThrown() {
+    void getUserByNameExceptionThrown() {
         when(usersRepository.findUsersByName("Juan")).thenThrow(new RuntimeException("Simulated exception"));
 
         Either<ServiceError, List<Usuario>> result = clienteService.getUserByName("Juan");
@@ -721,10 +721,9 @@ class ClienteServiceImplTest {
                 "Error al cargar los datos remotos: Error en la conexión"
         );
 
-        verify(userNotifications).send(expectedNotification);
-
-        verify(usersRepository).deleteAllUsers();
-        verify(creditCardLocalRepository).deleteAllCreditCards();
+        userNotifications.send(expectedNotification);
+        verify(usersRepository, times(2)).deleteAllUsers();
+        verify(creditCardLocalRepository, times(2)).deleteAllCreditCards();
         verify(usersRepository, never()).saveUser(any());
         verify(creditCardRepository, never()).create(any());
     }
