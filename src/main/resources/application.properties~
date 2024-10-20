@@ -1,0 +1,8 @@
+database.url=jdbc:postgresql://credit-card-db:5432/credit-card
+database.username=admin
+database.password=adminPassword123
+database.timeout=10000
+local.database.url=jdbc:sqlite:clients.db
+local.database.timeout=10000
+cache.max.size=10
+api.url="https://jsonplaceholder.typicode.com/users"
