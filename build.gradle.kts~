@@ -21,20 +21,21 @@ dependencies {
 
     // Project Reactor
     implementation("io.projectreactor:reactor-core:3.6.7")
-<<<<<<< HEAD
 
-=======
->>>>>>> db0979821abc5b9312a91bb762190c6086ee79db
     testImplementation("io.projectreactor:reactor-test:3.6.7")
+
+    //Postgres
+    implementation("org.postgresql:postgresql:42.6.0")
 
     // Vavr
     implementation("io.vavr:vavr:0.10.4")
 
     // JSON con Jackson
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
 
     // Driver para SQLite
-    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
+    implementation ("org.xerial:sqlite-jdbc:3.46.1.3")
 
     //Hikari
     implementation ("com.zaxxer:HikariCP:6.0.0")
@@ -48,7 +49,7 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-reactor-adapter:2.1.0")
 
     // Dagger
-    implementation("com.google.dagger:dagger:2.51.1")
+    implementation("com.google.dagger:️dagger:2.51.1")
     annotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
     testImplementation("com.google.dagger:dagger:2.51.1")
     testAnnotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
@@ -58,9 +59,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
     testImplementation("org.mockito:mockito-core:5.12.0")
-
+    testImplementation("org.testcontainers:testcontainers:1.20.2")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.2")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+tasks.jar {
+    archiveFileName.set("my-app.jar")
+    manifest {
+        attributes["Main-Class"] = "org.example.Main"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

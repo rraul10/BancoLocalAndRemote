@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UserApiRest {
 
-    String API_USERS_URL = "https://jsonplaceholder.typicode.com/";
+    String API_USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
 
     /**

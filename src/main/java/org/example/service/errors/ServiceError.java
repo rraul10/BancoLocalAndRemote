@@ -1,4 +1,4 @@
-package org.example.client.service.errors;
+package org.example.service.errors;
 
 public abstract class ServiceError {
     private final String message;
