@@ -17,19 +17,69 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Statement;
 
+/**
+ * Clase que gestiona la conexión a la base de datos.
+ * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+ * @since 1.0
+ */
+
 public class DataBaseManager implements AutoCloseable {
+
+    /**
+     * Instancia única de la clase.
+     */
     private static DataBaseManager instance = null;
+
+    /**
+     * Logger para registrar mensajes.
+     */
+
     private final Logger logger = LoggerFactory.getLogger(DataBaseManager.class);
+
+    /**
+     * URL de la base de datos.
+     */
+
     private String DB_URL;
+
+    /**
+     * Usuario de la base de datos.
+     */
+
     private String DB_USER;
+
+    /**
+     * Contraseña de la base de datos.
+     */
+
     private String DB_PASSWORD;
+
+    /**
+     * Tiempo de espera para la conexión a la base de datos.
+     */
+
     private long DB_TIMEOUT;
 
+    /**
+     * Indica si la base de datos ha sido inicializada.
+     */
+
     private Boolean init = false;
+
+    /**
+     * Constructor protegido para evitar instanciación directa.
+     */
 
     protected DataBaseManager() {
         initializeDatabaseProperties();
     }
+
+    /**
+     * Constructor que inicializa la base de datos con las propiedades proporcionadas.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @return Instancia de la clase DataBaseManager
+     * @param config Propiedades de configuración.
+     */
 
     private DataBaseManager(ConfigProperties config) {
         this.DB_URL = config.getProperty("database.url", "jdbc:postgresql://" + System.getenv("POSTGRES_HOST") + ":" + System.getenv("POSTGRES_PORT") + "/" + System.getenv("POSTGRES_DATABASE"));
@@ -38,12 +88,23 @@ public class DataBaseManager implements AutoCloseable {
         this.DB_TIMEOUT = Long.parseLong(config.getProperty("database.timeout", "10000"));
     }
 
+    /**
+     * Inicializa las propiedades de la base de datos con valores por defecto.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     */
+
     private void initializeDatabaseProperties() {
         this.DB_URL = "jdbc:postgresql://" + System.getenv("POSTGRES_HOST") + ":" + System.getenv("POSTGRES_PORT") + "/" + System.getenv("POSTGRES_DATABASE");
         this.DB_USER = "admin";
         this.DB_PASSWORD = "adminPassword123";
         this.DB_TIMEOUT = 10000;
     }
+
+    /**
+     * Obtiene la instancia única de la clase.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @return La instancia única de la clase.
+     */
 
     public static DataBaseManager getInstance() {
         if (instance == null) {
@@ -52,12 +113,26 @@ public class DataBaseManager implements AutoCloseable {
         return instance;
     }
 
+    /**
+     * Obtiene la instancia única de la clase con las propiedades proporcionadas.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @param config Propiedades de configuración.
+     * @return La instancia única de la clase.
+     */
+
     public static DataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
             instance = new DataBaseManager(config);
         }
         return instance;
     }
+
+    /**
+     * Establece una conexión a la base de datos.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @return La conexión a la base de datos.
+     * @throws SQLException Si ocurre un error al conectar.
+     */
 
     public Connection connect() throws SQLException {
         try {
@@ -75,6 +150,12 @@ public class DataBaseManager implements AutoCloseable {
         }
     }
 
+    /**
+     * Cierra una conexión a la base de datos.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @param connection La conexión a cerrar.
+     */
+
     public void disconnect(Connection connection) {
         if (connection != null) {
             try {
@@ -85,6 +166,12 @@ public class DataBaseManager implements AutoCloseable {
             }
         }
     }
+
+    /**
+     * Inicializa la base de datos ejecutando un script SQL.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     * @param connection La conexión a la base de datos.
+     */
 
     private void initializeDatabase(Connection connection) {
         String scriptPath = "database/init.sql";
@@ -118,8 +205,12 @@ public class DataBaseManager implements AutoCloseable {
         }
     }
 
+    /**
+     * Cierra la base de datos y el logger.
+     * @author Raul Fernandez, Samuel Cortes, Javier Hernandez, Alvaro Herrero, Javier Ruiz, Yahya El Hadri.
+     */
+
     @Override
     public void close() throws Exception {
-
     }
 }
