@@ -24,6 +24,9 @@ dependencies {
 
     testImplementation("io.projectreactor:reactor-test:3.6.7")
 
+    //Postgres
+    implementation("org.postgresql:postgresql:42.6.0")
+
     // Vavr
     implementation("io.vavr:vavr:0.10.4")
 
@@ -62,4 +65,12 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+tasks.jar {
+    archiveFileName.set("my-app.jar")
+    manifest {
+        attributes["Main-Class"] = "org.example.Main"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
