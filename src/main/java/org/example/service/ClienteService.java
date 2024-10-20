@@ -1,7 +1,7 @@
-package org.example.client.service;
+package org.example.service;
 
 import io.vavr.control.Either;
-import org.example.client.service.errors.ServiceError;
+import org.example.service.errors.ServiceError;
 import org.example.models.Cliente;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;

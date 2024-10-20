@@ -1,10 +1,9 @@
-package org.example.client.service;
+package org.example.service;
 
 import io.vavr.control.Either;
-import org.apache.ibatis.jdbc.Null;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
-import org.example.client.service.errors.ServiceError;
+import org.example.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.dto.TarjetaCreditoDto;
 import org.example.creditcard.repositories.CreditCardRepository;
