@@ -1,10 +1,14 @@
 package org.example;
 
 import org.example.di.DaggerAppComponent;
+import org.example.models.Cliente;
 import org.example.models.TarjetaCredito;
+import org.example.models.Usuario;
 import org.example.service.ClienteService;
 
 import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -27,11 +31,22 @@ public class Main {
         });
 
         CompletableFuture.runAsync(()->{
-                    clienteService.getAllClientes(false);
                     clienteService.getAllUsers(true).forEach(i->
-                            i.forEach(System.out::println)
-                    );
+                            i.forEach(j->{
+                                clienteService.createUser(j);
+                            })
 
+                    );
+                    clienteService.loadTarjetasCsv(new File("data/tarjetas.csv")).forEach(i->
+                            i.forEach(j->{
+                                clienteService.createTarjeta(j);
+                            })
+                    );
+                    clienteService.getAllClientes(false).forEach(i->
+                            i.forEach(j->{
+                                System.out.println(j);
+                            })
+                    );
                 }
 
         );
