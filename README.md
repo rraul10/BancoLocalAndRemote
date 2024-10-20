@@ -26,3 +26,17 @@ Este proyecto consiste en desarrollar una aplicación en **Java** para la **gest
 - Despliegue de la infraestructura con **Docker** (incluyendo **multi-stage build**).
 - Pruebas unitarias y de integración usando **TestContainers**.
 - Integración continua con **GitFlow** y Pull Requests para cada tarea.
+
+---
+
+### 👥 **Equipo del Proyecto**
+
+- **Project Owner:**
+  - [Javier Hernández](https://github.com/Javierhvicente)
+
+- **Equipo de Desarrolladores:**
+  - [Raúl Fernández](https://github.com/rraul10)
+  - [Javier Ruiz](https://github.com/javi97ruiz)
+  - [Yahya El Hadri](https://github.com/13elhadri)
+  - [Samuel Cortés](https://github.com/Samuceese)
+  - [Alvaro Herrero](https://github.com/alvarito304)
