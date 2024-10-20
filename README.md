@@ -1,10 +1,7 @@
-# 🏦 **Gestión de Clientes Bancarios**
+# Proyecto de Gestión de Clientes y Tarjetas
 
-## 🎯 **Descripción del Proyecto**
-
-Este proyecto consiste en desarrollar una aplicación en **Java** para la **gestión de clientes** de un banco y sus **tarjetas de crédito**. El sistema permitirá realizar operaciones de **alta, baja, modificación y consulta (CRUD)** sobre los clientes y sus tarjetas, además de ofrecer otras funcionalidades avanzadas como:
-
-- **Caché LRU** para optimizar el rendimiento.
+### 📝 **Optimización y Funcionalidades Adicionales**
+- Implementación de **Caché LRU** para optimizar el rendimiento.
 - **Validación** de datos antes de almacenar clientes y tarjetas.
 - **Importación y exportación** de datos en formatos **JSON** y **CSV**.
 - **Notificaciones** automáticas sobre cambios en los clientes.
@@ -40,3 +37,5 @@ Este proyecto consiste en desarrollar una aplicación en **Java** para la **gest
   - [Yahya El Hadri](https://github.com/13elhadri)
   - [Samuel Cortés](https://github.com/Samuceese)
   - [Alvaro Herrero](https://github.com/alvarito304)
+
+![Imagen del Proyecto](C:\Users\raulf\OneDrive\Imágenes\Capturas de pantalla\jyrsJYRS.png)
