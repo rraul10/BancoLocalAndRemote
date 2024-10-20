@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class UserRemoteRepositoryImpl {
+public class UserRemoteRepositoryImpl implements UserRemoteRepository{
 
     private final Logger logger = LoggerFactory.getLogger(UserRemoteRepositoryImpl.class);
     private final UserApiRest userApiRest;
@@ -25,6 +25,7 @@ public class UserRemoteRepositoryImpl {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
+    @Override
     public List<Usuario> getAll() {
         logger.info("Obteniendo todos los usuarios...");
         var call = userApiRest.getAll();
@@ -49,6 +50,7 @@ public class UserRemoteRepositoryImpl {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
+    @Override
     public Usuario updateUser(long id , Usuario usuario){
         logger.info("Actualizando al usuario " + usuario + " con id "+ id);
 
@@ -66,10 +68,10 @@ public class UserRemoteRepositoryImpl {
             }
         }
     }
-
-    public Usuario getById(int id) {
+    @Override
+    public Usuario getById(long id) {
         logger.info("Obteniendo usuario con id: " + id);
-        var call = userApiRest.getById((long)id);
+        var call = userApiRest.getById(id);
 
         try {
             var response = call.get();
@@ -89,7 +91,7 @@ public class UserRemoteRepositoryImpl {
         }
     }
 
-
+    @Override
     public List<Usuario> getByName(String name) {
         logger.info("Obteniendo usuario(s) con nombre: " + name);
         var call = userApiRest.getByName(name);
@@ -125,7 +127,8 @@ public class UserRemoteRepositoryImpl {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
-    public Usuario createUsuario(Usuario usuario) {
+    @Override
+    public Usuario createUser(Usuario usuario) {
         var callSync = userApiRest.createUser(UserMapper.toRequest(usuario));
         try {
             var response = callSync.get();
@@ -145,6 +148,7 @@ public class UserRemoteRepositoryImpl {
      * @version 1.0
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
+    @Override
     public Usuario deleteById(long id) {
         logger.info("Borrando al usuario con id: " + id);
 
