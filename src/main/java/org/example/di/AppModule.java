@@ -1,7 +1,6 @@
 package org.example.di;
 
 
-
 import dagger.Module;
 import dagger.Provides;
 import org.example.client.database.LocalDataBaseManager;
@@ -9,8 +8,6 @@ import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.creditcard.CreditCardLocalRepositoryImpl;
 import org.example.client.repository.user.UserLocalRepositoryImpl;
 import org.example.client.repository.user.UsersRepository;
-import org.example.client.service.ClienteService;
-import org.example.client.service.ClienteServiceImpl;
 import org.example.config.ConfigProperties;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.database.DataBaseManager;
@@ -20,18 +17,18 @@ import org.example.creditcard.validator.TarjetaValidator;
 import org.example.creditcard.validator.TarjetaValidatorImpl;
 import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
+import org.example.service.ClienteService;
+import org.example.service.ClienteServiceImpl;
 import org.example.users.api.RetrofitUser;
 import org.example.users.api.UserApiRest;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.cache.CacheUsuarioImpl;
-import org.example.users.repository.UserRemoteRepository;
 import org.example.users.repository.UserRemoteRepositoryImpl;
 import org.example.users.validator.UserValidator;
 import org.example.users.validator.UserValidatorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.example.users.api.UserApiRest.API_USERS_URL;
 import javax.inject.Singleton;
 
 @Module
@@ -91,7 +88,10 @@ public class AppModule {
     @Provides
     @Singleton
     public UserRemoteRepositoryImpl provideUserRemoteRepository() {
-        return new UserRemoteRepositoryImpl(RetrofitUser.getUser(configProperties.getProperty("api.url",API_USERS_URL)).create(UserApiRest.class));
+        return new UserRemoteRepositoryImpl(
+                RetrofitUser.getUser(
+                        "https://jsonplaceholder.typicode.com/"
+                ).create(UserApiRest.class));
     }
 
     @Provides
@@ -110,7 +110,6 @@ public class AppModule {
     public TarjetaNotificacion proviedTarjetaNotifications() {
         return new TarjetaNotificacion();
     }
-
 
     @Provides
     @Singleton
@@ -135,7 +134,4 @@ public class AppModule {
                 proviedTarjetaNotifications()
         );
     }
-
-
-
 }
