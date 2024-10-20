@@ -38,4 +38,4 @@
   - [Samuel Cortés](https://github.com/Samuceese)
   - [Alvaro Herrero](https://github.com/alvarito304)
 
-![Imagen del Proyecto](C:\Users\raulf\OneDrive\Imágenes\Capturas de pantalla\jyrsJYRS.png)
+![Imagen del Proyecto]("C:\Users\raulf\BancoLocalAndRemote\jyrsJYRS.png")
