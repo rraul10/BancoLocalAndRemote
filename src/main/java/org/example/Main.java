@@ -1,10 +1,10 @@
 package org.example;
 
 
-import org.example.client.service.ClienteService;
-import org.example.client.service.ClienteServiceImpl;
+
 import org.example.di.AppComponent;
 import org.example.di.DaggerAppComponent;
+import org.example.service.ClienteService;
 
 public class Main {
 

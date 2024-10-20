@@ -176,7 +176,7 @@ class UserRemoteRepositoryTest {
 
         when(userApiRest.createUser(any(Request.class))).thenReturn(CompletableFuture.completedFuture(UserMapper.toResponse(usuario)));
 
-        var res = userRemoteRepository.createUsuario(usuario);
+        var res = userRemoteRepository.createUser(usuario);
 
         assertEquals(1L, res.getId());
         assertEquals("Juan Perez", res.getName());

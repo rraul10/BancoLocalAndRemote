@@ -22,7 +22,7 @@ class creditCardRemoteRepositoryImplTest {
     @BeforeAll
      static void setUpAll() throws SQLException {
         ConfigProperties properties = new ConfigProperties("application.properties");
-        dataBaseManager = LocalDataBaseManager.getInstanceMemory(properties);
+        dataBaseManager = LocalDataBaseManager.getInstance(properties);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();
         usersRepository = new UserLocalRepositoryImpl(dataBaseManager);
