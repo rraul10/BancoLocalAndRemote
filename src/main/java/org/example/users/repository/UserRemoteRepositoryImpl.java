@@ -51,24 +51,6 @@ public class UserRemoteRepositoryImpl implements UserRemoteRepository{
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     @Override
-    public Usuario updateUser(long id , Usuario usuario){
-        logger.info("Actualizando al usuario " + usuario + " con id "+ id);
-
-        var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
-        try {
-            var response = callSync.get();
-            return UserMapper.toUserFromUpdate(response, id);
-        } catch (Exception e) {
-            if (e.getCause().getMessage().contains("404")) {
-                logger.info("Usuario no encontrados");
-                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
-            } else {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
-    @Override
     public Usuario getById(long id) {
         logger.info("Obteniendo usuario con id: " + id);
         var call = userApiRest.getById(id);
@@ -91,6 +73,12 @@ public class UserRemoteRepositoryImpl implements UserRemoteRepository{
         }
     }
 
+    /**
+     * Obtiene un usuario por su nombre en la API remota
+     * @param name el nombre del usuario a buscar
+     * @return el usuario encontrado
+     * @throws UserNotFoundException si el usuario no existe
+     */
     @Override
     public List<Usuario> getByName(String name) {
         logger.info("Obteniendo usuario(s) con nombre: " + name);
@@ -117,8 +105,6 @@ public class UserRemoteRepositoryImpl implements UserRemoteRepository{
     }
 
 
-
-
     /**
      * Crea un usuario en la API remota
      * @param usuario el usuario a crear
@@ -136,6 +122,34 @@ public class UserRemoteRepositoryImpl implements UserRemoteRepository{
         } catch (Exception e) {
             logger.error("Error creando usuario");
             return null;
+        }
+    }
+
+
+    /**
+     * @param id El id único del usuario a actualizar.
+     * @param usuario El objeto Usuario que contiene la información actualizada del usuario.
+     * @return El objeto Usuario actualizado si la operación es exitosa, o null si ocurre un error no relacionado con usuario no encontrado.
+     * @throws UserNotFoundException Si el usuario con el ID especificado no se encuentra en la API remota.
+     * @version 1.0
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     */
+    @Override
+    public Usuario updateUser(long id , Usuario usuario){
+        logger.info("Actualizando al usuario " + usuario + " con id "+ id);
+
+        var callSync  = userApiRest.updateUser(id,UserMapper.toRequest(usuario));
+        try {
+            var response = callSync.get();
+            return UserMapper.toUserFromUpdate(response, id);
+        } catch (Exception e) {
+            if (e.getCause().getMessage().contains("404")) {
+                logger.info("Usuario no encontrados");
+                throw new UserNotFoundException("Usuario no encontrado con id: " + id);
+            } else {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 

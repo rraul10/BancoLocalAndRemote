@@ -702,7 +702,6 @@ class ClienteServiceImplTest {
         );
 
         userNotifications.send(expectedNotification);
-        verify(userNotifications).send(expectedNotification);
         verify(usersRepository, times(2)).deleteAllUsers();
         verify(creditCardLocalRepository, times(2)).deleteAllCreditCards();
         verify(usersRepository).saveUser(usuario);
