@@ -3,6 +3,8 @@ package org.example.service;
 import io.vavr.control.Either;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
+import org.example.client.storage.StorageJsonClient;
+import org.example.creditcard.storage.StorageCsvCredCard;
 import org.example.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.dto.TarjetaCreditoDto;
@@ -17,12 +19,16 @@ import org.example.notification.UserNotifications;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.dto.UsuarioDto;
 import org.example.users.repository.UserRemoteRepository;
+import org.example.users.storage.StorageCsvUser;
 import org.example.users.validator.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static io.vavr.control.Either.right;
 
 /**
  * Implementacion del servicio de clientes.
@@ -45,6 +51,11 @@ public class ClienteServiceImpl implements ClienteService {
     private final TarjetaValidator tarjetaValidator;
     private final UserNotifications userNotifications;
     private final TarjetaNotificacion tarjetaNotificacion;
+
+    private final StorageJsonClient storageJsonClient;
+    private final StorageCsvCredCard storageCsvCredCard;
+    private final StorageCsvUser storageCsvUser;
+
     /**
      * Inicializa la instancia con los repositorios y servicios necesarios.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
@@ -59,7 +70,7 @@ public class ClienteServiceImpl implements ClienteService {
      * @param tarjetaValidator Validador de tarjetas de crédito.
      */
 
-    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator, UserNotifications userNotifications, TarjetaNotificacion tarjetaNotificacion) {
+    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator, UserNotifications userNotifications, TarjetaNotificacion tarjetaNotificacion, StorageJsonClient storageJsonClient, StorageCsvCredCard storageCsvCredCard, StorageCsvUser storageCsvUser) {
         this.usersRepository = usersRepository;
         this.creditCardLocalRepository = creditCardLocalRepository;
         this.creditCardRepository = creditCardRepository;
@@ -70,6 +81,9 @@ public class ClienteServiceImpl implements ClienteService {
         this.tarjetaValidator = tarjetaValidator;
         this.userNotifications = userNotifications;
         this.tarjetaNotificacion = tarjetaNotificacion;
+        this.storageJsonClient = storageJsonClient;
+        this.storageCsvCredCard = storageCsvCredCard;
+        this.storageCsvUser = storageCsvUser;
         loadData();
     }
 
@@ -106,7 +120,7 @@ public class ClienteServiceImpl implements ClienteService {
                     ))
                     .collect(Collectors.toList());
 
-            return Either.right(clientes);
+            return right(clientes);
         }catch(Exception e){
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.ClienteLoadErrors("Error al obtener los clientes"));
@@ -125,9 +139,9 @@ public class ClienteServiceImpl implements ClienteService {
     public Either<ServiceError, List<Usuario> > getAllUsers(Boolean fromRemote) {
         try {
             if(fromRemote){
-                return Either.right(userRemoteRepository.getAll());
+                return right(userRemoteRepository.getAll());
             }
-            return Either.right(usersRepository.findAllUsers());
+            return right(usersRepository.findAllUsers());
         }catch (Exception e) {
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.UsersLoadError("Error al obtener los usuarios"));
@@ -146,9 +160,9 @@ public class ClienteServiceImpl implements ClienteService {
     public Either<ServiceError, List<TarjetaCredito>> getAllTarjetas(Boolean fromRemote) {
         try {
             if(fromRemote){
-                return Either.right(creditCardRepository.getAll());
+                return right(creditCardRepository.getAll());
             }
-            return Either.right(creditCardLocalRepository.findAllCreditCards());
+            return right(creditCardLocalRepository.findAllCreditCards());
         }catch (Exception e) {
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener los usuarios"));
@@ -189,7 +203,7 @@ public class ClienteServiceImpl implements ClienteService {
             }
 
             Cliente clienteDef = new Cliente(usuario.get(), tarjetas.orElse(new ArrayList<>()));
-            return Either.right(clienteDef);
+            return right(clienteDef);
         }catch (Exception e){
             logger.error("Error al obtener el cliente con id: {}", id, e);
             return Either.left(new ServiceError.ClienteNotFound("Error al obtener el cliente con id: " + id));
@@ -220,7 +234,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(usuario.isEmpty()){
                 return Either.left(new ServiceError.UserNotFound("Usuario no encontrado con id: " + id));
             }
-            return Either.right(usuario.get());
+            return right(usuario.get());
         }catch (Exception e){
             logger.error("Error al obtener el usuario con id: {}", id, e);
             return Either.left(new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id));
@@ -251,7 +265,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(tarjeta.isEmpty()){
                 return Either.left(new ServiceError.TarjetasLoadError("Tarjeta no encontrada con id: " + id));
             }
-            return Either.right(tarjeta.get());
+            return right(tarjeta.get());
         }catch (Exception e){
             logger.error("Error al obtener la tarjeta con id: {}", id, e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id));
@@ -290,7 +304,7 @@ public class ClienteServiceImpl implements ClienteService {
               clientes.add(new Cliente(user, tarjetas.orElse(new ArrayList<>())));
            }
 
-            return Either.right(clientes);
+            return right(clientes);
         }catch (Exception e){
             logger.error("Error al obtener el cliente con nombre: {}", nombre, e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener el cliente con id: " + nombre));
@@ -316,7 +330,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(usuarios.isEmpty()){
                 return Either.left(new ServiceError.UserNotFound("Usuario no encontrado con nombre: " + nombre));
             }
-            return Either.right(usuarios.get());
+            return right(usuarios.get());
         }catch (Exception e){
             logger.error("Error al obtener el usuario con nombre: {}", nombre, e);
             return Either.left(new ServiceError.UserNotFound("Error al obtener el usuario con id: " + nombre));
@@ -377,14 +391,14 @@ public class ClienteServiceImpl implements ClienteService {
                                                 "Tarjeta de crédito creada con éxito" + tarjeta.getNumero()
                                         );
                                         tarjetaNotificacion.send(notificacionTarjetaCreada);
-                                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                        return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                                     }
                             );
                         });
-                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                        return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                     }
             );
-            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+            return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
         }catch (Exception e){
             logger.error("Error al crear el cliente", e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
@@ -428,10 +442,10 @@ public class ClienteServiceImpl implements ClienteService {
                                 "Usuario creado con éxito" + usuario.getId()
                         );
                         userNotifications.send(notificacionUsuarioCreado);
-                        return Either.right(usuarioCreado);
+                        return right(usuarioCreado);
                     }
             );
-            return Either.right(usuario);
+            return right(usuario);
         }catch (Exception e){
             logger.error("Error al crear el usuario", e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
@@ -475,10 +489,10 @@ public class ClienteServiceImpl implements ClienteService {
                                 "Tarjeta de crédito creada con éxito" + tarjetaCredito.getNumero()
                         );
                         tarjetaNotificacion.send(notificacionTarjetaCreada);
-                        return Either.right(tarjetaCreada);
+                        return right(tarjetaCreada);
                     }
             );
-            return Either.right(tarjetaCredito);
+            return right(tarjetaCredito);
         }catch (Exception e){
             logger.error("Error al crear la tarjeta", e);
             Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
@@ -556,17 +570,17 @@ public class ClienteServiceImpl implements ClienteService {
                                                             "Usuario actualizado con éxito" + usuario.getId()
                                                     );
                                                     userNotifications.send(notificacionUsuarioActualizado);
-                                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                                    return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                                                 }
                                         );
                                     });
-                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                                    return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                                 }
                         );
-                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+                        return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                     }
             );
-            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
+            return right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
         }catch (Exception e){
             logger.error("Error al actualizar el cliente con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
@@ -625,13 +639,13 @@ public class ClienteServiceImpl implements ClienteService {
                                             "Usuario actualizado con éxito" + user.getId()
                                     );
                                     userNotifications.send(notificacionUsuarioActualizado);
-                                    return Either.right(usuarioActualizado);
+                                    return right(usuarioActualizado);
                                 }
                         );
-                        return Either.right(user);
+                        return right(user);
                     }
             );
-            return Either.right(usuario);
+            return right(usuario);
         }catch (Exception e){
             logger.error("Error al actualizar el usuario con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
@@ -689,13 +703,13 @@ public class ClienteServiceImpl implements ClienteService {
                                             "Tarjeta actualizada: " + tarjetaValidada.getNumero()
                                     );
                                     tarjetaNotificacion.send(notificacionActualizado);
-                                    return Either.right(tarjetaActualizada);
+                                    return right(tarjetaActualizada);
                                 }
                         );
-                        return Either.right(tarjeta);
+                        return right(tarjeta);
                     }
             );
-            return Either.right(tarjetaCredito);
+            return right(tarjetaCredito);
         }catch (Exception e){
             logger.error("Error al actualizar la tarjeta con id: {}", id, e);
             Notification<TarjetaCreditoDto> notificacionErrorUpdate = new Notification<>(
@@ -754,7 +768,7 @@ public class ClienteServiceImpl implements ClienteService {
                                 "Cliente eliminado con éxito" + user.usuario.getId()
                         );
                         userNotifications.send(notificacionClienteEliminado);
-                        return Either.right(user);
+                        return right(user);
                     }
             );
             return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el cliente con id: " + id));
@@ -799,7 +813,7 @@ public class ClienteServiceImpl implements ClienteService {
                                 "Usuario eliminado con éxito" + user.getId()
                         );
                         userNotifications.send(notificacionUsuarioEliminado);
-                        return Either.right(user);
+                        return right(user);
                     }
             );
             return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
@@ -846,7 +860,7 @@ public class ClienteServiceImpl implements ClienteService {
                                 "Tarjeta eliminada con éxito" + tarjeta.getNumero()
                         );
                         tarjetaNotificacion.send(notificacionTarjetaEliminado);
-                        return Either.right(tarjeta);
+                        return right(tarjeta);
                     }
             );
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
@@ -859,6 +873,72 @@ public class ClienteServiceImpl implements ClienteService {
             );
             tarjetaNotificacion.send(notificacionErrorGeneral);
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, List<Cliente>> loadClientesJson(File file) {
+        try {
+            List<Cliente> clientes = (List<Cliente>) storageJsonClient.importList(file);
+            return right(clientes);
+        }catch (Exception e){
+            logger.error("Error al cargar los clientes", e);
+            return Either.left(new ServiceError.ClienteLoadErrors("Error al cargar los clientes"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveClientesJson(List<Cliente> clientes, File file) {
+        try {
+            storageJsonClient.exportList(clientes, file );
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar los clientes", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar los clientes"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, List<Usuario>> loadUsersCsv(File file) {
+        try {
+            List<Usuario> usuarios = (List<Usuario>) storageCsvUser.importList(file);
+            return right(usuarios);
+        }catch (Exception e){
+            logger.error("Error al cargar los usuarios", e);
+            return Either.left(new ServiceError.ImportErrors("Error al cargar los usuarios"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveUsersCsv(List<Usuario> usuarios, File file) {
+        try {
+            storageCsvUser.exportList(usuarios, file);
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar los usuarios", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar los usuarios"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, List<TarjetaCredito>> loadTarjetasCsv(File file) {
+        try {
+            List<TarjetaCredito> tarjetas = (List<TarjetaCredito>) storageCsvCredCard.importList(file);
+            return right(tarjetas);
+        }catch (Exception e){
+            logger.error("Error al cargar las tarjetas", e);
+            return Either.left(new ServiceError.ImportErrors("Error al cargar las tarjetas"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveTarjetasCsv(List<TarjetaCredito> tarjetasCredito, File file) {
+        try {
+            storageCsvCredCard.exportList(tarjetasCredito, file);
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar las tarjetas", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar las tarjetas"));
         }
     }
 
@@ -894,5 +974,7 @@ public class ClienteServiceImpl implements ClienteService {
         }
 
     }
+
+
 
 }

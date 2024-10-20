@@ -1,8 +1,11 @@
 package org.example;
 
 import org.example.di.DaggerAppComponent;
+import org.example.models.TarjetaCredito;
 import org.example.service.ClienteService;
 
+import java.awt.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class Main {
@@ -28,6 +31,7 @@ public class Main {
                     clienteService.getAllUsers(true).forEach(i->
                             i.forEach(System.out::println)
                     );
+
                 }
 
         );
