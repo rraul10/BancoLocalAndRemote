@@ -37,5 +37,3 @@
   - [Yahya El Hadri](https://github.com/13elhadri)
   - [Samuel Cortés](https://github.com/Samuceese)
   - [Alvaro Herrero](https://github.com/alvarito304)
-
-![Imagen del Proyecto]("C:\Users\raulf\BancoLocalAndRemote\jyrsJYRS.png")
