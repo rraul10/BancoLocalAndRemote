@@ -29,11 +29,13 @@ RUN chmod +x /app/test.sh
 RUN /bin/sh /app/test.sh
 
 # Compilar el proyecto usando `/bin/sh`
-RUN echo "Ejecutando gradlew build" && /bin/sh -c "/app/gradlew build"
+RUN ./gradlew wrapper
+RUN echo "Ejecutando gradlew build" && /bin/sh -c "/app/gradlew build -x test"
 
 # Etapa de ejecución, un docker especifico, que se etiqueta como run
 # Con una imagen de java, solo necesitamos el jre
 FROM eclipse-temurin:21-jre-alpine AS run
+
 
 # Directorio de trabajo
 WORKDIR /app
@@ -41,7 +43,7 @@ WORKDIR /app
 # Copia el jar de la aplicación, ojo que esta en la etapa de compilación, etiquetado como build
 # Cuidado con la ruta definida cuando has copiado las cosas en la etapa de compilación
 # Para copiar un archivo de una etapa a otra, se usa la instrucción COPY --from=etapaOrigen
-COPY --from=build /app/build/libs/*SNAPSHOT.jar /app/my-app.jar
+COPY --from=build /app/build/libs/*.jar /app/my-app.jar
 
 # Ejecuta el jar
 ENTRYPOINT ["java","-jar","/app/my-app.jar"]
