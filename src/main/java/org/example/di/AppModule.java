@@ -8,22 +8,30 @@ import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.creditcard.CreditCardLocalRepositoryImpl;
 import org.example.client.repository.user.UserLocalRepositoryImpl;
 import org.example.client.repository.user.UsersRepository;
+import org.example.client.storage.StorageJsonClient;
+import org.example.client.storage.StorageJsonClientImpl;
 import org.example.config.ConfigProperties;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.database.DataBaseManager;
 import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.creditcard.repositories.CreditCardRepositoryImpl;
+import org.example.creditcard.storage.StorageCsvCredCard;
+import org.example.creditcard.storage.StorageCsvCredCardImpl;
 import org.example.creditcard.validator.TarjetaValidator;
 import org.example.creditcard.validator.TarjetaValidatorImpl;
 import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
 import org.example.service.ClienteService;
 import org.example.service.ClienteServiceImpl;
+import org.example.storages.validators.CsvValidator;
+import org.example.storages.validators.JsonValidator;
 import org.example.users.api.RetrofitUser;
 import org.example.users.api.UserApiRest;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.cache.CacheUsuarioImpl;
 import org.example.users.repository.UserRemoteRepositoryImpl;
+import org.example.users.storage.StorageCsvUser;
+import org.example.users.storage.StorageCsvUserImpl;
 import org.example.users.validator.UserValidator;
 import org.example.users.validator.UserValidatorImpl;
 import org.slf4j.Logger;
@@ -113,6 +121,25 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public StorageJsonClient proviedStorageJsonClient() {
+        JsonValidator jsonValidator = new JsonValidator();
+        return new StorageJsonClientImpl(jsonValidator);}
+
+    @Provides
+    @Singleton
+    public StorageCsvCredCard proviedStorageCsvCredCard() {
+        return new StorageCsvCredCardImpl();
+    }
+
+    @Provides
+    @Singleton
+    public StorageCsvUser proviedStorageCsvUser() {
+        CsvValidator csvValidator = new CsvValidator();
+        return new StorageCsvUserImpl(csvValidator);
+    }
+
+    @Provides
+    @Singleton
     public ClienteService provideClienteService(UsersRepository usersRepository,
                                                 CreditCardLocalRepository creditCardLocalRepository,
                                                 CreditCardRepository creditCardRepository,
@@ -120,7 +147,10 @@ public class AppModule {
                                                 CacheTarjetaImpl cacheTarjeta,
                                                 UserValidator userValidator,
                                                 UserRemoteRepositoryImpl userRemoteRepository,
-                                                TarjetaValidator tarjetaValidator) {
+                                                TarjetaValidator tarjetaValidator,
+                                                StorageJsonClient storageJsonClient,
+                                                StorageCsvCredCard storageCsvCredCard,
+                                                StorageCsvUser storageCsvUser) {
         return new ClienteServiceImpl(
                 usersRepository,
                 creditCardLocalRepository,
@@ -131,7 +161,10 @@ public class AppModule {
                 userRemoteRepository,
                 tarjetaValidator,
                 proviedUserNotifications(),
-                proviedTarjetaNotifications()
+                proviedTarjetaNotifications(),
+                storageJsonClient,
+                storageCsvCredCard,
+                storageCsvUser
         );
     }
 }

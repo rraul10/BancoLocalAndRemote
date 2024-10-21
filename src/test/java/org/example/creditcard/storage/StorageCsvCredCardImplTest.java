@@ -1,16 +1,14 @@
 package org.example.creditcard.storage;
 
 import org.example.models.TarjetaCredito;
-import org.example.storages.validators.csvValidator;
+import org.example.storages.validators.CsvValidator;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +23,7 @@ class StorageCsvCredCardImplTest {
     public void importList() {
         File file = new File(getClass().getClassLoader().getResource("creditCardTest.csv").getFile());
         System.out.println(file.getAbsolutePath());
-        csvValidator validadorCsvCC = mock(csvValidator.class);
+        CsvValidator validadorCsvCC = mock(CsvValidator.class);
         //when(validadorCsvCC.csvValidatorImport(any(File.class))).thenReturn(true);
         StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
 
@@ -38,7 +36,7 @@ class StorageCsvCredCardImplTest {
 
     @Test
     public void importListWithInvalidFile() {
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
         //when(validador.csvValidatorImport(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("creditCardTest.json").getFile());
         StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
@@ -51,7 +49,7 @@ class StorageCsvCredCardImplTest {
 
     @Test
     public void importListWithInvalidFormat() {
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
         //when(validador.csvValidatorImport(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("creditCardTestInvalidFormat.csv").getFile());
         StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
@@ -65,7 +63,7 @@ class StorageCsvCredCardImplTest {
     // Handles non-CSV files by returning an error Flux
     @Test
     public void test_import_non_csv_file() {
-        csvValidator validator = Mockito.mock(csvValidator.class);
+        CsvValidator validator = Mockito.mock(CsvValidator.class);
         //Mockito.when(validator.csvValidatorImport(Mockito.any(File.class))).thenReturn(false);
 
         StorageCsvCredCardImpl storage = new StorageCsvCredCardImpl();
@@ -83,7 +81,7 @@ class StorageCsvCredCardImplTest {
         @Test
         public void exportList() {
 
-            csvValidator validador = mock(csvValidator.class);
+            CsvValidator validador = mock(CsvValidator.class);
             //when(validador.csvValidatorExport(any(List.class))).thenReturn(true);
 
             List<TarjetaCredito> lista = List.of(

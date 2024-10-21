@@ -1,15 +1,13 @@
 package org.example.storages.validators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.creditcard.repositories.CreditCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 import java.io.File;
 
-public class jsonValidator {
-    private final Logger logger = LoggerFactory.getLogger(jsonValidator.class);
+public class JsonValidator {
+    private final Logger logger = LoggerFactory.getLogger(JsonValidator.class);
     public boolean jsonValidator (File file){
         String text = file.toString();
 

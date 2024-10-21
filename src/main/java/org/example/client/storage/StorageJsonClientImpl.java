@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Setter;
-import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.Cliente;
-import org.example.storages.validators.csvValidator;
-import org.example.storages.validators.jsonValidator;
+import org.example.storages.validators.JsonValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -25,12 +23,12 @@ import java.util.List;
 
 public class StorageJsonClientImpl implements StorageJsonClient{
     private final Logger logger = LoggerFactory.getLogger(StorageJsonClientImpl.class);
-    private final jsonValidator validador;
+    private final JsonValidator validador;
 
     @Setter
     private ObjectMapper objectMapper;
 
-    public StorageJsonClientImpl(jsonValidator validador) {
+    public StorageJsonClientImpl(JsonValidator validador) {
         this.validador = validador;
         this.objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

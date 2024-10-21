@@ -1,14 +1,10 @@
 package org.example.client.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.creditcard.storage.StorageCsvCredCardImpl;
 import org.example.models.Cliente;
-import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
-import org.example.storages.validators.csvValidator;
-import org.example.storages.validators.jsonValidator;
+import org.example.storages.validators.JsonValidator;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -19,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +24,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void importList() {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         when(validador.jsonValidator(any(File.class))).thenReturn(true);
         StorageJsonClientImpl storageJsonClient = new StorageJsonClientImpl(validador);
         File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
@@ -41,7 +36,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void importListWithInvalidFile() {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         when(validador.jsonValidator(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("userTest.csv").getFile());
         StorageJsonClientImpl storage = new StorageJsonClientImpl(validador);
@@ -54,7 +49,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void importListException() {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         when(validador.jsonValidator(any(File.class))).thenReturn(false);
         StorageJsonClientImpl storageJsonClient = new StorageJsonClientImpl(validador);
         File nonExistentFile = new File("non_existent_file.json"); // Archivo inexistente
@@ -69,7 +64,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void importListWithInvalidFormat() {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         when(validador.jsonValidator(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("clientTestInvalidFormat.json").getFile());
         StorageJsonClientImpl storage = new StorageJsonClientImpl(validador);
@@ -82,7 +77,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void importListWithEmptyFile() {
-        jsonValidator validadorJsonCli = mock(jsonValidator.class);
+        JsonValidator validadorJsonCli = mock(JsonValidator.class);
         when(validadorJsonCli.jsonValidator(any(File.class))).thenReturn(false);
         File file = new File(getClass().getClassLoader().getResource("clientTestEmpty.json").getFile());
         StorageJsonClientImpl storage = new StorageJsonClientImpl(validadorJsonCli);
@@ -96,7 +91,7 @@ class StorageJsonClientImplTest {
     // Successfully exports a list of Cliente objects to a file in a temporary directory
     @Test
     public void exportList() {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         StorageJsonClientImpl storageClient = new StorageJsonClientImpl(validador);
 
         Usuario usuario = new Usuario(1L, "John Doe", "john_doe", "john@example.com",
@@ -123,7 +118,7 @@ class StorageJsonClientImplTest {
     @Test
     public void exportListEmpty() {
 
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
 
         List<Cliente> lista = Collections.emptyList();
 
@@ -147,7 +142,7 @@ class StorageJsonClientImplTest {
 
     @Test
     public void test_export_list_exception() throws IOException {
-        jsonValidator validador = mock(jsonValidator.class);
+        JsonValidator validador = mock(JsonValidator.class);
         StorageJsonClientImpl storageClient = new StorageJsonClientImpl(validador);
 
         Usuario usuario = new Usuario(1L, "John Doe", "john_doe", "john@example.com",
