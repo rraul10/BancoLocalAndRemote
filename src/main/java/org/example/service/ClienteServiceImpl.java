@@ -735,11 +735,39 @@ public class ClienteServiceImpl implements ClienteService {
      * @param id El ID del cliente a eliminar.
      * @return Either que contiene el cliente eliminado o un error si no se pudo eliminar.
      */
-
     @Override
     public Either<ServiceError, Cliente> deleteCliente(Long id) {
         try {
-            getClienteById(id).bimap(
+            return getClienteById(id).flatMap(
+                    cliente -> {
+                        try {
+                            userRemoteRepository.deleteById(id);
+                            cacheUsuario.remove(id);
+
+                            cliente.getTarjetas().forEach(tarjeta -> {
+                                creditCardRepository.delete(tarjeta.getId());
+                                cacheTarjeta.remove(tarjeta.getId());
+                                Notification<TarjetaCreditoDto> notificacionTarjetaEliminada = new Notification<>(
+                                        Notification.Type.DELETE,
+                                        new TarjetaCreditoDto(tarjeta),
+                                        "Tarjeta eliminada con éxito " + tarjeta.getNumero()
+                                );
+                                tarjetaNotificacion.send(notificacionTarjetaEliminada);
+                            });
+
+                            Notification<UsuarioDto> notificacionClienteEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new UsuarioDto(cliente.getUsuario()),
+                                    "Cliente eliminado con éxito " + cliente.getUsuario().getId()
+                            );
+                            userNotifications.send(notificacionClienteEliminado);
+                            return Either.right(cliente);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar las tarjetas del cliente con id: {}", id, e);
+                            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar las tarjetas del cliente con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el cliente con id: {}", id, error);
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
@@ -749,35 +777,9 @@ public class ClienteServiceImpl implements ClienteService {
                         );
                         userNotifications.send(notificacionErrorObtener);
                         return new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id);
-                    },
-                    user -> {
-                        userRemoteRepository.deleteById(id);
-                        cacheUsuario.remove(id);
-                        user.getTarjetas().forEach(tarjeta -> {
-                            creditCardRepository.delete(tarjeta.getId());
-                            Notification<TarjetaCreditoDto> notificacionTarjetaEliminada = new Notification<>(
-                                    Notification.Type.DELETE,
-                                    new TarjetaCreditoDto(tarjeta),
-                                    "Tarjeta eliminada con éxito" + tarjeta.getNumero()
-                            );
-                            tarjetaNotificacion.send(notificacionTarjetaEliminada);
-                        });
-                        cacheUsuario.remove(id);
-                        user.getTarjetas().forEach(tarjeta -> {
-                            cacheTarjeta.remove(tarjeta.getId());
-                        });
-
-                        Notification<UsuarioDto> notificacionClienteEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new UsuarioDto(user.getUsuario()),
-                                "Cliente eliminado con éxito" + user.usuario.getId()
-                        );
-                        userNotifications.send(notificacionClienteEliminado);
-                        return right(user);
                     }
             );
-            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el cliente con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar el cliente con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
@@ -794,45 +796,56 @@ public class ClienteServiceImpl implements ClienteService {
      * @param id El ID del usuario a eliminar.
      * @return Either que contiene el usuario eliminado o un error si no se pudo eliminar.
      */
-
     @Override
     public Either<ServiceError, Usuario> deleteUser(Long id) {
         try {
-            getUserById(id).bimap(
+            return getUserById(id).flatMap(
+                    user -> {
+                        try {
+                            userRemoteRepository.deleteById(id);
+                            cacheUsuario.remove(id);
+
+                            Notification<UsuarioDto> notificacionUsuarioEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new UsuarioDto(user),
+                                    "Usuario eliminado con éxito " + user.getId()
+                            );
+                            userNotifications.send(notificacionUsuarioEliminado);
+
+                            return Either.right(user);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar el usuario con id: {}", id, e);
+                            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el usuario con id: {}", id, error);
+
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
                                 Notification.Type.DELETE,
                                 null,
                                 "Error al obtener el usuario con id: " + id
                         );
                         userNotifications.send(notificacionErrorObtener);
+
                         return new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id);
-                    },
-                    user -> {
-                        userRemoteRepository.deleteById(id);
-                        cacheUsuario.remove(id);
-                        Notification<UsuarioDto> notificacionUsuarioEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new UsuarioDto(user),
-                                "Usuario eliminado con éxito" + user.getId()
-                        );
-                        userNotifications.send(notificacionUsuarioEliminado);
-                        return right(user);
                     }
             );
-            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar el usuario con id: {}", id, e);
+
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
                     null,
                     "Error al eliminar el usuario con id: " + id + ". Error: " + e.getMessage()
             );
             userNotifications.send(notificacionErrorGeneral);
+
             return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
         }
     }
+
 
     /**
      * Elimina una tarjeta de credito existente.
@@ -845,7 +858,24 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, TarjetaCredito> deleteTarjeta(UUID id) {
         try {
-            getTarjetaById(id).bimap(
+            return getTarjetaById(id).flatMap(
+                    tarjeta -> {
+                        try {
+                            creditCardRepository.delete(id);
+                            cacheTarjeta.remove(id);
+                            Notification<TarjetaCreditoDto> notificacionTarjetaEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new TarjetaCreditoDto(tarjeta),
+                                    "Tarjeta eliminada con éxito " + tarjeta.getNumero()
+                            );
+                            tarjetaNotificacion.send(notificacionTarjetaEliminado);
+                            return Either.right(tarjeta);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar la tarjeta con id: {}", id, e);
+                            return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener la tarjeta con id: {}", id, error);
                         Notification<TarjetaCreditoDto> notificacionErrorObtener = new Notification<>(
@@ -855,21 +885,9 @@ public class ClienteServiceImpl implements ClienteService {
                         );
                         tarjetaNotificacion.send(notificacionErrorObtener);
                         return new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id);
-                    },
-                    tarjeta -> {
-                        creditCardRepository.delete(id);
-                        cacheTarjeta.remove(id);
-                        Notification<TarjetaCreditoDto> notificacionTarjetaEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new TarjetaCreditoDto(tarjeta),
-                                "Tarjeta eliminada con éxito" + tarjeta.getNumero()
-                        );
-                        tarjetaNotificacion.send(notificacionTarjetaEliminado);
-                        return right(tarjeta);
                     }
             );
-            return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar la tarjeta con id: {}", id, e);
             Notification<TarjetaCreditoDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
