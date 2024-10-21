@@ -23,8 +23,8 @@ import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
 import org.example.service.ClienteService;
 import org.example.service.ClienteServiceImpl;
-import org.example.storages.validators.csvValidator;
-import org.example.storages.validators.jsonValidator;
+import org.example.storages.validators.CsvValidator;
+import org.example.storages.validators.JsonValidator;
 import org.example.users.api.RetrofitUser;
 import org.example.users.api.UserApiRest;
 import org.example.users.cache.CacheUsuario;
@@ -121,14 +121,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public csvValidator csvValidator() {
-        return new csvValidator();
+    public CsvValidator csvValidator() {
+        return new CsvValidator();
     }
 
     @Provides
     @Singleton
-    public jsonValidator jsonValidator() {
-        return new jsonValidator();
+    public JsonValidator jsonValidator() {
+        return new JsonValidator();
     }
     @Provides
     @Singleton
