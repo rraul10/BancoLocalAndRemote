@@ -6,6 +6,8 @@ import java.sql.*;
 import org.example.models.TarjetaCredito;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,69 +27,63 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CreditCardRepositoryImplTest {
 
-    @BeforeAll
-    static void setAllUp(){
+    @Mock
+    DataBaseManager dataBaseManager;
 
-    }
-    @BeforeEach
-    void setUp() {
-    }
+    @Mock
+    Connection connection;
 
-    @AfterEach
-    void tearDown() {
-    }
+    @Mock
+    PreparedStatement statement;
+
+    @Mock
+    ResultSet resultSet;
+
+    @InjectMocks
+    CreditCardRepositoryImpl repository;
 
     @Test
     public void getAll() {
-        DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
+        try (MockedStatic<DriverManager> mockedDriverManager = mockStatic(DriverManager.class)) {
 
-        try (MockedStatic<DriverManager> mockedDriverManager = Mockito.mockStatic(DriverManager.class)) {
+            UUID id = UUID.randomUUID();
 
-            Connection mockConnection = mock(Connection.class);
-            PreparedStatement mockStatement = mock(PreparedStatement.class);
-            ResultSet mockResultSet = mock(ResultSet.class);
-
-            when(mockDataBaseManager.connect()).thenReturn(mockConnection);
+            when(dataBaseManager.connect()).thenReturn(connection);
             mockedDriverManager.when(() -> DriverManager.getConnection(anyString(), anyString(), anyString()))
-                    .thenReturn(mockConnection);
-            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
-            when(mockStatement.executeQuery()).thenReturn(mockResultSet);
+                    .thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(true, false);
 
-            when(mockResultSet.next()).thenReturn(true, false);
-            when(mockResultSet.getObject("uuid")).thenReturn(UUID.randomUUID());
-            when(mockResultSet.getString("numero")).thenReturn("1234567890123456");
-            when(mockResultSet.getString("nombreTitular")).thenReturn("John Doe");
-            when(mockResultSet.getObject("clientID", String.class)).thenReturn("1");
-            when(mockResultSet.getString("fechaCaducidad")).thenReturn("12/99");
-            when(mockResultSet.getObject("created_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
-            when(mockResultSet.getObject("updated_at", LocalDateTime.class)).thenReturn(LocalDateTime.now());
-            when(mockResultSet.getObject("isDeleted", Boolean.class)).thenReturn(false);
-
-            System.out.println();
+            // Asegúrate de que los nombres de los campos coinciden con los utilizados en tu función
+            when(resultSet.getObject("id", UUID.class)).thenReturn(id);
+            when(resultSet.getString("numero")).thenReturn("1234567890123456");
+            when(resultSet.getString("nombreTitular")).thenReturn("John Doe");
+            when(resultSet.getObject("clienteID", String.class)).thenReturn("1");
+            when(resultSet.getString("fechaCaducidad")).thenReturn("12/99");
+            when(resultSet.getObject("createdAt", LocalDateTime.class)).thenReturn(LocalDateTime.now());
+            when(resultSet.getObject("updatedAt", LocalDateTime.class)).thenReturn(LocalDateTime.now());
+            when(resultSet.getObject("isDeleted", Boolean.class)).thenReturn(false);
 
             List<TarjetaCredito> tarjetas = repository.getAll();
-
-            Assertions.assertNotNull(tarjetas);
-            Assertions.assertFalse(tarjetas.isEmpty());
+            assertNotNull(tarjetas);
+            assertFalse(tarjetas.isEmpty());
         } catch (SQLException e) {
-            Assertions.fail("SQL Exception should not occur");
+            fail("SQL Exception should not occur");
         }
-
     }
 
 
     @Test
     public void getAllFails() {
-        DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
+
 
         try {
-            when(mockDataBaseManager.connect()).thenThrow(new SQLException("Connection failed"));
+            when(dataBaseManager.connect()).thenThrow(new SQLException("Connection failed"));
         } catch (SQLException e) {
             fail("Mock setup failed");
         }
 
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
         List<TarjetaCredito> tarjetas = repository.getAll();
 
         assertNotNull(tarjetas);
@@ -108,32 +104,27 @@ class CreditCardRepositoryImplTest {
                 .isDeleted(false)
                 .build();
 
-        DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
-        Connection mockConnection = mock(Connection.class);
-        PreparedStatement mockStatement = mock(PreparedStatement.class);
-        ResultSet mockResultSet = mock(ResultSet.class);
 
         try {
-            when(mockDataBaseManager.connect()).thenReturn(mockConnection);
-            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
-            when(mockStatement.executeQuery()).thenReturn(mockResultSet);
-            when(mockResultSet.next()).thenReturn(true);
-            doReturn(expectedCard.getId()).when(mockResultSet).getObject("uuid", UUID.class);
-            doReturn(expectedCard.getNumero()).when(mockResultSet).getString("numero");
-            doReturn(expectedCard.getNombreTitular()).when(mockResultSet).getString("nombreTitular");
-            doReturn(expectedCard.getClientID()).when(mockResultSet).getObject("clientID", Long.class);
-            doReturn(expectedCard.getFechaCaducidad()).when(mockResultSet).getString("fechaCaducidad");
-            doReturn(expectedCard.getCreatedAt()).when(mockResultSet).getObject("created_at", LocalDateTime.class);
-            doReturn(expectedCard.getUpdatedAt()).when(mockResultSet).getObject("updated_at", LocalDateTime.class);
-            doReturn(expectedCard.getIsDeleted()).when(mockResultSet).getObject("isDeleted", Boolean.class);
+            when(dataBaseManager.connect()).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(true);
+            doReturn(expectedCard.getId()).when(resultSet).getObject("id", UUID.class);
+            doReturn(expectedCard.getNumero()).when(resultSet).getString("numero");
+            doReturn(expectedCard.getNombreTitular()).when(resultSet).getString("nombreTitular");
+            doReturn(expectedCard.getClientID()).when(resultSet).getLong("clientID");
+            doReturn(expectedCard.getFechaCaducidad()).when(resultSet).getString("fechaCaducidad");
+            doReturn(expectedCard.getCreatedAt()).when(resultSet).getObject("createdAt", LocalDateTime.class);
+            doReturn(expectedCard.getUpdatedAt()).when(resultSet).getObject("updatedAt", LocalDateTime.class);
+            doReturn(expectedCard.getIsDeleted()).when(resultSet).getObject("isDeleted", Boolean.class);
 
-            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
             Optional<TarjetaCredito> result = repository.getById(validId);
 
-            Assertions.assertTrue(result.isPresent());
-            Assertions.assertEquals(expectedCard, result.get());
+            assertTrue(result.isPresent());
+            assertEquals(expectedCard, result.get());
         } catch (SQLException e) {
-            Assertions.fail("SQLException was thrown");
+            fail("SQLException was thrown");
         }
     }
 
@@ -142,23 +133,17 @@ class CreditCardRepositoryImplTest {
     public void getByIdNotFound() {
         UUID nonExistentId = UUID.randomUUID();
 
-        DataBaseManager mockDataBaseManager = Mockito.mock(DataBaseManager.class);
-        Connection mockConnection = Mockito.mock(Connection.class);
-        PreparedStatement mockStatement = Mockito.mock(PreparedStatement.class);
-        ResultSet mockResultSet = Mockito.mock(ResultSet.class);
-
         try {
-            Mockito.when(mockDataBaseManager.connect()).thenReturn(mockConnection);
-            Mockito.when(mockConnection.prepareStatement(Mockito.anyString())).thenReturn(mockStatement);
-            Mockito.when(mockStatement.executeQuery()).thenReturn(mockResultSet);
-            Mockito.when(mockResultSet.next()).thenReturn(false);
+            when(dataBaseManager.connect()).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(false);
 
-            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
             Optional<TarjetaCredito> result = repository.getById(nonExistentId);
 
-            Assertions.assertFalse(result.isPresent());
+            assertFalse(result.isPresent());
         } catch (SQLException e) {
-            Assertions.fail("SQL Exception should not occur");
+            fail("SQL Exception should not occur");
         }
     }
 
@@ -167,29 +152,21 @@ class CreditCardRepositoryImplTest {
     public void getByIdFails() {
         UUID anyId = UUID.randomUUID();
 
-        DataBaseManager mockDbManager = Mockito.mock(DataBaseManager.class);
 
         try {
-            Mockito.when(mockDbManager.connect()).thenThrow(new SQLException("Connection failed"));
+            when(dataBaseManager.connect()).thenThrow(new SQLException("Connection failed"));
 
-            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDbManager);
             Optional<TarjetaCredito> result = repository.getById(anyId);
 
-            Assertions.assertFalse(result.isPresent());
+            assertFalse(result.isPresent());
         } catch (SQLException e) {
-            Assertions.fail("SQLException should be handled within the method");
+            fail("SQLException should be handled within the method");
         }
     }
 
 
-
     @Test
     public void create() throws SQLException {
-
-        DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
-        Connection mockConnection = mock(Connection.class);
-        PreparedStatement mockStatement = mock(PreparedStatement.class);
-        ResultSet mockResultSet = mock(ResultSet.class);
 
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
@@ -201,14 +178,11 @@ class CreditCardRepositoryImplTest {
                 .isDeleted(false)
                 .build();
 
-        when(mockDataBaseManager.connect()).thenReturn(mockConnection);
-        when(mockConnection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(mockStatement);
-        when(mockStatement.getGeneratedKeys()).thenReturn(mockResultSet);
-        when(mockResultSet.next()).thenReturn(true);
-        when(mockResultSet.getString(1)).thenReturn(UUID.randomUUID().toString());
-
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
-
+        when(dataBaseManager.connect()).thenReturn(connection);
+        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(statement);
+        when(statement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString(1)).thenReturn(UUID.randomUUID().toString());
 
         TarjetaCredito result = repository.create(creditCard);
 
@@ -222,8 +196,6 @@ class CreditCardRepositoryImplTest {
     @Test
     public void createFails() throws SQLException {
 
-        DataBaseManager mockDataBaseManager = mock(DataBaseManager.class);
-
         TarjetaCredito creditCard = TarjetaCredito.builder()
                 .numero("1234567890123456")
                 .nombreTitular("John Doe")
@@ -234,10 +206,7 @@ class CreditCardRepositoryImplTest {
                 .isDeleted(false)
                 .build();
 
-        when(mockDataBaseManager.connect()).thenThrow(new SQLException("Connection failed"));
-
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDataBaseManager);
-
+        when(dataBaseManager.connect()).thenThrow(new SQLException("Connection failed"));
 
         TarjetaCredito result = repository.create(creditCard);
 
@@ -260,15 +229,10 @@ class CreditCardRepositoryImplTest {
                 .isDeleted(false)
                 .build();
 
-        DataBaseManager dataBaseManager = mock(DataBaseManager.class);
-        Connection connection = mock(Connection.class);
-        PreparedStatement statement = mock(PreparedStatement.class);
-
         when(dataBaseManager.connect()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(statement);
         when(statement.executeUpdate()).thenReturn(1);
 
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(dataBaseManager);
         TarjetaCredito updatedCard = repository.update(id, creditcard);
 
         assertNotNull(updatedCard);
@@ -289,13 +253,9 @@ class CreditCardRepositoryImplTest {
                 .isDeleted(false)
                 .build();
 
-        DataBaseManager dataBaseManager = mock(DataBaseManager.class);
-        Connection connection = mock(Connection.class);
-
         when(dataBaseManager.connect()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenThrow(new SQLException("Database error"));
 
-        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(dataBaseManager);
         TarjetaCredito updatedCard = repository.update(id, creditcard);
 
         assertNull(updatedCard);
@@ -305,40 +265,122 @@ class CreditCardRepositoryImplTest {
     @Test
     public void delete() {
         UUID validId = UUID.randomUUID();
-        DataBaseManager mockDbManager = Mockito.mock(DataBaseManager.class);
-        Connection mockConnection = Mockito.mock(Connection.class);
-        PreparedStatement mockStatement = Mockito.mock(PreparedStatement.class);
 
         try {
-            Mockito.when(mockDbManager.connect()).thenReturn(mockConnection);
-            Mockito.when(mockConnection.prepareStatement(Mockito.anyString())).thenReturn(mockStatement);
-            Mockito.when(mockStatement.executeUpdate()).thenReturn(1);
+            when(dataBaseManager.connect()).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeUpdate()).thenReturn(1);
 
-            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDbManager);
             boolean result = repository.delete(validId);
 
-            Assertions.assertTrue(result);
-            Mockito.verify(mockStatement).setString(1, validId.toString());
-            Mockito.verify(mockStatement).executeUpdate();
+            assertTrue(result);
+            verify(statement).setString(1, validId.toString());
+            verify(statement).executeUpdate();
         } catch (SQLException e) {
-            Assertions.fail("SQLException should not be thrown");
+            fail("SQLException should not be thrown");
         }
     }
 
     @Test
     public void deleteFails() {
         UUID validId = UUID.randomUUID();
-        DataBaseManager mockDbManager = Mockito.mock(DataBaseManager.class);
 
         try {
-            Mockito.when(mockDbManager.connect()).thenThrow(new SQLException("Connection error"));
+            when(dataBaseManager.connect()).thenThrow(new SQLException("Connection error"));
 
-            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(mockDbManager);
+            CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(dataBaseManager);
             boolean result = repository.delete(validId);
 
-            Assertions.assertFalse(result);
+            assertFalse(result);
         } catch (SQLException e) {
-            Assertions.fail("SQLException should be handled within the method");
+            fail("SQLException should be handled within the method");
         }
+    }
+
+    @Test
+    public void findAllCreditCardsByUserId_Success() {
+        // Arrange
+        Long userId = 1L;
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234567890123456")
+                .nombreTitular("John Doe")
+                .clientID(userId)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> expectedTarjetas = List.of(tarjetaCredito);
+
+        try (MockedStatic<DriverManager> mockedDriverManager = mockStatic(DriverManager.class)) {
+            when(dataBaseManager.connect()).thenReturn(connection);
+            mockedDriverManager.when(() -> DriverManager.getConnection(anyString(), anyString(), anyString()))
+                    .thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(true, false);
+            when(resultSet.getObject("uuid")).thenReturn(tarjetaCredito.getId());
+            when(resultSet.getString("numero")).thenReturn(tarjetaCredito.getNumero());
+            when(resultSet.getString("nombreTitular")).thenReturn(tarjetaCredito.getNombreTitular());
+            when(resultSet.getObject("clienteID", String.class)).thenReturn(String.valueOf(tarjetaCredito.getClientID()));
+            when(resultSet.getString("fechaCaducidad")).thenReturn(tarjetaCredito.getFechaCaducidad());
+            when(resultSet.getObject("createdAt", LocalDateTime.class)).thenReturn(tarjetaCredito.getCreatedAt());
+            when(resultSet.getObject("updatedAt", LocalDateTime.class)).thenReturn(tarjetaCredito.getUpdatedAt());
+            when(resultSet.getObject("isDeleted", Boolean.class)).thenReturn(tarjetaCredito.getIsDeleted());
+
+            // Act
+            List<TarjetaCredito> tarjetas = repository.findAllCreditCardsByUserId(userId);
+
+            // Assert
+            assertNotNull(tarjetas);
+            assertFalse(tarjetas.isEmpty());
+            assertEquals(expectedTarjetas, tarjetas);
+        } catch (SQLException e) {
+            fail("SQL Exception should not occur");
+        }
+    }
+
+    @Test
+    public void findAllCreditCardsByUserId_NoResults() {
+        Long userId = 1L;
+
+        try (MockedStatic<DriverManager> mockedDriverManager = mockStatic(DriverManager.class)) {
+            when(dataBaseManager.connect()).thenReturn(connection);
+            mockedDriverManager.when(() -> DriverManager.getConnection(anyString(), anyString(), anyString()))
+                    .thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(false); // No results
+
+            List<TarjetaCredito> tarjetas = repository.findAllCreditCardsByUserId(userId);
+
+            assertNotNull(tarjetas);
+            assertTrue(tarjetas.isEmpty());
+        } catch (SQLException e) {
+            fail("SQL Exception should not occur");
+        }
+
+
+    }
+
+    @Test
+    public void findAllCreditCardsByUserId_withException() throws SQLException {
+        // Arrange
+        Long userId = 1L;
+        String query = "SELECT * FROM Tarjeta where clientID = ?";
+
+        // Mockear dataBaseManager.connect para lanzar una SQLException
+        when(dataBaseManager.connect()).thenThrow(new SQLException("Simulated exception"));
+
+        // Instanciar el repositorio con sus dependencias
+        CreditCardRepositoryImpl repository = new CreditCardRepositoryImpl(dataBaseManager);
+
+        // Act
+        List<TarjetaCredito> result = repository.findAllCreditCardsByUserId(userId);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty()); // Debería estar vacío porque se maneja la excepción y se devuelve una lista vacía
     }
 }

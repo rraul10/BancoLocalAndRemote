@@ -906,7 +906,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, List<Cliente>> loadClientesJson(File file) {
         try {
-            List<Cliente> clientes = (List<Cliente>) storageJsonClient.importList(file);
+            List<Cliente> clientes = (List<Cliente>) storageJsonClient.importList(file).collectList().block();
             return right(clientes);
         }catch (Exception e){
             logger.error("Error al cargar los clientes", e);

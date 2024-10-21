@@ -5,8 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />origin/develop
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients.db" beforeDir="false" afterPath="$PROJECT_DIR$/clients.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tarjetas.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/tarjetas.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/creditcard/repositories/CreditCardRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/creditcard/repositories/CreditCardRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/creditcard/validator/TarjetaValidatorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/creditcard/validator/TarjetaValidatorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/client/storage/StorageJsonClientImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/client/storage/StorageJsonClientImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/creditcard/repositories/CreditCardRepositoryImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/creditcard/repositories/CreditCardRepositoryImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/creditcard/validator/TarjetaValidatorImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/creditcard/validator/TarjetaValidatorImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/ClienteServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/ClienteServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/usuarios/repository/UserRemoteRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/usuarios/repository/UserRemoteRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,43 +105,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/apiRest&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/samue/Desktop/2ºDaw/DesarrolloWebEntornoServidor/Proyectos/BancoLocalAndRemote&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
-=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.BancoLocalAndRemote [build].executor": "Run",
-    "Gradle.BancoLocalAndRemote [init].executor": "Run",
+    "Application.Main.executor": "Run",
+    "Gradle.CreditCardRepositoryImplTest.findAllCreditCardsByUserId_NoResults.executor": "Coverage",
+    "Gradle.CreditCardRepositoryImplTest.findAllCreditCardsByUserId_Success.executor": "Coverage",
+    "Gradle.CreditCardRepositoryImplTest.findAllCreditCardsByUserId_withException.executor": "Coverage",
+    "Gradle.StorageJsonClientImplTest.executor": "Run",
+    "Gradle.StorageJsonClientImplTest.importListException.executor": "Run",
+    "Gradle.Tests in 'BancoLocalAndRemote.test'.executor": "Run",
+    "Gradle.UserRemoteRepositoryTest.createUser_withException.executor": "Coverage",
+    "Gradle.UserRemoteRepositoryTest.deleteById_withException.executor": "Coverage",
+    "Gradle.UserRemoteRepositoryTest.getAll_withException.executor": "Coverage",
+    "Gradle.UserRemoteRepositoryTest.getById_responseIsNull.executor": "Run",
+    "Gradle.UserRemoteRepositoryTest.getById_withException.executor": "Coverage",
+    "Gradle.UserRemoteRepositoryTest.getByName_withException.executor": "Coverage",
+    "Gradle.UserRemoteRepositoryTest.updateUser_withException.executor": "Coverage",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.codeium.enabled": "true",
     "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/samue/Desktop/2ºDaw/DesarrolloWebEntornoServidor/Proyectos/BancoLocalAndRemote",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -134,17 +135,25 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
-    ]
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.BancoLocalAndRemote [build]">
-    <configuration name="BancoLocalAndRemote [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
+      <module name="BancoLocalAndRemote.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tests in 'BancoLocalAndRemote.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -155,93 +164,131 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" /
             <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.example.creditcard.repositories.CreditCardRepositoryImplTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="BancoLocalAndRemote [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="UserRemoteRepositoryTest.createUser_withException" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="init" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.example.usuarios.repository.UserRemoteRepositoryTest.createUser_withException&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserRemoteRepositoryTest.deleteById_withException" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.example.usuarios.repository.UserRemoteRepositoryTest.deleteById_withException&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserRemoteRepositoryTest.updateUser_withException" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.example.usuarios.repository.UserRemoteRepositoryTest.updateUser_withException&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.BancoLocalAndRemote [build]" />
-        <item itemvalue="Gradle.BancoLocalAndRemote [init]" />
-        <item itemvalue="Gradle.CreditCardRepositoryImplTest" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Gradle.Tests in 'BancoLocalAndRemote.test'" />
+        <item itemvalue="Gradle.UserRemoteRepositoryTest.deleteById_withException" />
+        <item itemvalue="Gradle.UserRemoteRepositoryTest.updateUser_withException" />
+        <item itemvalue="Gradle.UserRemoteRepositoryTest.createUser_withException" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
->>>>>>> origin/develop
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="" />
-      <created>1728056407781</created>
+      <changelist id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies" />
+      <created>1729506643074</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1728056407781</updated>
-      <workItem from="1728056408973" duration="1130000" />
-      <workItem from="1728135215769" duration="1100000" />
-<<<<<<< HEAD
-      <workItem from="1728147567420" duration="4108000" />
-      <workItem from="1728152299373" duration="4414000" />
-=======
-      <workItem from="1728205774415" duration="1457000" />
-      <workItem from="1728207250262" duration="3488000" />
->>>>>>> origin/develop
+      <updated>1729506643074</updated>
+      <workItem from="1729506648428" duration="7040000" />
+      <workItem from="1729520365898" duration="7290000" />
     </task>
-    <task id="LOCAL-00001" summary="Config Project dependencies">
-      <option name="closed" value="true" />
-      <created>1728056837053</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1728056837053</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Config Project dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="Config Project dependencies" />
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$ClienteServiceImplTest_saveClientesJsonOnSuccess.ic" NAME="ClienteServiceImplTest.saveClientesJsonOnSuccess Coverage Results" MODIFIED="1729508426010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$StorageJsonClientImplTest_importListException.ic" NAME="StorageJsonClientImplTest.importListException Coverage Results" MODIFIED="1729522356274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_getAll_withException.ic" NAME="UserRemoteRepositoryTest.getAll_withException Coverage Results" MODIFIED="1729523717190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$ClienteServiceImplTest_importClientesJsonOnError.ic" NAME="ClienteServiceImplTest.importClientesJsonOnError Coverage Results" MODIFIED="1729508213703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$ClienteServiceImplTest_saveClientesJsonOnError.ic" NAME="ClienteServiceImplTest.saveClientesJsonOnError Coverage Results" MODIFIED="1729508459779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_getByName_withException.ic" NAME="UserRemoteRepositoryTest.getByName_withException Coverage Results" MODIFIED="1729525821732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$CreditCardRepositoryImplTest_findAllCreditCardsByUserId_NoResults.ic" NAME="CreditCardRepositoryImplTest.findAllCreditCardsByUserId_NoResults Coverage Results" MODIFIED="1729523396380" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$CreditCardRepositoryImplTest_findAllCreditCardsByUserId_Success.ic" NAME="CreditCardRepositoryImplTest.findAllCreditCardsByUserId_Success Coverage Results" MODIFIED="1729523255114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_deleteById_withException.ic" NAME="UserRemoteRepositoryTest.deleteById_withException Coverage Results" MODIFIED="1729526198840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$CreditCardRepositoryImplTest_findAllCreditCardsByUserId_withException.ic" NAME="CreditCardRepositoryImplTest.findAllCreditCardsByUserId_withException Coverage Results" MODIFIED="1729523448416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_getById_withException.ic" NAME="UserRemoteRepositoryTest.getById_withException Coverage Results" MODIFIED="1729525688023" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$ClienteServiceImplTest_importClientesJsonOnSuccess.ic" NAME="ClienteServiceImplTest.importClientesJsonOnSuccess Coverage Results" MODIFIED="1729508075522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_createUser_withException.ic" NAME="UserRemoteRepositoryTest.createUser_withException Coverage Results" MODIFIED="1729525967996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$Tests_in__BancoLocalAndRemote_test_.ic" NAME="Tests in 'BancoLocalAndRemote.test' Coverage Results" MODIFIED="1729520851761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$ClienteServiceImplTest.ic" NAME="ClienteServiceImplTest Coverage Results" MODIFIED="1729509264655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/BancoLocalAndRemote$UserRemoteRepositoryTest_updateUser_withException.ic" NAME="UserRemoteRepositoryTest.updateUser_withException Coverage Results" MODIFIED="1729526094379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>

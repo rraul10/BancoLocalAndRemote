@@ -29,8 +29,8 @@ RUN chmod +x /app/test.sh
 RUN /bin/sh /app/test.sh
 
 # Compilar el proyecto usando `/bin/sh`
-RUN ./gradlew wrapper
-RUN echo "Ejecutando gradlew build" && /bin/sh -c "/app/gradlew build -x test"
+RUN ./gradlew wrapper --stacktrace
+RUN echo "Ejecutando gradlew build" && /bin/sh -c "/app/gradlew build"
 
 # Etapa de ejecución, un docker especifico, que se etiqueta como run
 # Con una imagen de java, solo necesitamos el jre
