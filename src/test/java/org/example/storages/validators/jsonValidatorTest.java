@@ -15,7 +15,7 @@ class jsonValidatorTest {
     public void test_valid_json_file_returns_true() {
 
         File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
-        jsonValidator validator = new jsonValidator();
+        JsonValidator validator = new JsonValidator();
         boolean result = validator.jsonValidator(file);
         assertTrue(result);
     }
@@ -25,7 +25,7 @@ class jsonValidatorTest {
     public void test_file_is_directory_returns_false() {
         File directory = mock(File.class);
         when(directory.isDirectory()).thenReturn(true);
-        jsonValidator validator = new jsonValidator();
+        JsonValidator validator = new JsonValidator();
         boolean result = validator.jsonValidator(directory);
         assertFalse(result);
     }
@@ -37,7 +37,7 @@ class jsonValidatorTest {
         File file = new File("test.txt");
 
         // Execute
-        boolean result = new jsonValidator().jsonValidator(file);
+        boolean result = new JsonValidator().jsonValidator(file);
 
         // Verify
         assertFalse(result);
@@ -50,7 +50,7 @@ class jsonValidatorTest {
         File file = new File("non_existent_file.json");
 
         // Execute
-        boolean result = new jsonValidator().jsonValidator(file);
+        boolean result = new JsonValidator().jsonValidator(file);
 
         // Verify
         assertFalse(result);
@@ -59,7 +59,7 @@ class jsonValidatorTest {
     // Invalid JSON file returns false
     @Test
     public void test_invalid_json_file_returns_false() {
-        jsonValidator validator = new jsonValidator();
+        JsonValidator validator = new JsonValidator();
         File invalidJsonFile = new File("invalid.json");
         boolean result = validator.jsonValidator(invalidJsonFile);
         assertFalse(result);
@@ -68,7 +68,7 @@ class jsonValidatorTest {
     // Empty JSON file returns false
     @Test
     public void test_empty_json_file_returns_false() {
-        jsonValidator validator = new jsonValidator();
+        JsonValidator validator = new JsonValidator();
         File emptyJsonFile = new File("empty.json");
         boolean result = validator.jsonValidator(emptyJsonFile);
         assertFalse(result);

@@ -1,8 +1,8 @@
 package org.example.di;
 
 import dagger.Component;
-import org.example.client.service.ClienteService;
-import org.example.client.service.ClienteServiceImpl;
+import org.example.service.ClienteService;
+
 
 import javax.inject.Singleton;
 

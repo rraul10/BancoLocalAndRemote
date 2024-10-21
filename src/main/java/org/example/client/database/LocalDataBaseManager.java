@@ -49,14 +49,14 @@ public class LocalDataBaseManager implements AutoCloseable {
 
     }
 
-    public static LocalDataBaseManager getInstance() {
+    public static LocalDataBaseManager getInstance(ConfigProperties config) {
         if (instance == null) {
             instance = new LocalDataBaseManager();
         }
         return instance;
     }
 
-    public static LocalDataBaseManager getInstance(ConfigProperties config) {
+    public static LocalDataBaseManager getInstanceMemory(ConfigProperties config) {
         if (instance == null) {
             instance = new LocalDataBaseManager(config);
         }
