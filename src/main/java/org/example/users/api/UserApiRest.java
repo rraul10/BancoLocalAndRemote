@@ -34,6 +34,13 @@ public interface UserApiRest {
     @GET("users/{id}")
     CompletableFuture<ResponseUserGetByid> getById(@Path("id") Long id);
 
+    /**
+     * Obtiene un usuario por su nombre.
+     * @param nombre del usuario a obtener.
+     * @return el usuario encontrado.
+     * @since 1.0
+     * @author Javier Hernandez, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez
+     */
     @GET("users/{name}")
     CompletableFuture<List<ResponseUserGetByName>> getByName(@Path("name") String nombre);
 
