@@ -1,4 +1,4 @@
-package org.example.client.service.errors;
+package org.example.service.errors;
 
 public abstract class ServiceError {
     private final String message;
@@ -93,6 +93,18 @@ public abstract class ServiceError {
 
     public static class TarjetasLoadError extends ServiceError{
         public TarjetasLoadError(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class ExportError extends ServiceError{
+        public ExportError(String message){
+            super("ERROR: " + message);
+        }
+    }
+
+    public static class ImportErrors extends ServiceError{
+        public ImportErrors(String message){
             super("ERROR: " + message);
         }
     }

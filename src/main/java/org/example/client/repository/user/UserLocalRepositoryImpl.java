@@ -136,6 +136,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
 
     @Override
     public Optional<Usuario> saveUser(Usuario user) {
+        System.out.println("LALALALALALALALALA");
         logger.debug("Guardando usuario...");
         String query = "INSERT INTO Cliente (id, name, username, email) VALUES (?, ?, ?, ?)";
         try (Connection connection = localDataBaseManager.connect();
@@ -144,7 +145,7 @@ public class UserLocalRepositoryImpl implements UsersRepository{
             statement.setString(2, user.getName());
             statement.setString(3, user.getUsername());
             statement.setString(4, user.getEmail());
-
+            System.out.println(user.getEmail());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 return Optional.of(user);

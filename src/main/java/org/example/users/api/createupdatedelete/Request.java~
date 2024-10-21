@@ -1,6 +1,5 @@
-package org.example.users.api.getAll;
+package org.example.users.api.createupdatedelete;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ResponseUserGetAll {
+public class Request {
 
     @JsonProperty("id")
     private int id;
@@ -25,40 +23,44 @@ public class ResponseUserGetAll {
     private String email;
 
     /**
+     * Devuelve el id del usuario.
      *
-     * @return el id del usuario
+     * @return el id del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
      * @version 1.0
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public int getId() {
         return id;
     }
 
     /**
+     * Devuelve el nombre del usuario.
      *
-     * @return el nombre del usuario
+     * @return el nombre del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
      * @version 1.0
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Devuelve el username del usuario.
      *
-     * @return el nombre de usuario del usuario
+     * @return el username del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
      * @version 1.0
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getUsername() {
         return username;
     }
 
     /**
+     * Devuelve el email del usuario.
      *
-     * @return el correo del usuario
+     * @return el email del usuario.
+     * @author Javier Hernández, Yahya el hadri, Javier Ruiz, Alvaro herrero, Samuel Cortes, Raul Fernandez.
      * @version 1.0
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
      */
     public String getEmail() {
         return email;

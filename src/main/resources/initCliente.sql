@@ -4,10 +4,10 @@ DROP TABLE IF EXISTS Cliente;
 
 -- Crear la tabla Cliente
 CREATE TABLE IF NOT EXISTS Cliente (
-                                       id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))), -- Generar un UUID como texto
+     id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))), -- Generar un UUID como texto
     name VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
     );
 
 -- Crear la tabla Tarjeta

@@ -3,7 +3,6 @@ package org.example.client.service;
 import io.vavr.control.Either;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
-import org.example.client.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.dto.TarjetaCreditoDto;
 import org.example.creditcard.repositories.CreditCardRepository;
@@ -14,6 +13,8 @@ import org.example.models.Usuario;
 import org.example.notification.Notification;
 import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
+import org.example.service.ClienteServiceImpl;
+import org.example.service.errors.ServiceError;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.dto.UsuarioDto;
 import org.example.users.repository.UserRemoteRepository;
@@ -703,6 +704,7 @@ class ClienteServiceImplTest {
         );
 
         userNotifications.send(expectedNotification);
+        //verify(userNotifications).send(expectedNotification);
         verify(usersRepository, times(2)).deleteAllUsers();
         verify(creditCardLocalRepository, times(2)).deleteAllCreditCards();
         verify(usersRepository).saveUser(usuario);

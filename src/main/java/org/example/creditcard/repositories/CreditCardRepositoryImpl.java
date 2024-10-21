@@ -118,7 +118,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public TarjetaCredito create(TarjetaCredito creditcard) {
         logger.info("Creando tarjeta...");
-        String query = "INSERT INTO Tarjeta (uuid, numero,nombreTitular,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
+        String query = "INSERT INTO Tarjeta (id, numero,clienteID,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
         var uuid = java.util.UUID.randomUUID();
         var timeStamp = LocalDateTime.now();
         // Esto es un try-with-resources, se cierra automaticamente
@@ -127,7 +127,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             // Sustituimos los ? por los valores de la persona
-            statement.setObject(1, uuid);
+            statement.setObject(1, creditcard.getId());
             statement.setString(2, creditcard.getNumero());
             statement.setString(3, creditcard.getNombreTitular());
             statement.setObject(4, creditcard.getClientID());
