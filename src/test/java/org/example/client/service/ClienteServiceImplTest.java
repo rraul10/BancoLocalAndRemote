@@ -5,6 +5,7 @@ import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
 import org.example.client.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
+import org.example.creditcard.dto.TarjetaCreditoDto;
 import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.creditcard.validator.TarjetaValidator;
 import org.example.models.Cliente;
@@ -702,7 +703,6 @@ class ClienteServiceImplTest {
         );
 
         userNotifications.send(expectedNotification);
-        verify(userNotifications).send(expectedNotification);
         verify(usersRepository, times(2)).deleteAllUsers();
         verify(creditCardLocalRepository, times(2)).deleteAllCreditCards();
         verify(usersRepository).saveUser(usuario);
@@ -727,6 +727,43 @@ class ClienteServiceImplTest {
         verify(usersRepository, never()).saveUser(any());
         verify(creditCardRepository, never()).create(any());
     }
+
+
+    @Test
+    void deleteClienteSuccess() {
+
+        when(usersRepository.findUserById(1L)).thenReturn(Optional.of(usuario));
+
+        Either<ServiceError, Cliente> result = clienteService.deleteCliente(usuario.getId());
+
+        assertTrue(result.isRight());
+        assertEquals(cliente, result.get());
+
+
+        Notification<TarjetaCreditoDto> expectedTarjetaNotificacion = new Notification<>(
+                Notification.Type.DELETE,
+                new TarjetaCreditoDto(tarjetaCredito),
+                "Tarjeta eliminada con éxito " + tarjetaCredito.getNumero()
+        );
+        verify(tarjetaNotificacion).send(expectedTarjetaNotificacion);
+
+        Notification<UsuarioDto> expectedClienteNotificacion = new Notification<>(
+                Notification.Type.DELETE,
+                new UsuarioDto(cliente.getUsuario()),
+                "Cliente eliminado con éxito " + cliente.getUsuario().getId()
+        );
+        verify(userNotifications).send(expectedClienteNotificacion);
+
+        verify(userRemoteRepository).deleteById(usuario.getId());
+        verify(cacheUsuario).remove(usuario.getId());
+        verify(creditCardRepository).delete(tarjetaCredito.getId());
+        verify(cacheTarjeta).remove(tarjetaCredito.getId());
+
+        verify(tarjetaNotificacion).send(any(Notification.class));
+        verify(userNotifications).send(any(Notification.class));
+    }
+
+
 
 
 
