@@ -3,9 +3,11 @@ package org.example.service;
 import io.vavr.control.Either;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
+import org.example.client.storage.StorageJsonClient;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.errors.TarjetaErrors;
 import org.example.creditcard.repositories.CreditCardRepository;
+import org.example.creditcard.storage.StorageCsvCredCard;
 import org.example.creditcard.validator.TarjetaValidator;
 import org.example.models.Cliente;
 import org.example.models.TarjetaCredito;
@@ -17,23 +19,26 @@ import org.example.service.errors.ServiceError;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.errors.UserErrors;
 import org.example.users.repository.UserRemoteRepository;
+import org.example.users.storage.StorageCsvUser;
 import org.example.users.validator.UserValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ClienteServiceImplTest {
@@ -68,8 +73,19 @@ class ClienteServiceImplTest {
     @Mock
     private TarjetaNotificacion tarjetaNotificacion;
 
+    @Mock
+    private  StorageJsonClient storageJsonClient;
+
+    @Mock
+    private  StorageCsvCredCard storageCsvCredCard;
+
+    @Mock
+    private  StorageCsvUser storageCsvUser;
+
     @InjectMocks
     private ClienteServiceImpl clienteService;
+
+
 
     private Usuario usuario;
     private TarjetaCredito tarjetaCredito;
@@ -562,12 +578,99 @@ class ClienteServiceImplTest {
         assertTrue(result.getLeft() instanceof ServiceError.TarjeteNotDeleted);
     }
 
+    // Successfully loads a list of Cliente objects from a valid JSON file
     @Test
-    void loadClientesJson() {
+    public void importClientesJsonOnSuccess() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "John Doe", "johndoe", "john@example.com", LocalDateTime.now(), LocalDateTime.now());
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234567890123456")
+                .nombreTitular("John Doe")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+        Cliente cliente = new Cliente(usuario, tarjetas);
+        File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
+        List<Cliente> expectedClientes = Arrays.asList(cliente);
+
+        when(storageJsonClient.importList(file)).thenReturn(Flux.fromIterable(expectedClientes));
+
+        Either<ServiceError, List<Cliente>> result = clienteService.loadClientesJson(file);
+
+        assertTrue(result.isRight());
+        assertEquals(expectedClientes, result.get());
     }
 
     @Test
-    void saveClientesJson() {
+    public void importClientesJsonOnError() {
+        File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
+
+        when(storageJsonClient.importList(file)).thenThrow(new RuntimeException("Simulated exception"));
+
+        Either<ServiceError, List<Cliente>> result = clienteService.loadClientesJson(file);
+
+        assertTrue(result.isLeft());
+        assertTrue(result.getLeft() instanceof ServiceError.ClienteLoadErrors);
+    }
+
+    @Test
+    public void saveClientesJsonOnSuccess() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "John Doe", "johndoe", "john@example.com", LocalDateTime.now(), LocalDateTime.now());
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234567890123456")
+                .nombreTitular("John Doe")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+        Cliente cliente = new Cliente(usuario, tarjetas);
+        List<Cliente> clientes = Arrays.asList(cliente);
+        File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
+
+        doNothing().when(storageJsonClient).exportList(clientes, file);
+
+        Either<ServiceError, Void> result = clienteService.saveClientesJson(clientes, file);
+
+        // Assert
+        assertTrue(result.isRight());
+    }
+
+    @Test
+    public void saveClientesJsonOnError() {
+        // Arrange
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "John Doe", "johndoe", "john@example.com", LocalDateTime.now(), LocalDateTime.now());
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234567890123456")
+                .nombreTitular("John Doe")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+        Cliente cliente = new Cliente(usuario, tarjetas);
+        List<Cliente> clientes = Arrays.asList(cliente);
+        File file = new File(getClass().getClassLoader().getResource("clientTest.json").getFile());
+
+        doThrow(new RuntimeException("Simulated exception")).when(storageJsonClient).exportList(clientes, file);
+
+        Either<ServiceError, Void> result = clienteService.saveClientesJson(clientes, file);
+
+        assertTrue(result.isLeft());
+        assertTrue(result.getLeft() instanceof ServiceError.ImportErrors);
     }
 
     @Test
