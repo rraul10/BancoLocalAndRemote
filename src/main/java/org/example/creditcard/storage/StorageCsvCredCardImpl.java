@@ -59,7 +59,6 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
      */
 
     private TarjetaCredito parseLine(List<String> linea) {
-        // Verificamos que la línea tenga al menos 5 columnas (id, numero, nombreTitular, clientID, fechaCaducidad)
         if (linea.size() < 5) {
             System.out.println(linea);
             throw new IllegalArgumentException("Línea CSV inválida: " + linea);

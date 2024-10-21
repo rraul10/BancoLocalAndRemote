@@ -21,8 +21,8 @@ public class Main {
         CompletableFuture.runAsync(() -> {
             while (true) {
                 try {
-                    clienteService.loadData();  // Ejecutar la función
-                    Thread.sleep(30000);  // Esperar 30 segundos
+                    clienteService.loadData();
+                    Thread.sleep(30000);
                 } catch (InterruptedException e) {
                     System.out.println("La tarea fue interrumpida.");
                     break;

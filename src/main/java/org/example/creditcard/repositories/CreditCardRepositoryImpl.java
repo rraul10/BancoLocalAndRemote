@@ -43,20 +43,20 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         List<TarjetaCredito> tarjetas = new ArrayList<>();
         String query = "SELECT * FROM Tarjeta";
 
-        // Esto es un try-with-resources, se cierra automaticamente
+
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 TarjetaCredito tarjeta = TarjetaCredito.builder()
-                        .id((java.util.UUID) resultSet.getObject("uuid"))
+                        .id((java.util.UUID) resultSet.getObject("id"))
                         .numero(resultSet.getString("numero"))
                         .nombreTitular(resultSet.getString("nombreTitular"))
-                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                        .clientID(Long.parseLong(resultSet.getObject("clienteID", String.class)))
                         .fechaCaducidad(resultSet.getString("fechaCaducidad"))
-                        .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
-                        .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                        .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
+                        .updatedAt(resultSet.getObject("updatedAt", LocalDateTime.class))
                         .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                         .build();
                 tarjetas.add(tarjeta);
@@ -81,22 +81,22 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         logger.info("Obteniendo tarjeta por id...");
         String query = "SELECT * FROM Tarjeta WHERE id = ?";
 
-        // Esto es un try-with-resources, se cierra automaticamente
+
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            // Sustituimos el ? por el id
+
             statement.setString(1, id.toString());
-            // Ejecutamos la consulta como try with resources
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(TarjetaCredito.builder()
-                            .id(resultSet.getObject("uuid", UUID.class))
+                            .id(resultSet.getObject("id", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID((resultSet.getObject("clientID", Long.class)))
+                            .clientID((resultSet.getObject("clienteID", Long.class)))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
-                            .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
-                            .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                            .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
+                            .updatedAt(resultSet.getObject("updatedAt", LocalDateTime.class))
                             .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                             .build());
                 }
@@ -118,15 +118,15 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public TarjetaCredito create(TarjetaCredito creditcard) {
         logger.info("Creando tarjeta...");
-        String query = "INSERT INTO Tarjeta (id, numero,clienteID,clienteId,fechaCaducidad, created_at, updated_at,isDeleted) VALUES (?, ?, ?, ?,?,?,?,?)";
+        String query = "INSERT INTO Tarjeta (id, numero,nombreTitular,clienteId,fechaCaducidad, createdAt, updatedAt,isDeleted) VALUES (?,?,?,?,?,?,?,?)";
         var uuid = java.util.UUID.randomUUID();
         var timeStamp = LocalDateTime.now();
-        // Esto es un try-with-resources, se cierra automaticamente
+
         try (Connection connection = dataBaseManager.connect();
-             // Este statement nos permite recuperar la clave generada
+
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Sustituimos los ? por los valores de la persona
+
             statement.setObject(1, creditcard.getId());
             statement.setString(2, creditcard.getNumero());
             statement.setString(3, creditcard.getNombreTitular());
@@ -136,10 +136,10 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
             statement.setObject(7, timeStamp);
             statement.setBoolean(8, creditcard.getIsDeleted());
 
-            // Ejecutamos la consulta
+
             statement.executeUpdate();
 
-            // Recuperamos la clave generada
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     String id = generatedKeys.getString(1);
@@ -175,19 +175,19 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     @Override
     public TarjetaCredito update(UUID id, TarjetaCredito creditcard) {
         logger.info("Actualizando tarjeta...");
-        String query = "UPDATE Tarjeta SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updated_at = ? WHERE id = ?";
+        String query = "UPDATE Tarjeta SET nombreTitular = ?,clienteId = ? ,fechaCaducidad = ? ,updatedAt = ? WHERE id = ?";
         LocalDateTime timeStamp = LocalDateTime.now();
-        // Esto es un try-with-resources, se cierra automaticamente
+
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            // Sustituimos los ? por los valores de la persona
+
             statement.setString(1, creditcard.getNombreTitular());
             statement.setObject(2, creditcard.getClientID());
             statement.setObject(3, creditcard.getFechaCaducidad());
             statement.setObject(4, timeStamp);
 
-            // Ejecutamos la consulta
+
             int rows = statement.executeUpdate();
             if (rows > 0) {
                 creditcard.setNombreTitular(creditcard.getNombreTitular());
@@ -214,14 +214,14 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
     public boolean delete(UUID id) {
         logger.info("Borrando tarjeta...");
         String query = "DELETE FROM Tarjeta WHERE id = ?";
-        // Esto es un try-with-resources, se cierra automaticamente
+
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            // Sustituimos el ? por el id
+
             statement.setString(1, id.toString());
 
-            // Ejecutamos la consulta
+
             int rows = statement.executeUpdate();
             if (rows > 0) {
                 return true;
@@ -250,7 +250,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
         List<TarjetaCredito> tarjetas = new ArrayList<>();
         String query = "SELECT * FROM Tarjeta where clientID = ?";
 
-        // Esto es un try-with-resources, se cierra automáticamente
+
         try (Connection connection = dataBaseManager.connect();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -260,10 +260,10 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                         .id((java.util.UUID) resultSet.getObject("uuid"))
                         .numero(resultSet.getString("numero"))
                         .nombreTitular(resultSet.getString("nombreTitular"))
-                        .clientID(Long.parseLong(resultSet.getObject("clientID", String.class)))
+                        .clientID(Long.parseLong(resultSet.getObject("clienteID", String.class)))
                         .fechaCaducidad(resultSet.getString("fechaCaducidad"))
-                        .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
-                        .updatedAt(resultSet.getObject("updated_at", LocalDateTime.class))
+                        .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
+                        .updatedAt(resultSet.getObject("updatedAt", LocalDateTime.class))
                         .isDeleted(resultSet.getObject("isDeleted", Boolean.class))
                         .build();
                 tarjetas.add(tarjeta);
