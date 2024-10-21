@@ -21,6 +21,12 @@ public class TarjetaValidatorImpl implements TarjetaValidator {
             logger.error("Nombre del titular inválido");
             return Either.left(new TarjetaErrors.NombreInvalido("Nombre del titular inválido"));
         }
+
+        if (!validateNumero(tarjeta.getNumero())){
+            logger.error("Numero de tarjeta inválido");
+            return Either.left(new TarjetaErrors.NumeroInvalido("Número de tarjeta inválido"));
+        }
+
         return Either.right(tarjeta);
     }
 

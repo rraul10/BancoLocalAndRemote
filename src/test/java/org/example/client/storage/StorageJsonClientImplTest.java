@@ -52,13 +52,11 @@ class StorageJsonClientImplTest {
         JsonValidator validador = mock(JsonValidator.class);
         when(validador.jsonValidator(any(File.class))).thenReturn(false);
         StorageJsonClientImpl storageJsonClient = new StorageJsonClientImpl(validador);
-        File nonExistentFile = new File("non_existent_file.json"); // Archivo inexistente
+        File nonExistentFile = new File("non_existent_file.json");
         Flux<Cliente> result = storageJsonClient.importList(nonExistentFile);
 
         StepVerifier.create(result)
                 .verifyError();
-
-        // Puedes verificar el log o un contador de excepciones si lo deseas
     }
 
 

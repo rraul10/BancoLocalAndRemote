@@ -46,6 +46,19 @@ services:
       - credit-card-db
       - adminer-credit-card-db
 
+  apache-jacoco:
+    image: ubuntu/apache2:latest
+    container_name: apache-jacoco
+    restart: always
+    ports:
+      - 8081:80
+    volumes:
+      - ./build/jacoco:/var/www/html
+    depends_on:
+      - credit-card-app
+    networks:
+      - credit-card-network
+
 networks:
   credit-card-network:
     driver: bridge

@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("io.freefair.lombok") version "8.6"
+    id ("jacoco")
 }
 
 group = "org.example"
@@ -65,6 +66,20 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(file("build/jacoco"))
+    }
+}
+
+tasks.check {
+    dependsOn(tasks.jacocoTestReport)
 }
 tasks.jar {
     archiveFileName.set("my-app.jar")
