@@ -31,12 +31,6 @@ public class Main {
         });
 
         CompletableFuture.runAsync(()->{
-                    clienteService.getAllUsers(true).forEach(i->
-                            i.forEach(j->{
-                                clienteService.createUser(j);
-                            })
-
-                    );
                     clienteService.loadTarjetasCsv(new File("data/tarjetas.csv")).forEach(i->
                             i.forEach(j->{
                                 clienteService.createTarjeta(j);

@@ -23,6 +23,9 @@ import org.example.users.storage.StorageCsvUser;
 import org.example.users.validator.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
 import java.util.*;
@@ -434,8 +437,10 @@ public class ClienteServiceImpl implements ClienteService {
                         return new ServiceError.UservalidatorError("Error al validar el usuario");
                     },
                     user -> {
-                        Usuario usuarioCreado = userRemoteRepository.createUser(usuario);
+                        Usuario usuarioCreado = usersRepository.saveUser(usuario).get();
+                        System.out.println("MAAAAAAAAAAA");
                         cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
+                        System.out.println("DEEEEEEEEEEE");
                         Notification<UsuarioDto> notificacionUsuarioCreado = new Notification<>(
                                 Notification.Type.CREATE,
                                 new UsuarioDto(usuarioCreado),
@@ -921,10 +926,10 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Either<ServiceError, List<TarjetaCredito>> loadTarjetasCsv(File file) {
+    public Either<ServiceError, List<TarjetaCredito>>loadTarjetasCsv(File file) {
         try {
-            List<TarjetaCredito> tarjetas = (List<TarjetaCredito>) storageCsvCredCard.importList(file);
-            return right(tarjetas);
+            List<TarjetaCredito> tarjetas = storageCsvCredCard.importList(file).subscribeOn(Schedulers.boundedElastic()).collectList().block();
+            return  right(tarjetas);
         }catch (Exception e){
             logger.error("Error al cargar las tarjetas", e);
             return Either.left(new ServiceError.ImportErrors("Error al cargar las tarjetas"));
