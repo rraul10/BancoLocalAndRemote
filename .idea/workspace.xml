@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464d5842-92dc-4ffe-ae6e-3480cbce7695" name="Changes" comment="Config Project dependencies">
-<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRemoteRepository.java" afterDir="false" />
-=======
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
->>>>>>> origin/develop
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />origin/develop
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

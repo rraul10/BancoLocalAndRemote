@@ -2,7 +2,7 @@ package org.example.users.storage;
 
 import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.models.Usuario;
-import org.example.storages.validators.csvValidator;
+import org.example.storages.validators.CsvValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -13,9 +13,9 @@ import java.util.List;
 
 public class StorageCsvUserImpl implements StorageCsvUser {
     private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
-    private final csvValidator validador;
+    private final CsvValidator validador;
 
-    public StorageCsvUserImpl(csvValidator validador) {
+    public StorageCsvUserImpl(CsvValidator validador) {
         this.validador = validador;
     }
 

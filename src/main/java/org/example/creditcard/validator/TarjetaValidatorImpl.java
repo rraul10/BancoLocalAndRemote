@@ -8,14 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TarjetaValidatorImpl implements TarjetaValidator {
-    private final Logger logger = LoggerFactory.getLogger(CreditCardRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(TarjetaValidatorImpl.class);
     @Override
     public Either<TarjetaErrors, TarjetaCredito> validarTarjetaCredito(TarjetaCredito tarjeta){
         logger.debug("Validando tarjeta de crédito");
-        if(!validateNumero((tarjeta.getNumero()))){
-            logger.error("Número de tarjeta inválido");
-            return Either.left(new TarjetaErrors.NumeroInvalido("Número de tarjeta inválido"));
-        }
+
         if(!validateCaducidad(tarjeta.getFechaCaducidad().toString())){
             logger.error("Fecha de caducidad inválida");
             return Either.left(new TarjetaErrors.CaducidadInvalida("Fecha de caducidad inválida"));

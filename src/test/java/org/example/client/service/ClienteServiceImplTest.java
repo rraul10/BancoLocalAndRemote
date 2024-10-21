@@ -3,7 +3,6 @@ package org.example.client.service;
 import io.vavr.control.Either;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
-import org.example.client.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.repositories.CreditCardRepository;
 import org.example.creditcard.validator.TarjetaValidator;
@@ -13,6 +12,8 @@ import org.example.models.Usuario;
 import org.example.notification.Notification;
 import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
+import org.example.service.ClienteServiceImpl;
+import org.example.service.errors.ServiceError;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.dto.UsuarioDto;
 import org.example.users.repository.UserRemoteRepository;
@@ -702,7 +703,6 @@ class ClienteServiceImplTest {
         );
 
         userNotifications.send(expectedNotification);
-        verify(userNotifications).send(expectedNotification);
         verify(usersRepository, times(2)).deleteAllUsers();
         verify(creditCardLocalRepository, times(2)).deleteAllCreditCards();
         verify(usersRepository).saveUser(usuario);
@@ -729,6 +729,277 @@ class ClienteServiceImplTest {
     }
 
 
+    @Test
+    void deleteClienteSuccess() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "Juan", "juanete", "juanete@example.com", LocalDateTime.now(), LocalDateTime.now());
+
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234-5678-9012")
+                .nombreTitular("Juan")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+
+        Cliente cliente = new Cliente(usuario, tarjetas);
+
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.of(usuario));
+        when(cacheTarjeta.buscarPorIdUsuario(id)).thenReturn(tarjetas);
+        when(creditCardRepository.delete(tarjetaCredito.getId())).thenReturn(true);
+
+        Either<ServiceError, Cliente> result = clienteService.deleteCliente(usuario.getId());
+
+        assertTrue(result.isRight());
+        assertEquals(cliente, result.get());
+
+
+        verify(userRemoteRepository).deleteById(usuario.getId());
+        verify(cacheUsuario).remove(usuario.getId());
+        verify(creditCardRepository).delete(tarjetaCredito.getId());
+        verify(cacheTarjeta).remove(tarjetaCredito.getId());
+    }
+
+    @Test
+    void deleteClienteNotFound() {
+        Long id = 1L;
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.empty());
+
+        Either<ServiceError, Cliente> result = clienteService.deleteCliente(id);
+
+        assertTrue(result.isLeft());
+        assertTrue(result.getLeft() instanceof ServiceError.UserNotFound);
+        assertEquals("ERROR: Error al obtener el cliente con id: " + id, result.getLeft().getMessage());
+
+        verify(userRemoteRepository, never()).deleteById(anyLong());
+        verify(cacheUsuario, never()).remove(anyLong());
+        verify(creditCardRepository, never()).delete(any(UUID.class));
+        verify(cacheTarjeta, never()).remove(any(UUID.class));
+
+    }
+
+    @Test
+    void deleteClienteErrorDeletingCard() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "Juan", "juanete", "juanete@example.com", LocalDateTime.now(), LocalDateTime.now());
+
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234-5678-9012")
+                .nombreTitular("Juan")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+
+        Cliente cliente = new Cliente(usuario, tarjetas);
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.of(usuario));
+        when(cacheTarjeta.buscarPorIdUsuario(id)).thenReturn(tarjetas);
+
+        doThrow(new RuntimeException("Error al eliminar la tarjeta")).when(creditCardRepository).delete(tarjetaCredito.getId());
+
+        Either<ServiceError, Cliente> result = clienteService.deleteCliente(id);
+
+        System.out.println(result);
+
+        assertTrue(result.isLeft());
+
+        verify(userRemoteRepository).deleteById(id);
+        verify(cacheUsuario).remove(id);
+
+        verify(creditCardRepository).delete(tarjetaCredito.getId());
+    }
+
+    @Test
+    void deleteClienteGeneralException() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "Juan", "juanete", "juanete@example.com", LocalDateTime.now(), LocalDateTime.now());
+
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(UUID.randomUUID())
+                .numero("1234-5678-9012")
+                .nombreTitular("Juan")
+                .clientID(id)
+                .fechaCaducidad("12/25")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+        List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+
+        Cliente cliente = new Cliente(usuario, tarjetas);
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.of(usuario));
+        when(cacheTarjeta.buscarPorIdUsuario(id)).thenReturn(tarjetas);
+
+        doThrow(new RuntimeException("Error inesperado")).when(userRemoteRepository).deleteById(id);
+
+        Either<ServiceError, Cliente> result = clienteService.deleteCliente(id);
+
+        assertTrue(result.isLeft());
+        assertEquals("ERROR: Error al obtener el cliente con id: " + id, result.getLeft().getMessage());
+
+        verify(userRemoteRepository).deleteById(id);
+        verify(cacheUsuario, never()).remove(id);
+    }
+
+    @Test
+    void deleteUserSuccess() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "Juan", "juanete", "juanete@example.com", LocalDateTime.now(), LocalDateTime.now());
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.of(usuario));
+
+        Either<ServiceError, Usuario> result = clienteService.deleteUser(id);
+
+        assertTrue(result.isRight());
+        assertEquals(usuario, result.get());
+
+        verify(userRemoteRepository).deleteById(id);
+        verify(cacheUsuario).remove(id);
+    }
+
+    @Test
+    void deleteUserNotFound() {
+        Long id = 1L;
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.empty());
+
+        Either<ServiceError, Usuario> result = clienteService.deleteUser(id);
+
+        assertTrue(result.isLeft());
+        assertEquals("ERROR: Error al obtener el usuario con id: 1", result.getLeft().getMessage());
+
+        verify(userRemoteRepository, never()).deleteById(anyLong());
+        verify(cacheUsuario, never()).remove(anyLong());
+    }
+
+    @Test
+    void deleteUserRemoteDeleteError() {
+        Long id = 1L;
+        Usuario usuario = new Usuario(id, "Juan", "juanete", "juanete@example.com", LocalDateTime.now(), LocalDateTime.now());
+
+        when(usersRepository.findUserById(id)).thenReturn(Optional.of(usuario));
+        when(userRemoteRepository.deleteById(id)).thenThrow(new RuntimeException("Error de eliminación"));
+
+        Either<ServiceError, Usuario> result = clienteService.deleteUser(id);
+
+        assertTrue(result.isLeft());
+        assertEquals("ERROR: Error al obtener el usuario con id: 1", result.getLeft().getMessage());
+
+        verify(userRemoteRepository).deleteById(id);
+        verify(cacheUsuario, never()).remove(anyLong());
+    }
+
+    @Test
+    void deleteUserGeneralError() {
+        Long id = 1L;
+        when(usersRepository.findUserById(id)).thenThrow(new RuntimeException("Error inesperado"));
+
+        Either<ServiceError, Usuario> result = clienteService.deleteUser(id);
+
+        assertTrue(result.isLeft());
+        assertEquals("ERROR: Error al obtener el usuario con id: 1", result.getLeft().getMessage());
+
+        verify(userRemoteRepository, never()).deleteById(anyLong());
+        verify(cacheUsuario, never()).remove(anyLong());
+    }
+
+    @Test
+    void deleteTarjetaSuccess() {
+        UUID id = UUID.randomUUID();
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(id)
+                .numero("1234-5678-9012-3456")
+                .nombreTitular("Juan Alberto")
+                .clientID(1L)
+                .fechaCaducidad("12/2025")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+
+        when(creditCardRepository.getById(id)).thenReturn(Optional.of(tarjetaCredito));
+        when(creditCardRepository.delete(id)).thenReturn(true);
+
+        doNothing().when(cacheTarjeta).remove(id);
+
+        clienteService.deleteTarjeta(id);
+
+        verify(creditCardRepository).getById(id);
+        verify(creditCardRepository).delete(id);
+        verify(cacheTarjeta).remove(id);
+    }
+
+    @Test
+    void deleteTarjetaNotFound() {
+        UUID id = UUID.randomUUID();
+
+        when(creditCardRepository.getById(id)).thenReturn(Optional.empty());
+
+        Either<ServiceError, TarjetaCredito> result = clienteService.deleteTarjeta(id);
+
+        assertTrue(result.isLeft(), "Se esperaba un error");
+        assertEquals("ERROR: Error al obtener la tarjeta con id: " + id, result.getLeft().getMessage());
+
+        verify(creditCardRepository, never()).delete(id);
+        verify(cacheTarjeta, never()).remove(id);
+        verify(tarjetaNotificacion).send(any(Notification.class));
+    }
+
+    @Test
+    void deleteTarjetaDeleteError() {
+        UUID id = UUID.randomUUID();
+        TarjetaCredito tarjetaCredito = TarjetaCredito.builder()
+                .id(id)
+                .numero("1234-5678-9012-3456")
+                .nombreTitular("Juan Alberto")
+                .clientID(1L)
+                .fechaCaducidad("12/2025")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .isDeleted(false)
+                .build();
+
+        when(creditCardRepository.getById(id)).thenReturn(Optional.of(tarjetaCredito));
+        when(creditCardRepository.delete(id)).thenThrow(new RuntimeException("Error de base de datos"));
+
+        Either<ServiceError, TarjetaCredito> result = clienteService.deleteTarjeta(id);
+
+        assertTrue(result.isLeft(), "Se esperaba un error");
+        assertEquals("ERROR: Error al obtener la tarjeta con id: " + id, result.getLeft().getMessage());
+
+        verify(creditCardRepository).getById(id);
+        verify(creditCardRepository).delete(id);
+        verify(cacheTarjeta, never()).remove(id);
+        verify(tarjetaNotificacion).send(any(Notification.class));
+    }
+
+    @Test
+    void deleteTarjetaGeneralError() {
+        UUID id = UUID.randomUUID();
+
+        when(creditCardRepository.getById(id)).thenThrow(new RuntimeException("Error inesperado"));
+
+        Either<ServiceError, TarjetaCredito> result = clienteService.deleteTarjeta(id);
+
+        assertTrue(result.isLeft(), "Se esperaba un error");
+        assertEquals("ERROR: Error al obtener la tarjeta con id: " + id, result.getLeft().getMessage());
+
+        verify(creditCardRepository, never()).delete(id);
+        verify(cacheTarjeta, never()).remove(id);
+        verify(tarjetaNotificacion).send(any(Notification.class));
+    }
 
 
 

@@ -1,13 +1,9 @@
 package org.example.usuarios.storage;
 
-import org.example.creditcard.storage.StorageCsvCredCardImpl;
-import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
-import org.example.storages.validators.csvValidator;
+import org.example.storages.validators.CsvValidator;
 import org.example.users.storage.StorageCsvUserImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -15,23 +11,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class StorageCsvUserImplTest {
     @Test
     public void importList() {
         File file = new File(getClass().getClassLoader().getResource("userTest.csv").getFile());
 
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
         //when(validador.csvValidatorImport(eq(file))).thenReturn(true);
         StorageCsvUserImpl storage = new StorageCsvUserImpl(validador);
         Flux<Usuario> result = storage.importList(file);
@@ -45,7 +38,7 @@ class StorageCsvUserImplTest {
     public void importListWithInvalidFile() {
         File file = new File(getClass().getClassLoader().getResource("userTest.json").getFile());
 
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
         //when(validador.csvValidatorImport(eq(file))).thenReturn(false);
         StorageCsvUserImpl storage = new StorageCsvUserImpl(validador);
         Flux<Usuario> result = storage.importList(file);
@@ -78,7 +71,7 @@ class StorageCsvUserImplTest {
     public void importListWithEmptyFile() {
         File file = new File(getClass().getClassLoader().getResource("userTestEmpty.csv").getFile());
 
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
         //when(csvValidator.csvValidatorImport(eq(file))).thenReturn(false);
         StorageCsvUserImpl storage = new StorageCsvUserImpl(validador);
         Flux<Usuario> result = storage.importList(file);
@@ -92,7 +85,7 @@ class StorageCsvUserImplTest {
     @Test
     public void exportList() {
 
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
 
         List<Usuario> usuarios = List.of(
                 Usuario.builder().id(1L).name("John").username("john_doe").email("john@example.com").build(),
@@ -120,7 +113,7 @@ class StorageCsvUserImplTest {
     @Test
     public void exportListEmpty() {
 
-        csvValidator validador = mock(csvValidator.class);
+        CsvValidator validador = mock(CsvValidator.class);
 
         List<Usuario> lista = Collections.emptyList();
 

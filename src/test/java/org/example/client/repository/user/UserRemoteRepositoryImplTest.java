@@ -21,7 +21,7 @@ class UserRemoteRepositoryImplTest {
     static void setUpAll() throws SQLException {
         ConfigProperties config = new ConfigProperties("application.properties");
         // Inicializa el pool de conexiones
-        dataBaseManager = LocalDataBaseManager.getInstanceMemory(config);
+        dataBaseManager = LocalDataBaseManager.getInstance(config);
         usersRepository = new UserLocalRepositoryImpl(dataBaseManager);
         dataBaseManager.connect();
         dataBaseManager.initializeDatabase();

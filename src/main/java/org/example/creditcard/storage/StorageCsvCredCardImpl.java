@@ -59,8 +59,13 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
      */
 
     private TarjetaCredito parseLine(List<String> linea) {
+        if (linea.size() < 5) {
+            System.out.println(linea);
+            throw new IllegalArgumentException("Línea CSV inválida: " + linea);
+        }
+
         return TarjetaCredito.builder()
-                .id(UUID.fromString(linea.get(0)))
+                .id(UUID.fromString(linea.get(0)))  // Parseamos el id como UUID
                 .numero(linea.get(1))
                 .nombreTitular(linea.get(2))
                 .clientID(Long.parseLong(linea.get(3)))
@@ -70,6 +75,7 @@ public class StorageCsvCredCardImpl implements StorageCsvCredCard {
                 .isDeleted(false)
                 .build();
     }
+
 
     /**
      * Exporta una lista de tarjetas de credito a un archivo CSV.

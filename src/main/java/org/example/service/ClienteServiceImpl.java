@@ -3,6 +3,9 @@ package org.example.service;
 import io.vavr.control.Either;
 import org.example.client.repository.creditcard.CreditCardLocalRepository;
 import org.example.client.repository.user.UsersRepository;
+import org.example.client.storage.StorageJsonClient;
+import org.example.creditcard.errors.TarjetaErrors;
+import org.example.creditcard.storage.StorageCsvCredCard;
 import org.example.service.errors.ServiceError;
 import org.example.creditcard.cache.CacheTarjetaImpl;
 import org.example.creditcard.dto.TarjetaCreditoDto;
@@ -16,13 +19,19 @@ import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
 import org.example.users.cache.CacheUsuario;
 import org.example.users.dto.UsuarioDto;
+import org.example.users.errors.UserErrors;
 import org.example.users.repository.UserRemoteRepository;
+import org.example.users.storage.StorageCsvUser;
 import org.example.users.validator.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static io.vavr.control.Either.right;
 
 /**
  * Implementacion del servicio de clientes.
@@ -45,6 +54,9 @@ public class ClienteServiceImpl implements ClienteService {
     private final TarjetaValidator tarjetaValidator;
     private final UserNotifications userNotifications;
     private final TarjetaNotificacion tarjetaNotificacion;
+    private final StorageJsonClient storageJsonClient;
+    private final StorageCsvCredCard storageCsvCredCard;
+    private final StorageCsvUser storageCsvUser;
     /**
      * Inicializa la instancia con los repositorios y servicios necesarios.
      * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
@@ -59,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
      * @param tarjetaValidator Validador de tarjetas de crédito.
      */
 
-    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator, UserNotifications userNotifications, TarjetaNotificacion tarjetaNotificacion) {
+    public ClienteServiceImpl(UsersRepository usersRepository, CreditCardLocalRepository creditCardLocalRepository, CreditCardRepository creditCardRepository, CacheUsuario cacheUsuario, CacheTarjetaImpl cacheTarjeta, UserValidator userValidator, UserRemoteRepository userRemoteRepository, TarjetaValidator tarjetaValidator, UserNotifications userNotifications, TarjetaNotificacion tarjetaNotificacion, StorageJsonClient storageJsonClient, StorageCsvCredCard storageCsvCredCard, StorageCsvUser storageCsvUser) {
         this.usersRepository = usersRepository;
         this.creditCardLocalRepository = creditCardLocalRepository;
         this.creditCardRepository = creditCardRepository;
@@ -70,6 +82,9 @@ public class ClienteServiceImpl implements ClienteService {
         this.tarjetaValidator = tarjetaValidator;
         this.userNotifications = userNotifications;
         this.tarjetaNotificacion = tarjetaNotificacion;
+        this.storageJsonClient = storageJsonClient;
+        this.storageCsvCredCard = storageCsvCredCard;
+        this.storageCsvUser = storageCsvUser;
         loadData();
     }
 
@@ -106,7 +121,7 @@ public class ClienteServiceImpl implements ClienteService {
                     ))
                     .collect(Collectors.toList());
 
-            return Either.right(clientes);
+            return right(clientes);
         }catch(Exception e){
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.ClienteLoadErrors("Error al obtener los clientes"));
@@ -125,9 +140,9 @@ public class ClienteServiceImpl implements ClienteService {
     public Either<ServiceError, List<Usuario> > getAllUsers(Boolean fromRemote) {
         try {
             if(fromRemote){
-                return Either.right(userRemoteRepository.getAll());
+                return right(userRemoteRepository.getAll());
             }
-            return Either.right(usersRepository.findAllUsers());
+            return right(usersRepository.findAllUsers());
         }catch (Exception e) {
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.UsersLoadError("Error al obtener los usuarios"));
@@ -146,9 +161,9 @@ public class ClienteServiceImpl implements ClienteService {
     public Either<ServiceError, List<TarjetaCredito>> getAllTarjetas(Boolean fromRemote) {
         try {
             if(fromRemote){
-                return Either.right(creditCardRepository.getAll());
+                return right(creditCardRepository.getAll());
             }
-            return Either.right(creditCardLocalRepository.findAllCreditCards());
+            return right(creditCardLocalRepository.findAllCreditCards());
         }catch (Exception e) {
             logger.error("Error al obtener los clientes", e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener los usuarios"));
@@ -189,7 +204,7 @@ public class ClienteServiceImpl implements ClienteService {
             }
 
             Cliente clienteDef = new Cliente(usuario.get(), tarjetas.orElse(new ArrayList<>()));
-            return Either.right(clienteDef);
+            return right(clienteDef);
         }catch (Exception e){
             logger.error("Error al obtener el cliente con id: {}", id, e);
             return Either.left(new ServiceError.ClienteNotFound("Error al obtener el cliente con id: " + id));
@@ -220,7 +235,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(usuario.isEmpty()){
                 return Either.left(new ServiceError.UserNotFound("Usuario no encontrado con id: " + id));
             }
-            return Either.right(usuario.get());
+            return right(usuario.get());
         }catch (Exception e){
             logger.error("Error al obtener el usuario con id: {}", id, e);
             return Either.left(new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id));
@@ -251,7 +266,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(tarjeta.isEmpty()){
                 return Either.left(new ServiceError.TarjetasLoadError("Tarjeta no encontrada con id: " + id));
             }
-            return Either.right(tarjeta.get());
+            return right(tarjeta.get());
         }catch (Exception e){
             logger.error("Error al obtener la tarjeta con id: {}", id, e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id));
@@ -290,7 +305,7 @@ public class ClienteServiceImpl implements ClienteService {
               clientes.add(new Cliente(user, tarjetas.orElse(new ArrayList<>())));
            }
 
-            return Either.right(clientes);
+            return right(clientes);
         }catch (Exception e){
             logger.error("Error al obtener el cliente con nombre: {}", nombre, e);
             return Either.left(new ServiceError.TarjetasLoadError("Error al obtener el cliente con id: " + nombre));
@@ -316,7 +331,7 @@ public class ClienteServiceImpl implements ClienteService {
             if(usuarios.isEmpty()){
                 return Either.left(new ServiceError.UserNotFound("Usuario no encontrado con nombre: " + nombre));
             }
-            return Either.right(usuarios.get());
+            return right(usuarios.get());
         }catch (Exception e){
             logger.error("Error al obtener el usuario con nombre: {}", nombre, e);
             return Either.left(new ServiceError.UserNotFound("Error al obtener el usuario con id: " + nombre));
@@ -333,106 +348,106 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Either<ServiceError, Cliente> createCliente(Cliente cliente) {
-        try{
-            userValidator.ValidateUser(cliente.getUsuario()).bimap(
-                    error -> {
-                        logger.error("Error al validar el usuario", error);
+        try {
+            Either<UserErrors, Usuario> validationResult = userValidator.ValidateUser(cliente.getUsuario());
+            if (validationResult.isLeft()) {
+                UserErrors error = validationResult.getLeft();
+                logger.error("Error al validar el usuario", error);
+                Notification<UsuarioDto> notificacionErrorUsuario = new Notification<>(
+                        Notification.Type.CREATE,
+                        new UsuarioDto(cliente.getUsuario()),
+                        "Error al validar el usuario: " + cliente.getUsuario().getId() + error.getMessage()
+                );
+                userNotifications.send(notificacionErrorUsuario);
+                return Either.left(new ServiceError.UservalidatorError("Error al validar el usuario"));
+            }
 
-                        Notification<UsuarioDto> notificacionErrorUsuario = new Notification<>(
-                                Notification.Type.CREATE,
-                                new UsuarioDto(cliente.getUsuario()),
-                                "Error al validar el usuario: " + cliente.usuario.getId() + error.getMessage()
-                        );
-                        userNotifications.send(notificacionErrorUsuario);
-                        return new ServiceError.tarjetaCreditValidatorError("Error al validar el usuario");
-                    },
-                    usuario -> {
-                        Usuario usuarioCreado = userRemoteRepository.createUser(cliente.getUsuario());
-                        cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
-                        Notification<UsuarioDto> notificacionUsuarioCreado = new Notification<>(
-                                Notification.Type.CREATE,
-                                new UsuarioDto(usuarioCreado),
-                                "Usuario creado con éxito"+ cliente.usuario.getId()
-                        );
-                        userNotifications.send(notificacionUsuarioCreado);
-                        cliente.getTarjetas().forEach(tarjeta -> {
-                            tarjeta.setClientID(usuarioCreado.getId());
-                            tarjetaValidator.validarTarjetaCredito(tarjeta).bimap(
-                                    error -> {
-                                        logger.error("Error al validar la tarjeta", error);
-                                        Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
-                                                Notification.Type.CREATE,
-                                                new TarjetaCreditoDto(tarjeta),
-                                                "Error al validar la tarjeta de crédito: " + tarjeta.getNumero() + error.getMessage()
-                                        );
-                                        tarjetaNotificacion.send(notificacionErrorTarjeta);
-                                        return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
-                                    },
-                                    tarjetaCredito -> {
-                                        creditCardRepository.create(tarjetaCredito);
-                                        cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
-                                        Notification<TarjetaCreditoDto> notificacionTarjetaCreada = new Notification<>(
-                                                Notification.Type.CREATE,
-                                                new TarjetaCreditoDto(tarjetaCredito),
-                                                "Tarjeta de crédito creada con éxito" + tarjeta.getNumero()
-                                        );
-                                        tarjetaNotificacion.send(notificacionTarjetaCreada);
-                                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-                                    }
-                            );
-                        });
-                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-                    }
+            Usuario usuarioCreado = userRemoteRepository.createUser(cliente.getUsuario());
+            cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
+            Notification<UsuarioDto> notificacionUsuarioCreado = new Notification<>(
+                    Notification.Type.CREATE,
+                    new UsuarioDto(usuarioCreado),
+                    "Usuario creado con éxito " + cliente.getUsuario().getId()
             );
-            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-        }catch (Exception e){
+            userNotifications.send(notificacionUsuarioCreado);
+
+            for (TarjetaCredito tarjeta : cliente.getTarjetas()) {
+                tarjeta.setClientID(usuarioCreado.getId());
+                Either<TarjetaErrors, TarjetaCredito> tarjetaValidationResult = tarjetaValidator.validarTarjetaCredito(tarjeta);
+                if (tarjetaValidationResult.isLeft()) {
+                    TarjetaErrors tarjetaError = tarjetaValidationResult.getLeft();
+                    logger.error("Error al validar la tarjeta", tarjetaError);
+                    Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
+                            Notification.Type.CREATE,
+                            new TarjetaCreditoDto(tarjeta),
+                            "Error al validar la tarjeta de crédito: " + tarjeta.getNumero() + tarjetaError.getMessage()
+                    );
+                    tarjetaNotificacion.send(notificacionErrorTarjeta);
+                    return Either.left(new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta"));
+                }
+
+                TarjetaCredito tarjetaCredito = tarjetaValidationResult.get();
+                creditCardRepository.create(tarjetaCredito);
+                cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
+                Notification<TarjetaCreditoDto> notificacionTarjetaCreada = new Notification<>(
+                        Notification.Type.CREATE,
+                        new TarjetaCreditoDto(tarjetaCredito),
+                        "Tarjeta de crédito creada con éxito " + tarjeta.getNumero()
+                );
+                tarjetaNotificacion.send(notificacionTarjetaCreada);
+            }
+
+            return Either.right(new Cliente(usuarioCreado, cliente.getTarjetas()));
+        } catch (Exception e) {
             logger.error("Error al crear el cliente", e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.CREATE,
                     new UsuarioDto(cliente.getUsuario()),
-                    "Error al crear el cliente: "+ cliente.usuario.getId() + e.getMessage()
+                    "Error al crear el cliente: " + cliente.getUsuario().getId() + e.getMessage()
             );
             userNotifications.send(notificacionErrorGeneral);
-            return Either.left(new ServiceError.TarjetasLoadError("Error al crear el cliente" + cliente));
+            return Either.left(new ServiceError.TarjetasLoadError("Error al crear el cliente " + cliente));
         }
     }
 
+
     /**
      * Crea un nuevo usuario.
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
-     * @since 1.0
+     *
      * @param usuario El usuario a crear.
      * @return Either que contiene el usuario creado o un error si no se pudo crear.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
      */
 
     @Override
     public Either<ServiceError, Usuario> createUser(Usuario usuario) {
         try {
-            userValidator.ValidateUser(usuario).bimap(
-                    error -> {
-                        logger.error("Error al validar el usuario", error);
-                        Notification<UsuarioDto> notificacionError = new Notification<>(
-                                Notification.Type.CREATE,
-                                new UsuarioDto(usuario),
-                                "Error al validar el usuario: " + usuario.getId() + error.getMessage()
-                        );
-                        userNotifications.send(notificacionError);
-                        return new ServiceError.UservalidatorError("Error al validar el usuario");
-                    },
-                    user -> {
-                        Usuario usuarioCreado = userRemoteRepository.createUser(usuario);
-                        cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
-                        Notification<UsuarioDto> notificacionUsuarioCreado = new Notification<>(
-                                Notification.Type.CREATE,
-                                new UsuarioDto(usuarioCreado),
-                                "Usuario creado con éxito" + usuario.getId()
-                        );
-                        userNotifications.send(notificacionUsuarioCreado);
-                        return Either.right(usuarioCreado);
-                    }
+            Either<UserErrors, Usuario> validationResult = userValidator.ValidateUser(usuario);
+            if (validationResult.isLeft()) {
+                UserErrors error = validationResult.getLeft();
+                logger.error("Error al validar el usuario", error);
+                Notification<UsuarioDto> notificacionError = new Notification<>(
+                        Notification.Type.CREATE,
+                        new UsuarioDto(usuario),
+                        "Error al validar el usuario: " + usuario.getId() + error.getMessage()
+                );
+                userNotifications.send(notificacionError);
+                return Either.left(new ServiceError.UservalidatorError("Error al validar el usuario"));
+            }
+
+            Usuario usuarioCreado = userRemoteRepository.createUser(usuario);
+            cacheUsuario.put(usuarioCreado.getId(), usuarioCreado);
+            Notification<UsuarioDto> notificacionUsuarioCreado = new Notification<>(
+                    Notification.Type.CREATE,
+                    new UsuarioDto(usuarioCreado),
+                    "Usuario creado con éxito " + usuario.getId()
             );
-            return Either.right(usuario);
-        }catch (Exception e){
+            userNotifications.send(notificacionUsuarioCreado);
+
+            return Either.right(usuarioCreado);
+
+        } catch (Exception e) {
             logger.error("Error al crear el usuario", e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.CREATE,
@@ -440,46 +455,48 @@ public class ClienteServiceImpl implements ClienteService {
                     "Error al crear el usuario: " + usuario.getId() + e.getMessage()
             );
             userNotifications.send(notificacionErrorGeneral);
-            return Either.left(new ServiceError.UserNotCreated("Error al crear el usuario" + usuario));
+            return Either.left(new ServiceError.UserNotCreated("Error al crear el usuario " + usuario));
         }
     }
 
+
     /**
      * Crea una nueva tarjeta de credito.
-     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
-     * @since 1.0
+     *
      * @param tarjetaCredito La tarjeta de credito a crear.
      * @return Either que contiene la tarjeta de credito creada o un error si no se pudo crear.
+     * @author Alvaro Herrero, Javier Ruiz, Javier Hernandez, Raul Fernandez, Yahya El Hadri, Samuel Cortes.
+     * @since 1.0
      */
 
     @Override
     public Either<ServiceError, TarjetaCredito> createTarjeta(TarjetaCredito tarjetaCredito) {
         try {
-            tarjetaValidator.validarTarjetaCredito(tarjetaCredito).bimap(
-                    error -> {
-                        logger.error("Error al validar la tarjeta", error);
-                        Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
-                                Notification.Type.CREATE,
-                                new TarjetaCreditoDto(tarjetaCredito),
-                                "Error al validar la tarjeta de crédito: " + tarjetaCredito.getNumero() + error.getMessage()
-                        );
-                        tarjetaNotificacion.send(notificacionErrorTarjeta);
-                        return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
-                    },
-                    tarjeta -> {
-                        TarjetaCredito tarjetaCreada = creditCardRepository.create(tarjeta);
-                        cacheTarjeta.put(tarjetaCreada.getId(), tarjetaCreada);
-                        Notification<TarjetaCreditoDto> notificacionTarjetaCreada = new Notification<>(
-                                Notification.Type.CREATE,
-                                new TarjetaCreditoDto(tarjetaCredito),
-                                "Tarjeta de crédito creada con éxito" + tarjetaCredito.getNumero()
-                        );
-                        tarjetaNotificacion.send(notificacionTarjetaCreada);
-                        return Either.right(tarjetaCreada);
-                    }
+            Either<TarjetaErrors, TarjetaCredito> validationResult = tarjetaValidator.validarTarjetaCredito(tarjetaCredito);
+            if (validationResult.isLeft()) {
+                TarjetaErrors error = validationResult.getLeft();
+                logger.error("Error al validar la tarjeta", error);
+                Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
+                        Notification.Type.CREATE,
+                        new TarjetaCreditoDto(tarjetaCredito),
+                        "Error al validar la tarjeta de crédito: " + tarjetaCredito.getNumero() + error.getMessage()
+                );
+                tarjetaNotificacion.send(notificacionErrorTarjeta);
+                return Either.left(new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta"));
+            }
+
+            TarjetaCredito tarjetaCreada = creditCardRepository.create(tarjetaCredito);
+            cacheTarjeta.put(tarjetaCreada.getId(), tarjetaCreada);
+            Notification<TarjetaCreditoDto> notificacionTarjetaCreada = new Notification<>(
+                    Notification.Type.CREATE,
+                    new TarjetaCreditoDto(tarjetaCredito),
+                    "Tarjeta de crédito creada con éxito " + tarjetaCredito.getNumero()
             );
-            return Either.right(tarjetaCredito);
-        }catch (Exception e){
+            tarjetaNotificacion.send(notificacionTarjetaCreada);
+
+            return Either.right(tarjetaCreada);
+
+        } catch (Exception e) {
             logger.error("Error al crear la tarjeta", e);
             Notification<TarjetaCreditoDto> notificacionErrorTarjeta = new Notification<>(
                     Notification.Type.CREATE,
@@ -487,9 +504,10 @@ public class ClienteServiceImpl implements ClienteService {
                     "Error al crear la tarjeta " + tarjetaCredito.getNumero() + e.getMessage()
             );
             tarjetaNotificacion.send(notificacionErrorTarjeta);
-            return Either.left(new ServiceError.TarjeteNotDeleted("Error al crear la tarjeta" + tarjetaCredito));
+            return Either.left(new ServiceError.TarjeteNotCreated("Error al crear la tarjeta " + tarjetaCredito));
         }
     }
+
 
     /**
      * Actualiza un cliente existente.
@@ -505,69 +523,68 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, Cliente> updateCliente(Long id, Cliente cliente) {
         try {
-            getClienteById(id).bimap(
+            return getClienteById(id).flatMap(
+                    user -> {
+                        Either<UserErrors, Usuario> validationResult = userValidator.ValidateUser(cliente.getUsuario());
+                        if (validationResult.isLeft()) {
+                            UserErrors validationError = validationResult.getLeft();
+                            logger.error("Error al validar el usuario", validationError);
+                            Notification<UsuarioDto> notificacionErrorValidar = new Notification<>(
+                                    Notification.Type.UPDATE,
+                                    new UsuarioDto(cliente.getUsuario()),
+                                    "Error al validar el usuario: " + user.getId() + validationError.getMessage()
+                            );
+                            userNotifications.send(notificacionErrorValidar);
+                            return Either.left(new ServiceError.UservalidatorError("Error al validar el usuario"));
+                        }
+
+                        cacheUsuario.remove(id);
+                        Usuario usuarioActualizado = userRemoteRepository.updateUser(id, cliente.getUsuario());
+                        cacheUsuario.put(usuarioActualizado.getId(), usuarioActualizado);
+                        cliente.getTarjetas().forEach(tarjetaCredito -> cacheTarjeta.remove(tarjetaCredito.getId()));
+
+                        for (TarjetaCredito tarjeta : cliente.getTarjetas()) {
+                            tarjeta.setClientID(usuarioActualizado.getId());
+                            Either<TarjetaErrors, TarjetaCredito> tarjetaValidationResult = tarjetaValidator.validarTarjetaCredito(tarjeta);
+                            if (tarjetaValidationResult.isLeft()) {
+                                TarjetaErrors tarjetaError = tarjetaValidationResult.getLeft();
+                                logger.error("Error al validar la tarjeta", tarjetaError);
+                                Notification<TarjetaCreditoDto> notificacionErrorValidar = new Notification<>(
+                                        Notification.Type.UPDATE,
+                                        new TarjetaCreditoDto(tarjeta),
+                                        "Error al validar tarjeta: " + tarjeta.getNumero() + tarjetaError.getMessage()
+                                );
+                                tarjetaNotificacion.send(notificacionErrorValidar);
+                                return Either.left(new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta"));
+                            }
+
+                            TarjetaCredito tarjetaCredito = tarjetaValidationResult.get();
+                            creditCardRepository.update(tarjetaCredito.getId(), tarjetaCredito);
+                            cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
+                        }
+
+                        Notification<UsuarioDto> notificacionUsuarioActualizado = new Notification<>(
+                                Notification.Type.UPDATE,
+                                new UsuarioDto(usuarioActualizado),
+                                "Usuario actualizado con éxito " + usuarioActualizado.getId()
+                        );
+                        userNotifications.send(notificacionUsuarioActualizado);
+
+                        return Either.right(new Cliente(usuarioActualizado, cliente.getTarjetas()));
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el cliente con id: {}", id, error);
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
                                 Notification.Type.UPDATE,
-                               null,
+                                null,
                                 "Error al obtener el cliente con id: " + id
                         );
                         userNotifications.send(notificacionErrorObtener);
                         return new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id);
-                    },
-                    user -> {
-                        userValidator.ValidateUser(cliente.getUsuario()).bimap(
-                                error -> {
-                                    logger.error("Error al validar el usuario", error);
-                                    Notification<UsuarioDto> notificacionErrorValidar = new Notification<>(
-                                            Notification.Type.UPDATE,
-                                            new UsuarioDto(cliente.getUsuario()),
-                                            "Error al validar el usuario: "+ user.usuario.getId() + error.getMessage()
-                                    );
-                                    userNotifications.send(notificacionErrorValidar);
-                                    return new ServiceError.UservalidatorError("Error al validar el usuario");
-                                },
-                                usuario -> {
-                                    cacheUsuario.remove(id);
-                                    Usuario usuarioActualizado = userRemoteRepository.updateUser(id, cliente.getUsuario());
-                                    cacheUsuario.put(usuarioActualizado.getId(), usuarioActualizado);
-
-                                    cliente.tarjetas.forEach(tarjetaCredito -> cacheTarjeta.remove(tarjetaCredito.getId()));
-                                    cliente.getTarjetas().forEach(tarjeta -> {
-                                        tarjeta.setClientID(usuarioActualizado.getId());
-                                        tarjetaValidator.validarTarjetaCredito(tarjeta).bimap(
-                                                error -> {
-                                                    logger.error("Error al validar la tarjeta", error);
-                                                    Notification<TarjetaCreditoDto> notificacionErrorValidar = new Notification<>(
-                                                            Notification.Type.UPDATE,
-                                                            new TarjetaCreditoDto(tarjeta),
-                                                            "Error al validar tarjeta: "+ tarjeta.getNumero() + error.getMessage()
-                                                    );
-                                                    tarjetaNotificacion.send(notificacionErrorValidar);
-                                                    return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
-                                                },
-                                                tarjetaCredito -> {
-                                                    creditCardRepository.update(tarjetaCredito.getId(), tarjetaCredito);
-                                                    cacheTarjeta.put(tarjetaCredito.getId(), tarjetaCredito);
-                                                    Notification<UsuarioDto> notificacionUsuarioActualizado = new Notification<>(
-                                                            Notification.Type.UPDATE,
-                                                            new UsuarioDto(usuarioActualizado),
-                                                            "Usuario actualizado con éxito" + usuario.getId()
-                                                    );
-                                                    userNotifications.send(notificacionUsuarioActualizado);
-                                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-                                                }
-                                        );
-                                    });
-                                    return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-                                }
-                        );
-                        return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
                     }
             );
-            return Either.right(new Cliente(cliente.getUsuario(), cliente.getTarjetas()));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al actualizar el cliente con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.UPDATE,
@@ -578,6 +595,8 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.UserNotUpdated("Error al actualizar el cliente con id: " + id));
         }
     }
+
+
 
 
     /**
@@ -592,7 +611,33 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, Usuario> updateUser(Long id, Usuario usuario) {
         try {
-            getUserById(id).bimap(
+            return getUserById(id).flatMap(
+                    user -> {
+                        Either<UserErrors, Usuario> validationResult = userValidator.ValidateUser(usuario);
+                        if (validationResult.isLeft()) {
+                            UserErrors validationError = validationResult.getLeft();
+                            logger.error("Error al validar el usuario", validationError);
+                            Notification<UsuarioDto> notificacionErrorValidar = new Notification<>(
+                                    Notification.Type.UPDATE,
+                                    new UsuarioDto(usuario),
+                                    "Error al validar el usuario: " + user.getId() + validationError.getMessage()
+                            );
+                            userNotifications.send(notificacionErrorValidar);
+                            return Either.left(new ServiceError.UservalidatorError("Error al validar el usuario"));
+                        }
+
+                        cacheUsuario.remove(id);
+                        Usuario usuarioActualizado = userRemoteRepository.updateUser(id, usuario);
+                        cacheUsuario.put(usuarioActualizado.getId(), usuarioActualizado);
+                        Notification<UsuarioDto> notificacionUsuarioActualizado = new Notification<>(
+                                Notification.Type.UPDATE,
+                                new UsuarioDto(usuarioActualizado),
+                                "Usuario actualizado con éxito " + usuarioActualizado.getId()
+                        );
+                        userNotifications.send(notificacionUsuarioActualizado);
+                        return Either.right(usuarioActualizado);
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el usuario con id: {}", id, error);
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
@@ -602,37 +647,9 @@ public class ClienteServiceImpl implements ClienteService {
                         );
                         userNotifications.send(notificacionErrorObtener);
                         return new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id);
-                    },
-                    user -> {
-                        userValidator.ValidateUser(usuario).bimap(
-                                error -> {
-                                    logger.error("Error al validar el usuario", error);
-                                    Notification<UsuarioDto> notificacionErrorValidar = new Notification<>(
-                                            Notification.Type.UPDATE,
-                                            new UsuarioDto(usuario),
-                                            "Error al validar el usuario: " + user.getId() + error.getMessage()
-                                    );
-                                    userNotifications.send(notificacionErrorValidar);
-                                    return new ServiceError.UservalidatorError("Error al validar el usuario");
-                                },
-                                usuarioValidado -> {
-                                    cacheUsuario.remove(id);
-                                    Usuario usuarioActualizado = userRemoteRepository.updateUser(id, usuario);
-                                    cacheUsuario.put(usuarioActualizado.getId(), usuarioActualizado);
-                                    Notification<UsuarioDto> notificacionUsuarioActualizado = new Notification<>(
-                                            Notification.Type.UPDATE,
-                                            new UsuarioDto(usuarioActualizado),
-                                            "Usuario actualizado con éxito" + user.getId()
-                                    );
-                                    userNotifications.send(notificacionUsuarioActualizado);
-                                    return Either.right(usuarioActualizado);
-                                }
-                        );
-                        return Either.right(user);
                     }
             );
-            return Either.right(usuario);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al actualizar el usuario con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.UPDATE,
@@ -643,6 +660,7 @@ public class ClienteServiceImpl implements ClienteService {
             return Either.left(new ServiceError.UserNotUpdated("Error al actualizar el usuario con id: " + id));
         }
     }
+
 
     /**
      * Actualiza una tarjeta de credito existente.
@@ -656,52 +674,50 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, TarjetaCredito> updateTarjeta(UUID id, TarjetaCredito tarjetaCredito) {
         try {
-            getTarjetaById(id).bimap(
+            return getTarjetaById(id).flatMap(
+                    tarjeta -> {
+                        Either<TarjetaErrors, TarjetaCredito> validationResult = tarjetaValidator.validarTarjetaCredito(tarjetaCredito);
+                        if (validationResult.isLeft()) {
+                            TarjetaErrors validationError = validationResult.getLeft();
+                            logger.error("Error al validar la tarjeta", validationError);
+                            Notification<TarjetaCreditoDto> notificacionErrorValidar = new Notification<>(
+                                    Notification.Type.UPDATE,
+                                    new TarjetaCreditoDto(tarjeta),
+                                    "Error al validar tarjeta: " + tarjetaCredito.getNumero() + validationError.getMessage()
+                            );
+                            tarjetaNotificacion.send(notificacionErrorValidar);
+                            return Either.left(new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta"));
+                        }
+
+                        cacheTarjeta.remove(id);
+                        TarjetaCredito tarjetaActualizada = creditCardRepository.update(id, tarjetaCredito);
+                        cacheTarjeta.put(tarjetaActualizada.getId(), tarjetaActualizada);
+                        Notification<TarjetaCreditoDto> notificacionActualizado = new Notification<>(
+                                Notification.Type.UPDATE,
+                                new TarjetaCreditoDto(tarjetaActualizada),
+                                "Tarjeta actualizada: " + tarjetaActualizada.getNumero()
+                        );
+                        tarjetaNotificacion.send(notificacionActualizado);
+                        return Either.right(tarjetaActualizada);
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener la tarjeta con id: {}", id, error);
                         Notification<TarjetaCreditoDto> notificacionErrorEncontrar = new Notification<>(
                                 Notification.Type.UPDATE,
-                                 null,
+                                null,
                                 "Error al obtener tarjeta: " + tarjetaCredito.getNumero() + error.getMessage()
                         );
                         tarjetaNotificacion.send(notificacionErrorEncontrar);
                         return new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id);
-                    },
-                    tarjeta -> {
-                        tarjetaValidator.validarTarjetaCredito(tarjetaCredito).bimap(
-                                error -> {
-                                    logger.error("Error al validar la tarjeta", error);
-                                    Notification<TarjetaCreditoDto> notificacionErrorValidar = new Notification<>(
-                                            Notification.Type.UPDATE,
-                                            new TarjetaCreditoDto(tarjeta),
-                                            "Error al validar tarjeta: " + tarjetaCredito.getNumero() + error.getMessage()
-                                    );
-                                    tarjetaNotificacion.send(notificacionErrorValidar);
-                                    return new ServiceError.tarjetaCreditValidatorError("Error al validar la tarjeta");
-                                },
-                                tarjetaValidada -> {
-                                    cacheTarjeta.remove(id);
-                                    TarjetaCredito tarjetaActualizada = creditCardRepository.update(id, tarjetaCredito);
-                                    cacheTarjeta.put(tarjetaActualizada.getId(), tarjetaActualizada);
-                                    Notification<TarjetaCreditoDto> notificacionActualizado = new Notification<>(
-                                            Notification.Type.UPDATE,
-                                            new TarjetaCreditoDto(tarjetaValidada),
-                                            "Tarjeta actualizada: " + tarjetaValidada.getNumero()
-                                    );
-                                    tarjetaNotificacion.send(notificacionActualizado);
-                                    return Either.right(tarjetaActualizada);
-                                }
-                        );
-                        return Either.right(tarjeta);
                     }
             );
-            return Either.right(tarjetaCredito);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al actualizar la tarjeta con id: {}", id, e);
             Notification<TarjetaCreditoDto> notificacionErrorUpdate = new Notification<>(
                     Notification.Type.UPDATE,
-                   null,
-                    "Error al actualizar la tarjeta con id: {}"+ id + e.getMessage()
+                    null,
+                    "Error al actualizar la tarjeta con id: " + id + ". Error: " + e.getMessage()
             );
             tarjetaNotificacion.send(notificacionErrorUpdate);
             return Either.left(new ServiceError.TarjeteNotDeleted("Error al actualizar la tarjeta con id: " + id));
@@ -716,11 +732,39 @@ public class ClienteServiceImpl implements ClienteService {
      * @param id El ID del cliente a eliminar.
      * @return Either que contiene el cliente eliminado o un error si no se pudo eliminar.
      */
-
     @Override
     public Either<ServiceError, Cliente> deleteCliente(Long id) {
         try {
-            getClienteById(id).bimap(
+            return getClienteById(id).flatMap(
+                    cliente -> {
+                        try {
+                            userRemoteRepository.deleteById(id);
+                            cacheUsuario.remove(id);
+
+                            cliente.getTarjetas().forEach(tarjeta -> {
+                                creditCardRepository.delete(tarjeta.getId());
+                                cacheTarjeta.remove(tarjeta.getId());
+                                Notification<TarjetaCreditoDto> notificacionTarjetaEliminada = new Notification<>(
+                                        Notification.Type.DELETE,
+                                        new TarjetaCreditoDto(tarjeta),
+                                        "Tarjeta eliminada con éxito " + tarjeta.getNumero()
+                                );
+                                tarjetaNotificacion.send(notificacionTarjetaEliminada);
+                            });
+
+                            Notification<UsuarioDto> notificacionClienteEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new UsuarioDto(cliente.getUsuario()),
+                                    "Cliente eliminado con éxito " + cliente.getUsuario().getId()
+                            );
+                            userNotifications.send(notificacionClienteEliminado);
+                            return Either.right(cliente);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar las tarjetas del cliente con id: {}", id, e);
+                            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar las tarjetas del cliente con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el cliente con id: {}", id, error);
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
@@ -730,35 +774,9 @@ public class ClienteServiceImpl implements ClienteService {
                         );
                         userNotifications.send(notificacionErrorObtener);
                         return new ServiceError.UserNotFound("Error al obtener el cliente con id: " + id);
-                    },
-                    user -> {
-                        userRemoteRepository.deleteById(id);
-                        cacheUsuario.remove(id);
-                        user.getTarjetas().forEach(tarjeta -> {
-                            creditCardRepository.delete(tarjeta.getId());
-                            Notification<TarjetaCreditoDto> notificacionTarjetaEliminada = new Notification<>(
-                                    Notification.Type.DELETE,
-                                    new TarjetaCreditoDto(tarjeta),
-                                    "Tarjeta eliminada con éxito" + tarjeta.getNumero()
-                            );
-                            tarjetaNotificacion.send(notificacionTarjetaEliminada);
-                        });
-                        cacheUsuario.remove(id);
-                        user.getTarjetas().forEach(tarjeta -> {
-                            cacheTarjeta.remove(tarjeta.getId());
-                        });
-
-                        Notification<UsuarioDto> notificacionClienteEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new UsuarioDto(user.getUsuario()),
-                                "Cliente eliminado con éxito" + user.usuario.getId()
-                        );
-                        userNotifications.send(notificacionClienteEliminado);
-                        return Either.right(user);
                     }
             );
-            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el cliente con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar el cliente con id: {}", id, e);
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
@@ -775,45 +793,56 @@ public class ClienteServiceImpl implements ClienteService {
      * @param id El ID del usuario a eliminar.
      * @return Either que contiene el usuario eliminado o un error si no se pudo eliminar.
      */
-
     @Override
     public Either<ServiceError, Usuario> deleteUser(Long id) {
         try {
-            getUserById(id).bimap(
+            return getUserById(id).flatMap(
+                    user -> {
+                        try {
+                            userRemoteRepository.deleteById(id);
+                            cacheUsuario.remove(id);
+
+                            Notification<UsuarioDto> notificacionUsuarioEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new UsuarioDto(user),
+                                    "Usuario eliminado con éxito " + user.getId()
+                            );
+                            userNotifications.send(notificacionUsuarioEliminado);
+
+                            return Either.right(user);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar el usuario con id: {}", id, e);
+                            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener el usuario con id: {}", id, error);
+
                         Notification<UsuarioDto> notificacionErrorObtener = new Notification<>(
                                 Notification.Type.DELETE,
                                 null,
                                 "Error al obtener el usuario con id: " + id
                         );
                         userNotifications.send(notificacionErrorObtener);
+
                         return new ServiceError.UserNotFound("Error al obtener el usuario con id: " + id);
-                    },
-                    user -> {
-                        userRemoteRepository.deleteById(id);
-                        cacheUsuario.remove(id);
-                        Notification<UsuarioDto> notificacionUsuarioEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new UsuarioDto(user),
-                                "Usuario eliminado con éxito" + user.getId()
-                        );
-                        userNotifications.send(notificacionUsuarioEliminado);
-                        return Either.right(user);
                     }
             );
-            return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar el usuario con id: {}", id, e);
+
             Notification<UsuarioDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
                     null,
                     "Error al eliminar el usuario con id: " + id + ". Error: " + e.getMessage()
             );
             userNotifications.send(notificacionErrorGeneral);
+
             return Either.left(new ServiceError.UserNotDeleted("Error al eliminar el usuario con id: " + id));
         }
     }
+
 
     /**
      * Elimina una tarjeta de credito existente.
@@ -826,7 +855,24 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Either<ServiceError, TarjetaCredito> deleteTarjeta(UUID id) {
         try {
-            getTarjetaById(id).bimap(
+            return getTarjetaById(id).flatMap(
+                    tarjeta -> {
+                        try {
+                            creditCardRepository.delete(id);
+                            cacheTarjeta.remove(id);
+                            Notification<TarjetaCreditoDto> notificacionTarjetaEliminado = new Notification<>(
+                                    Notification.Type.DELETE,
+                                    new TarjetaCreditoDto(tarjeta),
+                                    "Tarjeta eliminada con éxito " + tarjeta.getNumero()
+                            );
+                            tarjetaNotificacion.send(notificacionTarjetaEliminado);
+                            return Either.right(tarjeta);
+                        } catch (Exception e) {
+                            logger.error("Error al eliminar la tarjeta con id: {}", id, e);
+                            return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
+                        }
+                    }
+            ).mapLeft(
                     error -> {
                         logger.error("Error al obtener la tarjeta con id: {}", id, error);
                         Notification<TarjetaCreditoDto> notificacionErrorObtener = new Notification<>(
@@ -836,21 +882,9 @@ public class ClienteServiceImpl implements ClienteService {
                         );
                         tarjetaNotificacion.send(notificacionErrorObtener);
                         return new ServiceError.TarjetasLoadError("Error al obtener la tarjeta con id: " + id);
-                    },
-                    tarjeta -> {
-                        creditCardRepository.delete(id);
-                        cacheTarjeta.remove(id);
-                        Notification<TarjetaCreditoDto> notificacionTarjetaEliminado = new Notification<>(
-                                Notification.Type.DELETE,
-                                new TarjetaCreditoDto(tarjeta),
-                                "Tarjeta eliminada con éxito" + tarjeta.getNumero()
-                        );
-                        tarjetaNotificacion.send(notificacionTarjetaEliminado);
-                        return Either.right(tarjeta);
                     }
             );
-            return Either.left(new ServiceError.TarjeteNotDeleted("Error al eliminar la tarjeta con id: " + id));
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error al eliminar la tarjeta con id: {}", id, e);
             Notification<TarjetaCreditoDto> notificacionErrorGeneral = new Notification<>(
                     Notification.Type.DELETE,
@@ -868,6 +902,72 @@ public class ClienteServiceImpl implements ClienteService {
      * @since 1.0
      * Carga los datos remotos en la cache local.
      */
+
+    @Override
+    public Either<ServiceError, List<Cliente>> loadClientesJson(File file) {
+        try {
+            List<Cliente> clientes = (List<Cliente>) storageJsonClient.importList(file);
+            return right(clientes);
+        }catch (Exception e){
+            logger.error("Error al cargar los clientes", e);
+            return Either.left(new ServiceError.ClienteLoadErrors("Error al cargar los clientes"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveClientesJson(List<Cliente> clientes, File file) {
+        try {
+            storageJsonClient.exportList(clientes, file );
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar los clientes", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar los clientes"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, List<Usuario>> loadUsersCsv(File file) {
+        try {
+            List<Usuario> usuarios = (List<Usuario>) storageCsvUser.importList(file);
+            return right(usuarios);
+        }catch (Exception e){
+            logger.error("Error al cargar los usuarios", e);
+            return Either.left(new ServiceError.ImportErrors("Error al cargar los usuarios"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveUsersCsv(List<Usuario> usuarios, File file) {
+        try {
+            storageCsvUser.exportList(usuarios, file);
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar los usuarios", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar los usuarios"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, List<TarjetaCredito>>loadTarjetasCsv(File file) {
+        try {
+            List<TarjetaCredito> tarjetas = storageCsvCredCard.importList(file).subscribeOn(Schedulers.boundedElastic()).collectList().block();
+            return  right(tarjetas);
+        }catch (Exception e){
+            logger.error("Error al cargar las tarjetas", e);
+            return Either.left(new ServiceError.ImportErrors("Error al cargar las tarjetas"));
+        }
+    }
+
+    @Override
+    public Either<ServiceError, Void> saveTarjetasCsv(List<TarjetaCredito> tarjetasCredito, File file) {
+        try {
+            storageCsvCredCard.exportList(tarjetasCredito, file);
+            return right(null);
+        }catch (Exception e){
+            logger.error("Error al guardar las tarjetas", e);
+            return Either.left(new ServiceError.ImportErrors("Error al guardar las tarjetas"));
+        }
+    }
 
     @Override
     public void loadData() {

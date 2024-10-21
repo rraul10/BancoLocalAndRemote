@@ -3,8 +3,7 @@ package org.example.storages.validators;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -20,7 +19,7 @@ class csvValidatorTest {
         assertTrue(file.canRead());
 
         // Llama al validador con el archivo real
-        csvValidator validator = new csvValidator();
+        CsvValidator validator = new CsvValidator();
         assertTrue(validator.csvValidatorImport(file));
     }
 
@@ -31,7 +30,7 @@ class csvValidatorTest {
         File directory = mock(File.class);
         when(directory.isDirectory()).thenReturn(true);
 
-        csvValidator validator = new csvValidator();
+        CsvValidator validator = new CsvValidator();
         assertFalse(validator.csvValidatorImport(directory));
     }
 
@@ -39,7 +38,7 @@ class csvValidatorTest {
     public void test_file_is_not_csv(){
         File nonCsvFile = mock(File.class);
         when(nonCsvFile.toString()).thenReturn("file.txt");
-        assertFalse(csvValidator.csvValidatorImport(nonCsvFile));
+        assertFalse(CsvValidator.csvValidatorImport(nonCsvFile));
 
     }
 
@@ -47,7 +46,7 @@ class csvValidatorTest {
     public void test_file_cannot_read(){
         File unreadableFile = mock(File.class);
         when(unreadableFile.canRead()).thenReturn(false);
-        assertFalse(csvValidator.csvValidatorImport(unreadableFile));
+        assertFalse(CsvValidator.csvValidatorImport(unreadableFile));
     }
 
 }

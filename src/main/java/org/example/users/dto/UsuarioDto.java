@@ -3,6 +3,8 @@ package org.example.users.dto;
 import lombok.NonNull;
 import org.example.models.Usuario;
 
+import java.time.LocalDateTime;
+
 public record UsuarioDto (
         long id,
         @NonNull
@@ -20,8 +22,8 @@ public record UsuarioDto (
                         usuario.getName(),
                         usuario.getUsername(),
                         usuario.getEmail(),
-                        usuario.getCreatedAt().toString(),
-                        usuario.getUpdatedAt().toString()
+                        LocalDateTime.now().toString(),
+                        LocalDateTime.now().toString()
                 );
         }
 
