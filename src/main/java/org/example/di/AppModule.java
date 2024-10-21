@@ -23,8 +23,8 @@ import org.example.notification.TarjetaNotificacion;
 import org.example.notification.UserNotifications;
 import org.example.service.ClienteService;
 import org.example.service.ClienteServiceImpl;
-import org.example.storages.validators.CsvValidator;
-import org.example.storages.validators.JsonValidator;
+import org.example.storages.validators.csvValidator;
+import org.example.storages.validators.jsonValidator;
 import org.example.users.api.RetrofitUser;
 import org.example.users.api.UserApiRest;
 import org.example.users.cache.CacheUsuario;
@@ -121,21 +121,31 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public StorageJsonClient proviedStorageJsonClient() {
-        JsonValidator jsonValidator = new JsonValidator();
-        return new StorageJsonClientImpl(jsonValidator);}
+    public csvValidator csvValidator() {
+        return new csvValidator();
+    }
 
     @Provides
     @Singleton
-    public StorageCsvCredCard proviedStorageCsvCredCard() {
+    public jsonValidator jsonValidator() {
+        return new jsonValidator();
+    }
+    @Provides
+    @Singleton
+    public StorageCsvCredCard storageCsvCredCard() {
         return new StorageCsvCredCardImpl();
     }
 
     @Provides
     @Singleton
-    public StorageCsvUser proviedStorageCsvUser() {
-        CsvValidator csvValidator = new CsvValidator();
-        return new StorageCsvUserImpl(csvValidator);
+    public StorageCsvUser storageCsvUser() {
+        return new StorageCsvUserImpl(csvValidator());
+    }
+
+    @Provides
+    @Singleton
+    public StorageJsonClient storageJsonClient() {
+        return new StorageJsonClientImpl(jsonValidator());
     }
 
     @Provides
@@ -149,8 +159,8 @@ public class AppModule {
                                                 UserRemoteRepositoryImpl userRemoteRepository,
                                                 TarjetaValidator tarjetaValidator,
                                                 StorageJsonClient storageJsonClient,
-                                                StorageCsvCredCard storageCsvCredCard,
-                                                StorageCsvUser storageCsvUser) {
+                                                StorageCsvUser storageCsvUser,
+                                                StorageCsvCredCard storageCsvCredCard) {
         return new ClienteServiceImpl(
                 usersRepository,
                 creditCardLocalRepository,

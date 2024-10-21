@@ -97,6 +97,12 @@ public abstract class ServiceError {
         }
     }
 
+    public static class ExportError extends ServiceError{
+        public ExportError(String message){
+            super("ERROR: " + message);
+        }
+    }
+
     public static class ImportErrors extends ServiceError{
         public ImportErrors(String message){
             super("ERROR: " + message);

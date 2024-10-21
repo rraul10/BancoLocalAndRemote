@@ -1,8 +1,15 @@
 package org.example;
 
 import org.example.di.DaggerAppComponent;
+import org.example.models.Cliente;
+import org.example.models.TarjetaCredito;
+import org.example.models.Usuario;
 import org.example.service.ClienteService;
 
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class Main {
@@ -14,8 +21,8 @@ public class Main {
         CompletableFuture.runAsync(() -> {
             while (true) {
                 try {
-                    clienteService.loadData();  // Ejecutar la función
-                    Thread.sleep(30000);  // Esperar 30 segundos
+                    clienteService.loadData();
+                    Thread.sleep(30000);
                 } catch (InterruptedException e) {
                     System.out.println("La tarea fue interrumpida.");
                     break;
@@ -24,9 +31,15 @@ public class Main {
         });
 
         CompletableFuture.runAsync(()->{
-                    clienteService.getAllClientes(false);
-                    clienteService.getAllUsers(true).forEach(i->
-                            i.forEach(System.out::println)
+                    clienteService.loadTarjetasCsv(new File("data/tarjetas.csv")).forEach(i->
+                            i.forEach(j->{
+                                clienteService.createTarjeta(j);
+                            })
+                    );
+                    clienteService.getAllClientes(false).forEach(i->
+                            i.forEach(j->{
+                                System.out.println(j);
+                            })
                     );
                 }
 

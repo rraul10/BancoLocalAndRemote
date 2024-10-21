@@ -5,6 +5,7 @@ import org.example.service.errors.ServiceError;
 import org.example.models.Cliente;
 import org.example.models.TarjetaCredito;
 import org.example.models.Usuario;
+import reactor.core.publisher.Flux;
 
 import java.io.File;
 import java.util.List;
@@ -36,6 +37,7 @@ public interface ClienteService {
     Either<ServiceError, Void> saveUsersCsv(List<Usuario> usuarios, File file);
     Either<ServiceError, List<TarjetaCredito>> loadTarjetasCsv(File file);
     Either<ServiceError, Void> saveTarjetasCsv(List<TarjetaCredito> tarjetasCredito, File file);
+
 
     void loadData();
 }
