@@ -50,7 +50,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
 
             while (resultSet.next()) {
                 TarjetaCredito tarjeta = TarjetaCredito.builder()
-                        .id((java.util.UUID) resultSet.getObject("id"))
+                        .id( resultSet.getObject("id", UUID.class))
                         .numero(resultSet.getString("numero"))
                         .nombreTitular(resultSet.getString("nombreTitular"))
                         .clientID(Long.parseLong(resultSet.getObject("clienteID", String.class)))
@@ -93,7 +93,7 @@ public class CreditCardRepositoryImpl implements CreditCardRepository {
                             .id(resultSet.getObject("id", UUID.class))
                             .numero(resultSet.getString("numero"))
                             .nombreTitular(resultSet.getString("nombreTitular"))
-                            .clientID((resultSet.getObject("clienteID", Long.class)))
+                            .clientID((resultSet.getLong("clientID")))
                             .fechaCaducidad(resultSet.getString("fechaCaducidad"))
                             .createdAt(resultSet.getObject("createdAt", LocalDateTime.class))
                             .updatedAt(resultSet.getObject("updatedAt", LocalDateTime.class))

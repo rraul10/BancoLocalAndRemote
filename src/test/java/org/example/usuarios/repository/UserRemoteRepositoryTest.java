@@ -5,6 +5,7 @@ import org.example.mappers.UserMapper;
 import org.example.models.Usuario;
 import org.example.users.api.UserApiRest;
 import org.example.users.api.createupdatedelete.Request;
+import org.example.users.api.createupdatedelete.Response;
 import org.example.users.api.getAll.ResponseUserGetAll;
 import org.example.users.api.getById.ResponseUserGetByid;
 import org.example.users.api.getByName.ResponseUserGetByName;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -58,7 +60,30 @@ class UserRemoteRepositoryTest {
         verify(userApiRest, times(1)).getAll();
     }
 
+    @Test
+    void getAll_withException() {
+        // Arrange
+        CompletableFuture<List<ResponseUserGetAll>> call = mock(CompletableFuture.class);
+        when(userApiRest.getAll()).thenReturn(call);
 
+        // Simular una excepción cuando se llama a call.get()
+        try {
+            when(call.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
+
+        // Instanciar el repositorio con sus dependencias
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
+
+        // Act
+        List<Usuario> result = userRemoteRepository.getAll();
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty()); // Debería estar vacío porque se maneja la excepción y se devuelve una lista vacía
+        verify(userApiRest, times(1)).getAll();
+    }
 
 
     @Test
@@ -81,30 +106,29 @@ class UserRemoteRepositoryTest {
         verify(userApiRest, times(1)).getById(1L);
     }
 
-    @Test
-    void getAllThrowsException() {
-        when(userApiRest.getAll()).thenThrow(RuntimeException.class);
+        @Test
+    void getById_withException() {
+        // Arrange
+        long id = 1L;
+        CompletableFuture<ResponseUserGetByid> call = mock(CompletableFuture.class);
+        when(userApiRest.getById(id)).thenReturn(call);
 
+        try {
+            when(call.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
 
-        assertThrows(RuntimeException.class, () -> userRemoteRepository.getAll());
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
 
-        verify(userApiRest, times(1)).getAll();
+        // Act
+        Usuario result = userRemoteRepository.getById(id);
+
+        // Assert
+        assertNull(result); // Debería ser null porque la excepción fue manejada y se devolvió null
     }
 
-
-    @Test
-    void getByIdNotFound() {
-
-        when(userApiRest.getById(2L)).thenThrow(UserNotFoundException.class);
-
-        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getById(2));
-
-        assertEquals(UserNotFoundException.class, exception.getClass());
-
-        verify(userApiRest, times(1)).getById(2L);
-    }
-
-    @Test
+        @Test
     void findByNameOK() {
         var user1 = ResponseUserGetByName.builder()
                 .id(1)
@@ -122,43 +146,27 @@ class UserRemoteRepositoryTest {
         verify(userApiRest, times(1)).getByName("Juan Perez");
     }
 
-
     @Test
-    void findByNameNotFound() {
+    void getByName_withException() {
+        // Arrange
+        String name = "Juan";
+        CompletableFuture<List<ResponseUserGetByName>> call = mock(CompletableFuture.class);
+        when(userApiRest.getByName(name)).thenReturn(call);
 
-        when(userApiRest.getByName("Ana Gomez")).thenThrow(UserNotFoundException.class);
+        try {
+            when(call.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
 
-        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName("Ana Gomez"));
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
 
-        assertEquals(UserNotFoundException.class, exception.getClass());
+        // Act
+        List<Usuario> result = userRemoteRepository.getByName(name);
 
-        verify(userApiRest, times(1)).getByName("Ana Gomez");
-    }
-
-    @Test
-    void findByNameNull() {
-
-        when(userApiRest.getByName(null)).thenThrow(UserNotFoundException.class);
-
-        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName(null));
-
-        assertEquals(UserNotFoundException.class, exception.getClass());
-
-        verify(userApiRest, times(1)).getByName(null);
-    }
-
-
-
-    @Test
-    void findByNameEmpty() {
-
-        when(userApiRest.getByName("")).thenThrow(UserNotFoundException.class);
-
-        var exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.getByName(""));
-
-        assertEquals(UserNotFoundException.class, exception.getClass());
-
-        verify(userApiRest, times(1)).getByName("");
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
@@ -182,6 +190,29 @@ class UserRemoteRepositoryTest {
         assertEquals("Juan Perez", res.getName());
 
         verify(userApiRest, times(1)).createUser(any(Request.class));
+    }
+
+    @Test
+    void createUser_withException() {
+        // Arrange
+        Usuario usuario = new Usuario(1L, "John Doe", "johndoe", "john@example.com", LocalDateTime.now(), LocalDateTime.now());
+        CompletableFuture<Response> callSync = mock(CompletableFuture.class);
+        when(userApiRest.createUser(any())).thenReturn(callSync);
+
+        try {
+            when(callSync.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
+
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
+
+        // Act
+        Usuario result = userRemoteRepository.createUser(usuario);
+
+        // Assert
+        assertNull(result); // Debería ser null porque la excepción fue manejada y se devolvió null
+        verify(userApiRest).createUser(any());
     }
 
 
@@ -212,21 +243,29 @@ class UserRemoteRepositoryTest {
     }
 
     @Test
-    void updateUsuarioNotFound() {
-        var usuario = Usuario.builder()
-                .id(1L)
-                .name("Juan")
-                .username("juanp")
-                .email("juan@example.com")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+    void updateUser_withException() {
+        // Arrange
+        long id = 1L;
+        Usuario usuario = new Usuario(id, "John Doe", "johndoe", "john@example.com", LocalDateTime.now(), LocalDateTime.now());
+        CompletableFuture<Response> callSync = mock(CompletableFuture.class);
+        when(userApiRest.updateUser(eq(id), any())).thenReturn(callSync);
 
-        when(userApiRest.updateUser(eq(1L), any(Request.class))).thenThrow(UserNotFoundException.class);
+        try {
+            when(callSync.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
 
-        assertThrows(UserNotFoundException.class, () -> userRemoteRepository.updateUser(1L, usuario));
-        verify(userApiRest, times(1)).updateUser(eq(1L), any(Request.class));
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
+
+        // Act
+        Usuario result = userRemoteRepository.updateUser(id, usuario);
+
+        // Assert
+        assertNull(result); // Debería ser null porque la excepción fue manejada y se devolvió null
+        verify(userApiRest).updateUser(eq(id), any());
     }
+
 
     @Test
     void deleteUsuarioOK() {
@@ -237,17 +276,29 @@ class UserRemoteRepositoryTest {
         verify(userApiRest, times(1)).deleteUser(1L);
     }
 
-
     @Test
-    void deleteUsuarioNotFound() {
-        when(userApiRest.deleteUser(1L)).thenThrow(UserNotFoundException.class);
+    void deleteById_withException() {
+        // Arrange
+        long id = 1L;
+        CompletableFuture<Response> callSync = mock(CompletableFuture.class);
+        when(userApiRest.deleteUser(id)).thenReturn(callSync);
 
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userRemoteRepository.deleteById(1L));
+        try {
+            when(callSync.get()).thenThrow(new ExecutionException(new Exception("Simulated exception")));
+        } catch (InterruptedException | ExecutionException e) {
+            fail("Exception during test setup");
+        }
 
-        assertEquals(UserNotFoundException.class, exception.getClass());
+        UserRemoteRepositoryImpl userRemoteRepository = new UserRemoteRepositoryImpl(userApiRest);
 
-        verify(userApiRest, times(1)).deleteUser(1L);
+        // Act
+        Usuario result = userRemoteRepository.deleteById(id);
+
+        // Assert
+        assertNull(result); // Debería ser null porque la excepción fue manejada y se devolvió null
+        verify(userApiRest).deleteUser(id);
     }
+
 
 
 

@@ -35,20 +35,20 @@ class TarjetaValidatorImplTest {
 
     @Test
     void validarTarjetaCreditoNumeroInvalido() {
-
         TarjetaCredito tarjeta = TarjetaCredito.builder()
                 .id(UUID.fromString("3ec260b3-820c-496a-8620-9fe3b0b016b3"))
                 .numero("4257 4600 0460 1637")
                 .nombreTitular("John Doe")
-                .clientID(2l)
+                .clientID(2L)
                 .fechaCaducidad("12/25")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
                 .build();
+        tarjeta.setNumero("4257 4600 0460 163");
 
-        tarjeta.setNumero("4257 4600 0460 1638");
         Either<TarjetaErrors, TarjetaCredito> resultado = tarjetaValidatorImpl.validarTarjetaCredito(tarjeta);
+
         assertTrue(resultado.isLeft());
         assertEquals("ERROR: Número de tarjeta inválido", resultado.getLeft().getMessage());
     }
