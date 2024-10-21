@@ -17,15 +17,6 @@
 - **Logs** detallados de las operaciones realizadas.
 - **Configuración parametrizada** en archivos `.env` y `application.properties`.
 
-## 🚀 **Requisitos del Proyecto**
-
-- Uso de **Spring Boot** como framework principal.
-- Despliegue de la infraestructura con **Docker** (incluyendo **multi-stage build**).
-- Pruebas unitarias y de integración usando **TestContainers**.
-- Integración continua con **GitFlow** y Pull Requests para cada tarea.
-
----
-
 ### 👥 **Equipo del Proyecto**
 
 - **Project Owner:**
